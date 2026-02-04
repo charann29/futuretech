@@ -1,0 +1,216 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{microtype}
+\usepackage{calc}
+\usepackage[margin=0.35in, top=0.3in, bottom=0.3in]{geometry}
+\input{glyphtounicode}
+
+% Font options
+\usepackage[sc]{mathpazo}
+\linespread{1.0}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-10pt}\scshape\raggedright\fontsize{14}{16}\selectfont
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    { {{ '#' }}1 }
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{ {{ '#' }}1 } & {{ '#' }}2 \\
+      \textit{\small {{ '#' }}3 } & \textit{\small {{ '#' }}4 } \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small {{ '#' }}1 } & \textit{\small {{ '#' }}2 } \\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small {{ '#' }}1 & {{ '#' }}2 \\
+    \end{tabular*}\vspace{-4pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{ {{ '#' }}1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}, itemsep=0pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[noitemsep, topsep=0pt, parsep=0pt, partopsep=0pt, itemsep=-2pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \scshape {{ resume.personal_info.name|latextxt }}} \\ \vspace{1pt}
+    \small 
+    {% if resume.personal_info.phone %}{{ resume.personal_info.phone|latextxt }} $|$ {% endif %}
+    \href{mailto:{{- resume.personal_info.email|trim -}}}{\underline{ {{- resume.personal_info.email|latextxt -}} }} 
+    {% if resume.personal_info.linkedin %}$|$ \href{ {{- resume.personal_info.linkedin|trim -}} }{\underline{LinkedIn}}{% endif %}
+    {% if resume.personal_info.github %}$|$ \href{ {{- resume.personal_info.github|trim -}} }{\underline{GitHub}}{% endif %}
+    {% if resume.personal_info.website %}$|$ \href{ {{- resume.personal_info.website|trim -}} }{\underline{Portfolio}}{% endif %}
+\end{center}
+
+%-----------SUMMARY-----------
+{% if resume.summary %}
+\section{Professional Summary}
+\small{ {{ resume.summary|latextxt }} }
+{% endif %}
+
+%-----------EXPERIENCE-----------
+{% if resume.experience %}
+\section{Experience}
+  \resumeSubHeadingListStart
+    {% for exp in resume.experience %}
+      \resumeSubheading
+        { {{ exp.company|latextxt }} }{ {{ exp.location|latextxt }} }
+        { {{ exp.role|latextxt }} }{ {{ exp.start_date|latextxt }} -- {{ exp.end_date|latextxt }} }
+        {% if exp.details %}
+        \resumeItemListStart
+          {% for detail in exp.details %}
+          \resumeItem{ {{ detail|latextxt }} }
+          {% endfor %}
+        \resumeItemListEnd
+        {% endif %}
+    {% endfor %}
+  \resumeSubHeadingListEnd
+{% endif %}
+
+%-----------EDUCATION-----------
+{% if resume.education %}
+\section{Education}
+  \resumeSubHeadingListStart
+    {% for edu in resume.education %}
+      \resumeSubheading
+        { {{ edu.institution|latextxt }} }{ {{ edu.location|latextxt }} }
+        { {{ edu.degree|latextxt }} }{ {{ edu.start_date|latextxt }} -- {{ edu.end_date|latextxt }} }
+        {% if edu.details %}
+        \resumeItemListStart
+          {% for detail in edu.details %}
+          \resumeItem{ {{ detail|latextxt }} }
+          {% endfor %}
+        \resumeItemListEnd
+        {% endif %}
+    {% endfor %}
+  \resumeSubHeadingListEnd
+{% endif %}
+
+%-----------PROGRAMMING SKILLS-----------
+{% if resume.skills %}
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     {% for category in resume.skills %}
+     {% if category.skills %}
+     \textbf{ {% if category.category %}{{ category.category|latextxt }}{% else %}Skills{% endif %} }{: {{ category.skills|map('latextxt')|join(' $\cdot$ ') }} } \\
+     {% endif %}
+     {% endfor %}
+    }}
+ \end{itemize}
+{% endif %}
+
+%-----------PROJECTS-----------
+{% if resume.projects %}
+\section{Projects}
+    \resumeSubHeadingListStart
+      {% for project in resume.projects %}
+        \resumeProjectHeading
+          {\textbf{ {{ project.name|latextxt }} } $|$ { {{ project.technologies|map('latextxt')|join(' $\cdot$ ') }} } }
+          {% if project.link %}{ \href{ {{- project.link|trim -}} }{\underline{Link}} }{% else %}{}{% endif %}
+          \resumeItemListStart
+            {% for detail in project.details %}
+              \resumeItem{ {{ detail|latextxt }} }
+            {% endfor %}
+          \resumeItemListEnd
+      {% endfor %}
+    \resumeSubHeadingListEnd
+{% endif %}
+
+%-----------CERTIFICATIONS-----------
+{% if resume.certifications %}
+\section{Certifications}
+  \resumeSubHeadingListStart
+    {% for cert in resume.certifications %}
+      \resumeProjectHeading
+        {\textbf{ {{ cert.name|latextxt }} } $|$ {{ cert.issuer|latextxt }} {% if cert.link %} $|$ \href{ {{- cert.link|trim -}} }{\underline{Verify}}{% endif %} }{ {{ cert.date|latextxt }} }
+        {% if cert.details %}
+        \resumeItemListStart
+          {% for detail in cert.details %}
+          \resumeItem{ {{ detail|latextxt }} }
+          {% endfor %}
+        \resumeItemListEnd
+        {% endif %}
+    {% endfor %}
+  \resumeSubHeadingListEnd
+{% endif %}
+
+%-----------LANGUAGES-----------
+{% if resume.languages %}
+\section{Languages Known}
+\footnotesize{ {{ resume.languages|map('latextxt')|join(' $\cdot$ ') }} }
+{% endif %}
+
+%-----------CUSTOM SECTIONS-----------
+{% if resume.custom_sections %}
+{% for section in resume.custom_sections %}
+\section{ {{ section.title|latextxt }} }
+  \resumeSubHeadingListStart
+    {% for item in section.items %}
+      \resumeProjectHeading
+        {\textbf{ {% if item.link %}\href{ {{- item.link|trim -}} }{ {{ item.name|latextxt }} }{% else %}{{ item.name|latextxt }}{% endif %} } {% if item.organizer %}$|$ {{ item.organizer|latextxt }}{% endif %} }{ {{ item.date|latextxt if item.date else '' }} }
+        {% if item.details %}
+        \resumeItemListStart
+          {% for detail in item.details %}
+          \resumeItem{ {{ detail|latextxt }} }
+          {% endfor %}
+        \resumeItemListEnd
+        {% endif %}
+    {% endfor %}
+  \resumeSubHeadingListEnd
+{% endfor %}
+{% endif %}
+
+\end{document}

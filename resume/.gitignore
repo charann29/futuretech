@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# API Keys and Secrets
+config.py
+
+# Output files
+output/
+*.pdf
+*.tex
+*.aux
+*.log
+*.out
+
+# Data
+data/saved_resumes/*.json
+!data/saved_resumes/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

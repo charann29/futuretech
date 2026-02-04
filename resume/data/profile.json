@@ -1,0 +1,101 @@
+{
+  "personal_info": {
+    "name": "Harsh Agarwal",
+    "email": "aharsh5498@gmail.com",
+    "phone": "7702324798",
+    "linkedin": "https://www.linkedin.com/in/harsh-agarwal-griet/",
+    "github": "https://github.com/Harsh-Agarwal-dark",
+    "website": "https://google.com",
+    "location": "Hyderabad"
+  },
+  "education": [
+    {
+      "institution": "Gokaraju Rangaraju Institute of Engineering and Technology",
+      "degree": "Btech",
+      "start_date": "03/11/22",
+      "end_date": "01/06/26",
+      "location": "Hyderabad",
+      "gpa": "8.34",
+      "details": [
+        "Specializing in Computer Science with a focus on Java development and Full Stack technologies.",
+        "Relevant Coursework: Data Structures & Algorithms, Object-Oriented Programming, Database Management Systems, and Web Technologies.",
+        "Consistently maintaining a high GPA of 8.34, demonstrating strong academic focus and technical problem-solving skills."
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Smart Interviews",
+      "role": "DSA Mentor",
+      "start_date": "01/01/25",
+      "end_date": "01/01/26",
+      "location": "hyderabad",
+      "details": []
+    }
+  ],
+  "projects": [
+    {
+      "name": "Estate",
+      "technologies": [
+        "React js",
+        "MongoDb",
+        "Node js",
+        "Java",
+        "Python",
+        "MySql",
+        "NoSql"
+      ],
+      "link": "https://github.com/Harsh-Agarwal-dark/estate",
+      "details": [
+        "Built a responsive frontend using React and Vite for fast development and modular UI components.",
+        "Integrated Google Maps API to display property locations with interactive map markers.",
+        "Implemented Firebase Authentication to enable secure login and multi-user access.",
+        "Used Firebase Firestore to store property listings, user data, and real-time chat messages."
+      ]
+    },
+    {
+      "name": "Tomato",
+      "technologies": [],
+      "link": "https://github.com/Harsh-Agarwal-dark/estate",
+      "details": [
+        "Designed a dynamic UI using React and Vite for real-time cart updates and order placement.",
+        "Developed a RESTful backend with Node.js to manage orders, users, and menu data.",
+        "Integrated MongoDB as the database to store orders, user info, and item details."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "",
+      "skills": [
+        "DSA",
+        "React js",
+        "MongoDb",
+        "Node js",
+        "Java",
+        "Python",
+        "MySql",
+        "NoSql"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Academy Cloud Foundations",
+      "issuer": "AWS",
+      "date": "2024",
+      "link": "https://aws.amazon.com/training/",
+      "details": [
+        "Gained foundational knowledge of AWS cloud services and infrastructure.",
+        "Learned about cloud security, architecture, and pricing models."
+      ]
+    }
+  ],
+  "languages": [
+    "English",
+    "Hindi",
+    "Telugu"
+  ],
+  "job_description": "JAVA + Gen AI Primary Skills: JAVA, Springboot, Microservices, Github Copilot, Python or TypeScript, CI/CD implementation, Hands-on experience with LLM frameworks (e.g., OpenAI, Hugging Face, LangChain) Secondary Skills: Angular/React, MySQL, AWS",
+  "summary": "Final Year student with 1 year of experience in full stack development and DSA"
+}

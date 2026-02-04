@@ -1,0 +1,87 @@
+{
+    "personal_info": {
+        "name": "Full Name",
+        "email": "email@example.com",
+        "phone": "1234567890",
+        "linkedin": "linkedin.com/in/username",
+        "github": "github.com/username",
+        "website": "portfolio.com",
+        "location": "City, Country"
+    },
+    "education": [
+        {
+            "institution": "University Name",
+            "degree": "Degree Name",
+            "start_date": "MM/YYYY",
+            "end_date": "MM/YYYY",
+            "gpa": "3.8/4.0",
+            "details": [
+                "Major in CS",
+                "Dean's List"
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "company": "Company Name",
+            "role": "Role Name",
+            "start_date": "MM/YYYY",
+            "end_date": "Present",
+            "location": "City, State",
+            "details": [
+                "Achieved X by doing Y",
+                "Managed a team of Z"
+            ]
+        }
+    ],
+    "projects": [
+        {
+            "name": "Project Name",
+            "technologies": [
+                "Python",
+                "React"
+            ],
+            "details": [
+                "Description of project",
+                "Impact of project"
+            ],
+            "link": "github.com/link"
+        }
+    ],
+    "skills": [
+        {
+            "category": "Programming Languages",
+            "skills": [
+                "Java",
+                "Python",
+                "JavaScript"
+            ]
+        },
+        {
+            "category": "Tools",
+            "skills": [
+                "Git",
+                "Docker",
+                "AWS"
+            ]
+        }
+    ],
+    "certifications": [
+        {
+            "name": "AWS Certified Cloud Practitioner",
+            "issuer": "Amazon Web Services",
+            "date": "01/2024",
+            "link": "https://verification.link",
+            "details": [
+                "Cloud computing basics",
+                "Security and compliance"
+            ]
+        }
+    ],
+    "languages": [
+        "English",
+        "Spanish"
+    ],
+    "job_description": "Software Engineer with React and Python",
+    "summary": "Experienced professional looking for..."
+}
