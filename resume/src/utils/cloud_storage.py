@@ -59,8 +59,30 @@ def get_gcs_credentials():
                 cred_source = creds_info["credential_source"]
                 print(f"📋 credential_source type: {list(cred_source.keys())}")
                 
-                # If using environment_variable, the token should already be in the env var
-                if "environment_id" in cred_source:
+                # If using environment_variable (Railway's format), convert to file
+                if "environment_variable" in cred_source:
+                    env_var_name = cred_source.get("environment_variable")
+                    token_value = os.getenv(env_var_name)
+                    
+                    if token_value:
+                        print(f"✅ Found OIDC token in environment variable: {env_var_name}")
+                        
+                        # Create a temporary file with the token
+                        import tempfile
+                        token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
+                        token_file.write(token_value)
+                        token_file.close()
+                        
+                        # Replace environment_variable with file
+                        del creds_info["credential_source"]["environment_variable"]
+                        creds_info["credential_source"]["file"] = token_file.name
+                        print(f"✅ Converted environment_variable to file: {token_file.name}")
+                    else:
+                        print(f"❌ Environment variable {env_var_name} not found")
+                        raise ValueError(f"Environment variable {env_var_name} is required but not set")
+                
+                # If using environment_id, the token should already be in the env var
+                elif "environment_id" in cred_source:
                     env_var_name = cred_source.get("environment_id")
                     token_value = os.getenv(env_var_name)
                     
