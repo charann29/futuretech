@@ -11,7 +11,7 @@ from typing import List, Optional, Dict, Any
 import json
 import traceback
 
-from config import GROQ_API_KEY
+# from config import GROQ_API_KEY (Removed to avoid ModuleNotFoundError on Railway)
 from src.utils.llm_client import LLMClient
 from src.agents.jd_parser_agent import JDParserAgent
 from src.agents.expander_agent import ExpanderAgent

@@ -3,14 +3,19 @@ import json
 import sys
 from pathlib import Path
 
-# Add parent directory to path to import config
+# Add parent directory to path to import config (Optional fallback)
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from config import GROQ_API_KEY
+try:
+    from config import GROQ_API_KEY
+except ImportError:
+    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 from groq import Groq
 
 class LLMClient:
     def __init__(self, model_name: str = "llama-3.3-70b-versatile"):
+        if not GROQ_API_KEY:
+            raise ValueError("GROQ_API_KEY not found in environment or config.py")
         self.client = Groq(api_key=GROQ_API_KEY)
         self.model_name = model_name
         self.total_input_tokens = 0
