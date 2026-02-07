@@ -18,8 +18,9 @@ const MainLayout = ({ sidebar, children, preview, isSaving, lastSaved, onDownloa
                     >
                         ☰
                     </button>
-                    <div className="logo-icon">E</div>
-                    <span className="logo-text">ElevateBox</span>
+                    <a href="/index2.html">
+                        <img src="/logo.png" alt="Future Tech" style={{ height: '40px', width: 'auto' }} />
+                    </a>
                 </div>
                 <div className="header-center">
                     <div className="status-indicator">
@@ -34,7 +35,6 @@ const MainLayout = ({ sidebar, children, preview, isSaving, lastSaved, onDownloa
                 </div>
                 <div className="header-right">
                     <ThemeToggle />
-                    <button className="btn-secondary">Preview</button>
                     <button className="btn-primary" onClick={onDownload} disabled={isSaving}>
                         {isSaving ? 'Processing...' : 'Download PDF'}
                     </button>

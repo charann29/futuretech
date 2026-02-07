@@ -1,6 +1,10 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
@@ -16,7 +20,7 @@ from src.agents.enhancer_agent import EnhancerAgent
 from src.agents.skills_analyzer import SkillsAnalyzer
 from src.generators.resume_generator import ResumeGenerator
 from src.schemas.resume_schema import Resume
-from src.utils.gcs_utils import upload_resume_to_gcs, get_resume_download_url
+from src.utils.cloud_storage import upload_resume_to_gcs, get_signed_url
 
 app = FastAPI()
 
@@ -104,36 +108,46 @@ async def generate_resume_pdf(request: GenerateRequest):
     """
     Generates a TeX and PDF, uploads to GCS, and returns the path and signed URL.
     """
+    print(f"\n🚀 Received Generate Request for user: {request.user_id}, resume: {request.resume_id}")
     try:
         resume = request.resume
         user_id = request.user_id
         resume_id = request.resume_id
 
+        print("🛠️  Initializing ResumeGenerator...")
         generator = ResumeGenerator()
         filename = f"resume_{resume_id}"
+        print(f"📄 Generating TeX for {filename}...")
         tex_path = generator.generate_tex(resume, filename=filename)
+        print(f"🔨 Compiling PDF from {tex_path}...")
         pdf_path = generator.generate_pdf(tex_path)
         
         if pdf_path and os.path.exists(pdf_path):
+            print(f"✅ PDF generated at: {pdf_path}")
             # Read PDF content for upload
             with open(pdf_path, "rb") as f:
                 file_content = f.read()
             
-            # Upload to GCS
+            # Upload to GCS and Sync to Supabase (logic is now inside the utility)
+            print("☁️  Uploading to Google Cloud Storage...")
             gcs_path = upload_resume_to_gcs(user_id, resume_id, file_content)
             
-            # Generate temporary download URL
-            download_url = get_resume_download_url(user_id, resume_id)
+            # Generate temporary download URL (V4 signed)
+            print("🔑 Generating Signed URL...")
+            download_url = get_signed_url(user_id, resume_id)
             
+            print("🎉 Generation and Upload Complete!")
             return {
-                "message": "Resume generated and uploaded successfully",
+                "message": "Resume generated, uploaded to GCS, and synced to Supabase successfully",
                 "gcs_path": gcs_path,
                 "download_url": download_url,
                 "filename": f"{filename}.pdf"
             }
         else:
+            print("❌ PDF generation failed (check LaTeX logs above).")
             raise HTTPException(status_code=500, detail="PDF generation failed")
     except Exception as e:
+        print(f"🔥 FATAL ERROR in /generate: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 

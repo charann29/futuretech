@@ -90,9 +90,9 @@ function BuilderPage() {
             // If we got a GCS path back, save it into our Supabase record
             if (result && result.gcs_path && resumeData.id) {
                 await saveResume({ ...resumeData, gcs_path: result.gcs_path });
-                showToast.success('Resume generated, uploaded to Cloud Storage, and link saved!');
+                showToast.success('Resume generated and saved to your library!');
             } else {
-                showToast.success('Resume generated successfully!');
+                showToast.success('Resume generated! Check your downloads.');
             }
         } catch (error) {
             console.error('Download failed:', error);
@@ -111,10 +111,10 @@ function BuilderPage() {
             if (response.analysis) {
                 setAnalysisFeedback(response.analysis);
             }
-            showToast.success('Resume processed with AI pipeline! Check the preview and analysis.');
+            showToast.success('Resume enhanced! Review the AI tailored content.');
         } catch (error) {
             console.error('Processing failed:', error);
-            showToast.error('Failed to process resume. Check backend logs.');
+            showToast.error('AI Processing failed. Please check your connection or try again later.');
         } finally {
             setIsSaving(false);
         }

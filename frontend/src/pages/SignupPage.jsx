@@ -37,7 +37,7 @@ const SignupPage = () => {
     };
 
     return (
-        <AuthLayout title="Create Account" subtitle="Join ElevateBox to build your professional resume">
+        <AuthLayout title="Join the Future" subtitle="Create an account and transform your career today">
             <form onSubmit={handleSignup} className="auth-form">
                 <div className="form-group">
                     <label>Full Name</label>

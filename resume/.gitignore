@@ -10,6 +10,9 @@ ENV/
 
 # API Keys and Secrets
 config.py
+.env
+.env.*
+! .env.template
 
 # Output files
 output/

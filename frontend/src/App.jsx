@@ -6,6 +6,7 @@ import BuilderPage from './pages/BuilderPage'
 import ResumeSelectorPage from './pages/ResumeSelectorPage'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import ProfilePage from './pages/ProfilePage'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -29,6 +30,14 @@ function App() {
           element={
             <ProtectedRoute>
               <BuilderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
             </ProtectedRoute>
           }
         />

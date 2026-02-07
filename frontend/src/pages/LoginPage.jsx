@@ -28,7 +28,7 @@ const LoginPage = () => {
     };
 
     return (
-        <AuthLayout title="Welcome Back" subtitle="Log in to your ElevateBox account">
+        <AuthLayout title="Modern Resume Builder" subtitle="Log in to your account and start building your future">
             <form onSubmit={handleLogin} className="auth-form">
                 <div className="form-group">
                     <label>Email Address</label>

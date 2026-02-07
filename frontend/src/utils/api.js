@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 
-const API_URL = 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 // AI Processing and PDF Generation stay on the local server
 export const processResume = async (resumeData) => {
@@ -46,9 +46,14 @@ export const generateResumePDF = async (resumeData) => {
 
         const data = await response.json();
 
-        // Open the signed URL in a new tab for preview/download
+        // Trigger automatic download
         if (data.download_url) {
-            window.open(data.download_url, '_blank');
+            const link = document.createElement('a');
+            link.href = data.download_url;
+            link.download = data.filename || `resume_${resumeData.id}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         return data; // contains gcs_path and download_url

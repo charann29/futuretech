@@ -365,8 +365,8 @@
   }
 }
 
-@media (max-width: 1100px) {
-  .main-layout {
+@media (max-width: 1200px) {
+  .main-layout.sidebar-open {
     grid-template-columns: 240px 1fr;
   }
 
@@ -378,6 +378,7 @@
 @media (max-width: 768px) {
   .app-header {
     padding: 0 1rem;
+    height: 56px;
   }
 
   .header-center {
@@ -392,11 +393,32 @@
     grid-template-columns: 1fr;
   }
 
+  .main-layout.sidebar-open,
+  .main-layout.sidebar-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .sidebar {
     display: none;
   }
 
-  .btn-secondary {
+  .content-area {
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    max-width: 100%;
+  }
+
+  .status-indicator {
     display: none;
+  }
+}
+
+/* Fix for mobile grid-2 */
+@media (max-width: 640px) {
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
   }
 }

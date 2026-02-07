@@ -8,8 +8,9 @@ const HomePage = () => {
         <div className="page-container home-page">
             <nav className="home-nav">
                 <div className="nav-logo">
-                    <div className="logo-icon">E</div>
-                    <span className="logo-text">ElevateBox</span>
+                    <a href="/index2.html">
+                        <img src="/logo.png" alt="Future Tech" style={{ height: '40px', width: 'auto' }} />
+                    </a>
                 </div>
                 <div className="nav-links">
                     <ThemeToggle />
@@ -57,7 +58,7 @@ const HomePage = () => {
             </main>
 
             <footer className="home-footer">
-                <p>© 2026 ElevateBox. Built with ❤️ for job seekers.</p>
+                <p>© 2026 Future Tech. Built with ❤️ for job seekers.</p>
             </footer>
         </div>
     );
