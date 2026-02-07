@@ -28,20 +28,37 @@ def get_gcs_credentials():
             # Parse the JSON string
             creds_info = json.loads(creds_json_str)
             
-            # Check if OIDC token is provided as environment variable
-            oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
-            if oidc_token:
-                # Write token to a temporary file for the credential to use
-                import tempfile
-                token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
-                token_file.write(oidc_token)
-                token_file.close()
+            # Check if credential_source uses environment_variable
+            if "credential_source" in creds_info:
+                cred_source = creds_info["credential_source"]
                 
-                # Update the credential_source to use the temp file
-                if "credential_source" in creds_info:
-                    creds_info["credential_source"]["file"] = token_file.name
+                # If using environment_variable, the token should already be in the env var
+                if "environment_id" in cred_source:
+                    env_var_name = cred_source.get("environment_id")
+                    token_value = os.getenv(env_var_name)
+                    
+                    if token_value:
+                        print(f"✅ Found OIDC token in environment variable: {env_var_name}")
+                    else:
+                        print(f"⚠️  Warning: Environment variable {env_var_name} not found")
                 
-                print(f"✅ Using OIDC token from environment variable (temp file: {token_file.name})")
+                # If using file credential source, check if we need to create temp file
+                elif "file" in cred_source:
+                    file_path = cred_source["file"]
+                    
+                    # Check if the file path is a placeholder and we have RAILWAY_OIDC_TOKEN
+                    if not os.path.exists(file_path):
+                        oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
+                        if oidc_token:
+                            # Write token to a temporary file
+                            import tempfile
+                            token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
+                            token_file.write(oidc_token)
+                            token_file.close()
+                            
+                            # Update the credential_source to use the temp file
+                            creds_info["credential_source"]["file"] = token_file.name
+                            print(f"✅ Created temp file for OIDC token: {token_file.name}")
             
             # Create credentials from the external account config
             credentials = identity_pool.Credentials.from_info(creds_info)
@@ -55,6 +72,8 @@ def get_gcs_credentials():
         except Exception as e:
             print(f"⚠️  Error loading Workload Identity credentials: {e}")
             print(f"Error details: {type(e).__name__}: {str(e)}")
+            import traceback
+            traceback.print_exc()
             print("Falling back to ADC...")
     
     # Fall back to standard ADC (local development)
