@@ -28,9 +28,36 @@ def get_gcs_credentials():
             # Parse the JSON string
             creds_info = json.loads(creds_json_str)
             
-            # Check if credential_source uses environment_variable
-            if "credential_source" in creds_info:
+            print(f"📋 Loaded credential config with keys: {list(creds_info.keys())}")
+            
+            # Check if credential_source exists
+            if "credential_source" not in creds_info:
+                print("⚠️  credential_source missing, reconstructing from RAILWAY_OIDC_TOKEN...")
+                
+                # Check if we have the OIDC token in environment
+                oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
+                if oidc_token:
+                    # Create a temporary file with the token
+                    import tempfile
+                    token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
+                    token_file.write(oidc_token)
+                    token_file.close()
+                    
+                    # Add credential_source pointing to the temp file
+                    creds_info["credential_source"] = {
+                        "file": token_file.name,
+                        "format": {
+                            "type": "text"
+                        }
+                    }
+                    print(f"✅ Created credential_source with temp file: {token_file.name}")
+                else:
+                    print("❌ RAILWAY_OIDC_TOKEN not found in environment")
+                    raise ValueError("RAILWAY_OIDC_TOKEN environment variable is required")
+            else:
+                # credential_source exists, check its type
                 cred_source = creds_info["credential_source"]
+                print(f"📋 credential_source type: {list(cred_source.keys())}")
                 
                 # If using environment_variable, the token should already be in the env var
                 if "environment_id" in cred_source:
