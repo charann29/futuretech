@@ -117,20 +117,38 @@ def get_gcs_credentials():
                 # If using file credential source, check if we need to create temp file
                 elif "file" in cred_source:
                     file_path = cred_source["file"]
+                    print(f"🔍 Checking file path: {file_path}")
                     
-                    # Check if the file path is a placeholder and we have RAILWAY_OIDC_TOKEN
-                    if not os.path.exists(file_path):
-                        oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
-                        if oidc_token:
-                            # Write token to a temporary file
-                            import tempfile
-                            token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
-                            token_file.write(oidc_token)
-                            token_file.close()
+                    # Check if the file exists
+                    if os.path.exists(file_path):
+                        print(f"✅ OIDC token file exists at: {file_path}")
+                    else:
+                        print(f"⚠️  File not found at: {file_path}")
+                        
+                        # Railway provides OIDC token via service variable, not file
+                        # Check for Railway's service variable
+                        oidc_token = os.getenv("RAILWAY_SERVICE_OIDC_TOKEN")
+                        if not oidc_token:
+                            # Try the standard RAILWAY_OIDC_TOKEN variable
+                            oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
+                        
+                        if oidc_token and len(oidc_token) > 0:
+                            print(f"✅ Found OIDC token in environment variable")
+                            print(f"🔍 Token length: {len(oidc_token)}")
+                            print(f"🔍 Token preview: {oidc_token[:50]}...")
                             
-                            # Update the credential_source to use the temp file
-                            creds_info["credential_source"]["file"] = token_file.name
-                            print(f"✅ Created temp file for OIDC token: {token_file.name}")
+                            # Create the directory if it doesn't exist
+                            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+                            
+                            # Write token to the expected file path
+                            with open(file_path, 'w') as f:
+                                f.write(oidc_token)
+                            
+                            print(f"✅ Created OIDC token file at: {file_path}")
+                        else:
+                            print(f"❌ RAILWAY_SERVICE_OIDC_TOKEN and RAILWAY_OIDC_TOKEN not found or empty")
+                            print(f"❌ Cannot create token file - OIDC token is required")
+                            raise ValueError(f"CRITICAL: Railway OIDC token not available. File {file_path} doesn't exist and no token in environment variables.")
             
             # Create credentials from the external account config
             credentials = identity_pool.Credentials.from_info(creds_info)
