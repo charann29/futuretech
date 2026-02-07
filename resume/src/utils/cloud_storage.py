@@ -116,39 +116,38 @@ def get_gcs_credentials():
                 
                 # If using file credential source, check if we need to create temp file
                 elif "file" in cred_source:
-                    file_path = cred_source["file"]
-                    print(f"🔍 Checking file path: {file_path}")
+                    original_file_path = cred_source["file"]
+                    # We will use a writable path in /tmp for Railway as /run/secrets/ may be read-only or missing
+                    writable_token_path = "/tmp/railway-oidc-token"
                     
-                    # Check if the file exists
-                    if os.path.exists(file_path):
-                        print(f"✅ OIDC token file exists at: {file_path}")
+                    print(f"🔍 Checking original file path: {original_file_path}")
+                    
+                    if os.path.exists(original_file_path):
+                        print(f"✅ OIDC token file exists at: {original_file_path}")
                     else:
-                        print(f"⚠️  File not found at: {file_path}")
+                        print(f"⚠️  File not found at: {original_file_path}")
                         
-                        # Railway provides OIDC token via service variable, not file
-                        # Check for Railway's service variable
-                        oidc_token = os.getenv("RAILWAY_SERVICE_OIDC_TOKEN")
-                        if not oidc_token:
-                            # Try the standard RAILWAY_OIDC_TOKEN variable
-                            oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
+                        # Try to find the token in environment variables
+                        # RAILWAY_OIDC_TOKEN is the standard one if enabled in settings
+                        oidc_token = os.getenv("RAILWAY_OIDC_TOKEN") or os.getenv("RAILWAY_SERVICE_OIDC_TOKEN")
                         
                         if oidc_token and len(oidc_token) > 0:
-                            print(f"✅ Found OIDC token in environment variable")
-                            print(f"🔍 Token length: {len(oidc_token)}")
-                            print(f"🔍 Token preview: {oidc_token[:50]}...")
+                            print(f"✅ Found OIDC token in environment (length: {len(oidc_token)})")
                             
-                            # Create the directory if it doesn't exist
-                            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+                            # Create /tmp directory if it doesn't exist
+                            os.makedirs(os.path.dirname(writable_token_path), exist_ok=True)
                             
-                            # Write token to the expected file path
-                            with open(file_path, 'w') as f:
+                            # Write token to the writable path
+                            with open(writable_token_path, 'w') as f:
                                 f.write(oidc_token)
                             
-                            print(f"✅ Created OIDC token file at: {file_path}")
+                            # Update the config to point to our new writable file
+                            creds_info["credential_source"]["file"] = writable_token_path
+                            print(f"✅ Redirected credential_source to: {writable_token_path}")
                         else:
-                            print(f"❌ RAILWAY_SERVICE_OIDC_TOKEN and RAILWAY_OIDC_TOKEN not found or empty")
-                            print(f"❌ Cannot create token file - OIDC token is required")
-                            raise ValueError(f"CRITICAL: Railway OIDC token not available. File {file_path} doesn't exist and no token in environment variables.")
+                            print(f"❌ RAILWAY_OIDC_TOKEN is empty or missing.")
+                            print(f"📢 IMPORTANT: Check Railway Service Settings and ensure 'Workload Identity' is enabled.")
+                            raise ValueError(f"CRITICAL: Railway OIDC token not available. File {original_file_path} doesn't exist and environment variables are empty.")
             
             # Create credentials from the external account config
             credentials = identity_pool.Credentials.from_info(creds_info)
