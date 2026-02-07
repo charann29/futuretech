@@ -1,9 +1,11 @@
 import os
+import json
 import datetime
 import google.auth
 from google.auth.transport import requests
 from google.cloud import storage
 from google.api_core.exceptions import GoogleAPIError
+from google.auth import identity_pool
 from supabase import create_client, Client
 
 # Configuration from environment variables
@@ -15,10 +17,33 @@ SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 def get_gcs_credentials():
     """
     Load GCS credentials using Application Default Credentials (ADC).
-    Works with 'gcloud auth application-default login' locally
-    and with service account impersonation on Railway.
+    Supports:
+    - Workload Identity Federation (Railway) via GOOGLE_APPLICATION_CREDENTIALS_JSON
+    - Local ADC via 'gcloud auth application-default login'
     """
+    # Check for Workload Identity Federation credentials (Railway)
+    creds_json_str = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
+    if creds_json_str:
+        try:
+            # Parse the JSON string
+            creds_info = json.loads(creds_json_str)
+            
+            # Create credentials from the external account config
+            credentials = identity_pool.Credentials.from_info(creds_info)
+            
+            # Set the quota project
+            if PROJECT_ID:
+                credentials = credentials.with_quota_project(PROJECT_ID)
+            
+            print("✅ Using Workload Identity Federation credentials")
+            return credentials
+        except Exception as e:
+            print(f"⚠️  Error loading Workload Identity credentials: {e}")
+            print("Falling back to ADC...")
+    
+    # Fall back to standard ADC (local development)
     credentials, _ = google.auth.default()
+    print("✅ Using Application Default Credentials (ADC)")
     return credentials
 
 def get_supabase_client() -> Client:
