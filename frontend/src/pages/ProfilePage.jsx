@@ -23,19 +23,7 @@ const ProfilePage = () => {
 
     return (
         <div className="page-container">
-            <nav className="home-nav">
-                <div className="nav-logo">
-                    <a href="/landing.html">
-                        <img src="/logo.png" alt="Future Tech" style={{ height: '40px', width: 'auto' }} />
-                    </a>
-                </div>
-                <div className="nav-links">
-                    <ThemeToggle />
-                    <button className="btn-secondary nav-btn" onClick={handleLogout} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <LogOut size={18} /> Logout
-                    </button>
-                </div>
-            </nav>
+
 
             <main className="selector-page">
                 <header className="selector-header">
