@@ -7,7 +7,7 @@
 npx serve -s dist -l $PORT
 ```
 
-**Note:** The `-s` flag enables Single Page Application (SPA) mode, which is required for React Router to handle virtual routes like `/profile` and `/resumes`. Existing files like `landing.html` will still be served directly.
+**Note:** The `-s` flag enables SPA mode for React Router while still serving static files like `landing.html`. The serve package uses "clean URLs" - accessing `/landing.html` will redirect to `/landing` but still serve the correct content.
 
 ### Environment Variables
 - `VITE_API_URL` - Backend URL (e.g., `https://your-backend.up.railway.app`)
