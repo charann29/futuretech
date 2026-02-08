@@ -23,8 +23,8 @@ function App() {
       return
     }
 
-    // Redirect root to landing.html
-    if (window.location.pathname === '/') {
+    // Redirect root or /landing to landing.html
+    if (window.location.pathname === '/' || window.location.pathname === '/landing') {
       window.location.href = '/landing.html'
     }
   }, [navigate])
