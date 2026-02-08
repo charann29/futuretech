@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import './App.css'
-import HomePage from './pages/HomePage'
+
 import BuilderPage from './pages/BuilderPage'
 import ResumeSelectorPage from './pages/ResumeSelectorPage'
 import LoginPage from './pages/LoginPage'
@@ -14,6 +14,12 @@ function App() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // Redirect root to landing.html
+    if (window.location.pathname === '/') {
+      window.location.href = '/landing.html'
+      return
+    }
+
     // Check if we need to redirect from landing page
     const redirectPath = sessionStorage.getItem('redirectAfterLoad')
     if (redirectPath) {
@@ -25,7 +31,7 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<div>Redirecting...</div>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route
