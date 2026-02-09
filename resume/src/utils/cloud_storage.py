@@ -8,167 +8,14 @@ from google.api_core.exceptions import GoogleAPIError
 from google.auth import identity_pool
 from supabase import create_client, Client
 
-# Configuration from environment variables
-BUCKET_NAME = os.getenv("GCS_BUCKET_NAME", "user-resumes-storage-01")
-PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "project-353fe44f-aa79-48fc-91d")
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+from src.utils.google_auth import get_google_credentials
+from src.config import settings
 
-def get_gcs_credentials():
-    """
-    Load GCS credentials using Application Default Credentials (ADC).
-    Supports:
-    - Workload Identity Federation (Railway) via GOOGLE_APPLICATION_CREDENTIALS_JSON
-    - Local ADC via 'gcloud auth application-default login'
-    """
-    # Check for Workload Identity Federation credentials (Railway)
-    creds_json_str = os.getenv("GOOGLE_APPLICATION_CREDENTIALS_JSON")
-    if creds_json_str:
-        try:
-            # Parse the JSON string
-            creds_info = json.loads(creds_json_str)
-            
-            print(f"📋 Loaded credential config with keys: {list(creds_info.keys())}")
-            
-            # Check if credential_source exists
-            if "credential_source" not in creds_info:
-                print("⚠️  credential_source missing, reconstructing from RAILWAY_OIDC_TOKEN...")
-                
-                # Check if we have the OIDC token in environment
-                oidc_token = os.getenv("RAILWAY_OIDC_TOKEN")
-                if oidc_token:
-                    # Create a temporary file with the token
-                    import tempfile
-                    token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
-                    token_file.write(oidc_token)
-                    token_file.close()
-                    
-                    # Add credential_source pointing to the temp file
-                    creds_info["credential_source"] = {
-                        "file": token_file.name,
-                        "format": {
-                            "type": "text"
-                        }
-                    }
-                    print(f"✅ Created credential_source with temp file: {token_file.name}")
-                else:
-                    print("❌ RAILWAY_OIDC_TOKEN not found in environment")
-                    raise ValueError("RAILWAY_OIDC_TOKEN environment variable is required")
-            else:
-                # credential_source exists, check its type
-                cred_source = creds_info["credential_source"]
-                print(f"📋 credential_source type: {list(cred_source.keys())}")
-                
-                # If using environment_variable (Railway's format), convert to file
-                if "environment_variable" in cred_source:
-                    env_var_name = cred_source.get("environment_variable")
-                    token_value = os.getenv(env_var_name)
-                    
-                    # Debug: Print all environment variables that start with RAILWAY
-                    print(f"🔍 Checking for environment variable: {env_var_name}")
-                    railway_vars = {k: v[:20] + "..." if len(v) > 20 else v for k, v in os.environ.items() if k.startswith("RAILWAY")}
-                    print(f"🔍 Available RAILWAY_* variables: {list(railway_vars.keys())}")
-                    
-                    # Check if variable exists in environment
-                    if env_var_name in os.environ:
-                        actual_value = os.environ[env_var_name]
-                        print(f"🔍 Variable exists in os.environ")
-                        print(f"🔍 Value type: {type(actual_value)}")
-                        print(f"🔍 Value length: {len(actual_value) if actual_value else 0}")
-                        print(f"🔍 Value is empty string: {actual_value == ''}")
-                        print(f"🔍 Value is None: {actual_value is None}")
-                        if actual_value:
-                            print(f"🔍 Value preview: {actual_value[:50]}...")
-                        else:
-                            print(f"❌ Value is empty or None!")
-                    else:
-                        print(f"❌ Variable {env_var_name} NOT in os.environ")
-                    
-                    if token_value and len(token_value) > 0:
-                        print(f"✅ Found OIDC token in environment variable: {env_var_name}")
-                        print(f"🔍 Token preview: {token_value[:30]}..." if len(token_value) > 30 else f"🔍 Token: {token_value}")
-                        
-                        # Create a temporary file with the token
-                        import tempfile
-                        token_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.token')
-                        token_file.write(token_value)
-                        token_file.close()
-                        
-                        # Replace environment_variable with file
-                        del creds_info["credential_source"]["environment_variable"]
-                        creds_info["credential_source"]["file"] = token_file.name
-                        print(f"✅ Converted environment_variable to file: {token_file.name}")
-                    else:
-                        print(f"❌ Environment variable {env_var_name} is empty or not set")
-                        print(f"❌ This is a FATAL error - cannot proceed without OIDC token")
-                        # Don't fall back to ADC on Railway - it will timeout
-                        raise ValueError(f"CRITICAL: Environment variable {env_var_name} is required but not set. Railway OIDC token is missing!")
-                
-                # If using environment_id, the token should already be in the env var
-                elif "environment_id" in cred_source:
-                    env_var_name = cred_source.get("environment_id")
-                    token_value = os.getenv(env_var_name)
-                    
-                    if token_value:
-                        print(f"✅ Found OIDC token in environment variable: {env_var_name}")
-                    else:
-                        print(f"⚠️  Warning: Environment variable {env_var_name} not found")
-                
-                # If using file credential source, check if we need to create temp file
-                elif "file" in cred_source:
-                    original_file_path = cred_source["file"]
-                    # We will use a writable path in /tmp for Railway as /run/secrets/ may be read-only or missing
-                    writable_token_path = "/tmp/railway-oidc-token"
-                    
-                    print(f"🔍 Checking original file path: {original_file_path}")
-                    
-                    if os.path.exists(original_file_path):
-                        print(f"✅ OIDC token file exists at: {original_file_path}")
-                    else:
-                        print(f"⚠️  File not found at: {original_file_path}")
-                        
-                        # Try to find the token in environment variables
-                        # RAILWAY_OIDC_TOKEN is the standard one if enabled in settings
-                        oidc_token = os.getenv("RAILWAY_OIDC_TOKEN") or os.getenv("RAILWAY_SERVICE_OIDC_TOKEN")
-                        
-                        if oidc_token and len(oidc_token) > 0:
-                            print(f"✅ Found OIDC token in environment (length: {len(oidc_token)})")
-                            
-                            # Create /tmp directory if it doesn't exist
-                            os.makedirs(os.path.dirname(writable_token_path), exist_ok=True)
-                            
-                            # Write token to the writable path
-                            with open(writable_token_path, 'w') as f:
-                                f.write(oidc_token)
-                            
-                            # Update the config to point to our new writable file
-                            creds_info["credential_source"]["file"] = writable_token_path
-                            print(f"✅ Redirected credential_source to: {writable_token_path}")
-                        else:
-                            print(f"❌ RAILWAY_OIDC_TOKEN is empty or missing.")
-                            print(f"📢 IMPORTANT: Check Railway Service Settings and ensure 'Workload Identity' is enabled.")
-                            raise ValueError(f"CRITICAL: Railway OIDC token not available. File {original_file_path} doesn't exist and environment variables are empty.")
-            
-            # Create credentials from the external account config
-            credentials = identity_pool.Credentials.from_info(creds_info)
-            
-            # Set the quota project
-            if PROJECT_ID:
-                credentials = credentials.with_quota_project(PROJECT_ID)
-            
-            print("✅ Using Workload Identity Federation credentials")
-            return credentials
-        except Exception as e:
-            print(f"⚠️  Error loading Workload Identity credentials: {e}")
-            print(f"Error details: {type(e).__name__}: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            print("Falling back to ADC...")
-    
-    # Fall back to standard ADC (local development)
-    credentials, _ = google.auth.default()
-    print("✅ Using Application Default Credentials (ADC)")
-    return credentials
+# Configuration
+BUCKET_NAME = settings.GCS_BUCKET_NAME
+PROJECT_ID = settings.GOOGLE_CLOUD_PROJECT
+SUPABASE_URL = settings.SUPABASE_URL
+SUPABASE_KEY = settings.SUPABASE_SERVICE_ROLE_KEY
 
 def get_supabase_client() -> Client:
     """Returns a Supabase client."""
@@ -230,7 +77,8 @@ def get_signed_url(user_id: str, resume_id: str) -> str:
         credentials = get_gcs_credentials()
         
         # Get service account email from environment
-        service_account_email = os.getenv("GCS_SERVICE_ACCOUNT_EMAIL")
+        # Try to get service account email from settings
+        service_account_email = settings.GCS_SERVICE_ACCOUNT_EMAIL
         if not service_account_email:
             raise ValueError("GCS_SERVICE_ACCOUNT_EMAIL environment variable is required for signed URLs")
         

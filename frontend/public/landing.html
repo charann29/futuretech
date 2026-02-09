@@ -430,6 +430,200 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Demo Form Layout Overrides & Refinements - 1:1 Production Match */
+        .div-block-183198052144000 {
+            position: relative !important;
+            width: 100% !important;
+            max-width: none !important;
+            margin: 0 !important;
+        }
+
+        .div-block-1831980521255 {
+            background: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 16px !important;
+            box-shadow: 1px 1px 2px 0px rgba(0, 0, 0, 0.08) !important;
+            padding: 24px 48px 32px !important;
+            height: auto !important;
+            max-width: 500px !important;
+            width: 100% !important;
+            overflow: visible !important;
+            display: flex !important;
+            flex-direction: column !important;
+            position: relative !important;
+        }
+
+        .div-block-1831980521252 {
+            position: absolute !important;
+            right: calc((100% - 1200px) / 2) !important;
+            bottom: 0 !important;
+            padding: 16px 64px 32px 110px !important;
+            /* Exact production padding for internal shift */
+            height: auto !important;
+            overflow: visible !important;
+            display: block !important;
+            z-index: 10 !important;
+        }
+
+        .scholarship-form {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            position: relative;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-header-new {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .form-title-main {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.25;
+        }
+
+        .text-purple-underline {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+
+        .form-person-img-new {
+            width: 80px;
+            height: auto;
+            margin-left: 10px;
+        }
+
+        .form-field-wrapper {
+            margin-bottom: 18px;
+        }
+
+        .form-label-new {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .form-input-new,
+        .form-select-new {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #1e293b;
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input-new:focus,
+        .form-select-new:focus {
+            border-color: #7c3aed;
+        }
+
+        .form-input-new::placeholder {
+            color: #94a3b8;
+        }
+
+        .custom-phone-wrapper {
+            display: flex;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .custom-phone-wrapper:focus-within {
+            border-color: #7c3aed;
+        }
+
+        .custom-country-code {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            background: #f8fafc;
+            font-size: 13px;
+            color: #64748b;
+            border-right: 1px solid #e2e8f0;
+            white-space: nowrap;
+        }
+
+        .custom-country-code i {
+            font-size: 10px;
+            margin: 0 4px;
+        }
+
+        .phone-input-style {
+            border: none !important;
+        }
+
+        .form-policy-text {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-style: italic;
+        }
+
+        .form-agreement-text {
+            font-size: 12px;
+            color: #64748b;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .form-agreement-text a {
+            color: rgb(26, 115, 232);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-button-new {
+            width: 100%;
+            padding: 14px;
+            background: #7c3aed;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .form-button-new:hover {
+            background: #6d28d9;
+        }
+
+        .form-message {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .msg-success {
+            color: #10b981;
+        }
+
+        .msg-error {
+            color: #ef4444;
+        }
+
+        .div-block-1747 {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -630,8 +824,8 @@
                                                 class="div-block-183198052203">
                                                 <div class="div-block-183198052205">
                                                     <div class="html-embed-41917 w-embed"><img
-                                                            src='https://nxtwave.imgix.net/ccbp-website/nxtwave-intensive-2.0/course-duration-icon.png'
-                                                            alt='' loading='lazy' /></div>
+                                                            src='/assets/icons/duration.svg' alt='' loading='lazy' />
+                                                    </div>
                                                 </div>
                                                 <div class="div-block-183198052204">
                                                     <div class="text-block-94128920">Course Duration</div>
@@ -644,8 +838,8 @@
                                                 class="div-block-183198052203">
                                                 <div class="div-block-183198052205">
                                                     <div class="html-embed-41917 w-embed"><img
-                                                            src='https://nxtwave.imgix.net/ccbp-website/nxtwave-intensive-2.0/eligibility-icon.png'
-                                                            alt='' loading='lazy' /></div>
+                                                            src='/assets/icons/eligibility.svg' alt='' loading='lazy' />
+                                                    </div>
                                                 </div>
                                                 <div class="div-block-183198052204">
                                                     <div class="text-block-94128920">Eligibility</div>
@@ -657,8 +851,8 @@
                                                 class="div-block-183198052203">
                                                 <div class="div-block-183198052205">
                                                     <div class="html-embed-41917 w-embed"><img
-                                                            src='https://nxtwave.imgix.net/ccbp-website/nxtwave-intensive-2.0/online-icon.png'
-                                                            alt='' loading='lazy' /></div>
+                                                            src='/assets/icons/online.svg' alt='' loading='lazy' />
+                                                    </div>
                                                 </div>
                                                 <div class="div-block-183198052204">
                                                     <div class="text-block-94128920">Online</div>
@@ -671,8 +865,8 @@
                                                 class="div-block-1831980521447044">
                                                 <div class="div-block-1831980521447045">
                                                     <div class="html-embed-82605 w-embed"><img
-                                                            src='https://nxtwave.imgix.net/ccbp-website/intensive/live-sessions-icon-referral.png'
-                                                            alt='' loading='lazy' /></div>
+                                                            src='/assets/icons/support.svg' alt='' loading='lazy' />
+                                                    </div>
                                                 </div>
                                                 <div class="div-block-1831980521447046">
                                                     <div class="div-block-183198052144700">
@@ -871,19 +1065,122 @@
                 </div>
                 <div id="hero-section" class="div-block-1831980521252">
                     <div class="div-block-1831980521255">
-                        <div class="div-block-1747">
-                            <div class="div-block-183198052210">
-                                <div class="text-block-9412881914">Book a Live Demo<br />For Free !</div>
-                                <div class="script-container-underlne"></div>
-                            </div>
-                            <div class="html-embed-41933 w-embed"><img
-                                    src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxtwave-intensive-2.0/demo-embed-form-person-image.png'
-                                    alt='' loading='lazy' /></div>
-                        </div>
                         <div class="div-block-1831980521436 mobile-fee-increases-strip">
                             <div class="text-block-94128877 orange">Fee increases from March 31st</div>
                         </div>
-                        <div id="book-a-free-demo-intensive" class="scholarship-form"></div>
+                        <div id="book-a-free-demo-intensive" class="scholarship-form">
+                            <div class="form-header-new">
+                                <div class="form-title-main">
+                                    Book a Live Demo<br>
+                                    For <span class="text-purple-underline">Free</span> !
+                                </div>
+                                <img src="https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxtwave-intensive-2.0/demo-embed-form-person-image.png"
+                                    alt="" class="form-person-img-new">
+                            </div>
+                            <form id="demo-booking-form">
+                                <div class="form-field-wrapper">
+                                    <label class="form-label-new">Name</label>
+                                    <input type="text" name="full_name" placeholder="Enter Your Name" required
+                                        class="form-input-new">
+                                </div>
+                                <div class="form-field-wrapper">
+                                    <label class="form-label-new">Mobile Number (WhatsApp Number)</label>
+                                    <div class="custom-phone-wrapper">
+                                        <div class="custom-country-code">IN <i class="fas fa-chevron-down"></i> +91
+                                        </div>
+                                        <input type="tel" name="whatsapp_number" placeholder="Enter Mobile Number"
+                                            required pattern="[0-9]{10}" class="form-input-new phone-input-style">
+                                    </div>
+                                    <p class="form-policy-text">We assure you that we practice a strict 'NO-SPAM' policy
+                                    </p>
+                                </div>
+                                <div class="form-field-wrapper">
+                                    <label class="form-label-new">Highest Qualification</label>
+                                    <select name="highest_qualification" required class="form-select-new">
+                                        <option value="" disabled selected>Select Highest Qualification</option>
+                                        <option value="Graduation (Completed/Ongoing)">Graduation (Completed/Ongoing)
+                                        </option>
+                                        <option value="Post Graduation (Completed/Ongoing)">Post Graduation
+                                            (Completed/Ongoing)</option>
+                                        <option value="12th/Intermediate">12th/Intermediate</option>
+                                        <option value="Diploma">Diploma</option>
+                                    </select>
+                                </div>
+                                <div class="form-field-wrapper">
+                                    <label class="form-label-new">Native State</label>
+                                    <select name="native_state" required class="form-select-new">
+                                        <option value="" disabled selected>Enter your State</option>
+                                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                        <option value="Telangana">Telangana</option>
+                                        <option value="Karnataka">Karnataka</option>
+                                        <option value="Tamil Nadu">Tamil Nadu</option>
+                                        <option value="Maharashtra">Maharashtra</option>
+                                        <option value="Delhi">Delhi</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-agreement-text">
+                                    By proceeding further, I agree to the <a href="#">Terms & Conditions</a> and <a
+                                        href="#">Privacy Policy</a> of FutureTech
+                                </div>
+                                <button type="submit" id="submit-btn" class="form-button-new">
+                                    Book My Demo
+                                </button>
+                                <div id="form-message" class="form-message"></div>
+                            </form>
+                            <script>
+                                document.getElementById('demo-booking-form').addEventListener('submit', async (e) => {
+                                    e.preventDefault();
+                                    const btn = document.getElementById('submit-btn');
+                                    const msg = document.getElementById('form-message');
+                                    const formData = new FormData(e.target);
+
+                                    const data = {
+                                        full_name: formData.get('full_name'),
+                                        whatsapp_number: '+91' + formData.get('whatsapp_number'),
+                                        highest_qualification: formData.get('highest_qualification'),
+                                        native_state: formData.get('native_state')
+                                    };
+
+                                    btn.disabled = true;
+                                    btn.innerText = 'Processing...';
+                                    msg.innerText = '';
+
+                                    try {
+                                        // Use full backend URL to avoid Vite proxy issues
+                                        const response = await fetch('http://localhost:8000/api/leads', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify(data)
+                                        });
+
+                                        let result;
+                                        const contentType = response.headers.get("content-type");
+                                        if (contentType && contentType.indexOf("application/json") !== -1) {
+                                            result = await response.json();
+                                        } else {
+                                            // Fallback for non-JSON errors (like 404/500 text pages)
+                                            const text = await response.text();
+                                            throw new Error(`Server returned ${response.status}: ${text.substring(0, 100)}...`);
+                                        }
+
+                                        if (response.ok) {
+                                            msg.className = 'form-message msg-success';
+                                            msg.innerText = '✅ Success! We will contact you soon.';
+                                            e.target.reset();
+                                        } else {
+                                            throw new Error(result.detail || 'Something went wrong');
+                                        }
+                                    } catch (err) {
+                                        msg.className = 'form-message msg-error';
+                                        msg.innerText = '❌ Error: ' + err.message;
+                                    } finally {
+                                        btn.disabled = false;
+                                        btn.innerText = 'Book My Demo';
+                                    }
+                                });
+                            </script>
+                        </div>
                     </div>
                     <div class="image-8730088-copy w-embed"><img
                             src='https://nxtwave.imgix.net/ccbp-website/intensive/vector.png' loading='lazy'
@@ -929,9 +1226,8 @@
                     <div class="w-layout-grid grid-8652">
                         <div id="w-node-d6aa8992-a836-8aea-3ccd-b98bd26c1b2d-d23a40cb" class="div-block-183198052203">
                             <div class="div-block-183198052205">
-                                <div class="html-embed-41917 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxtwave-intensive-2.0/course-duration-icon.png'
-                                        alt='' loading='lazy' /></div>
+                                <div class="html-embed-41917 w-embed"><img src='/assets/icons/duration.svg' alt=''
+                                        loading='lazy' /></div>
                             </div>
                             <div class="div-block-183198052204">
                                 <div class="text-block-94128920">Course Duration</div>
@@ -940,9 +1236,8 @@
                         </div>
                         <div id="w-node-d6aa8992-a836-8aea-3ccd-b98bd26c1b35-d23a40cb" class="div-block-183198052203">
                             <div class="div-block-183198052205">
-                                <div class="html-embed-41917 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxtwave-intensive-2.0/eligibility-icon.png'
-                                        alt='' loading='lazy' /></div>
+                                <div class="html-embed-41917 w-embed"><img src='/assets/icons/eligibility.svg' alt=''
+                                        loading='lazy' /></div>
                             </div>
                             <div class="div-block-183198052204">
                                 <div class="text-block-94128920">Eligibility</div>
@@ -953,9 +1248,8 @@
                         </div>
                         <div id="w-node-d6aa8992-a836-8aea-3ccd-b98bd26c1b3f-d23a40cb" class="div-block-183198052203">
                             <div class="div-block-183198052205">
-                                <div class="html-embed-41917 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxtwave-intensive-2.0/online-icon.png'
-                                        alt='' loading='lazy' /></div>
+                                <div class="html-embed-41917 w-embed"><img src='/assets/icons/online.svg' alt=''
+                                        loading='lazy' /></div>
                             </div>
                             <div class="div-block-183198052204">
                                 <div class="text-block-94128920">Online</div>
@@ -965,9 +1259,8 @@
                         <div id="w-node-_15cebc3a-fb2f-f35f-776d-c6b55b2e8277-d23a40cb"
                             class="div-block-1831980521447044">
                             <div class="div-block-1831980521447045">
-                                <div class="html-embed-82605 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/intensive/live-sessions-icon-referral.png'
-                                        alt='' loading='lazy' /></div>
+                                <div class="html-embed-82605 w-embed"><img src='/assets/icons/support.svg' alt=''
+                                        loading='lazy' /></div>
                             </div>
                             <div class="div-block-1831980521447046">
                                 <div class="div-block-183198052144700">
@@ -1009,9 +1302,8 @@
                     <div id="upgradesContainer1" class="upgrades-container-1">
                         <div class="frame-1000004066">
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/intensive/live-streaming-3.0-upgrades.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/live_sessions.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004070">
                                     <div class="user-research">Live Sessions (Monday to Friday)</div>
                                     <div class="we-take-pride-in-mak">To learn coding best practices, get interview
@@ -1020,9 +1312,8 @@
                                 </div>
                             </div>
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/intensive/3.0-upgrades-personal-success-coach.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/success_coach.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004067">
                                     <div class="user-research">Dedicated Success Coach for Every Student</div>
                                     <div class="we-take-pride-in-mak">To guide you and ensure a smooth learning journey
@@ -1032,8 +1323,7 @@
                         </div>
                         <div class="frame-1000004066">
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave.imgix.net/ccbp-website/intensive/3.0-upgrades-placements-success-manager-icon.png'
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/placement_manager.svg'
                                         width="80px" alt='' loading='lazy' /></div>
                                 <div class="frame-1000004070">
                                     <div class="user-research">Placement Success Manager</div>
@@ -1042,9 +1332,8 @@
                                 </div>
                             </div>
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/intensive/3.0-upgrades-offline-drives.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/offline_drives.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004067">
                                     <div class="user-research">Mega Offline Placement Drives</div>
                                     <div class="we-take-pride-in-mak">Once in every 3 months</div>
@@ -1055,9 +1344,8 @@
                     <div id="upgradesContainer2" class="upgrades-container-2">
                         <div class="frame-1000004066">
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave.imgix.net/ccbp-website/intensive/3.0-upgrades-mock-interviews.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/ai_mock.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004065">
                                     <div class="user-research">AI-Powered Mock Interviews</div>
                                     <div class="we-take-pride-in-mak">Practice with realistic mock interviews and get
@@ -1065,9 +1353,8 @@
                                 </div>
                             </div>
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave.imgix.net/ccbp-website/intensive/3.0-upgrades-masterclasses.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/masterclasses.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004070">
                                     <div class="user-research">Masterclasses by Industry Experts</div>
                                     <div class="we-take-pride-in-mak">To keep you updated with the latest trends and
@@ -1077,9 +1364,8 @@
                         </div>
                         <div class="frame-1000004066">
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave.imgix.net/ccbp-website/intensive/3.0-upgrades-mentorship.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/mentorship.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004067">
                                     <div class="user-research">Mentorship from Successful Seniors</div>
                                     <div class="we-take-pride-in-mak">Alumni from 2000+ companies to make your placement
@@ -1087,11 +1373,10 @@
                                 </div>
                             </div>
                             <div class="frame-1000004068">
-                                <div class="html-embed-82606 w-embed"><img
-                                        src='https://nxtwave.imgix.net/ccbp-website/intensive/3.0-upgrades-nxt-bytes.png'
-                                        alt='' width="80px" loading='lazy' /></div>
+                                <div class="html-embed-82606 w-embed"><img src='/assets/icons/nxtbytes.svg' alt=''
+                                        width="80px" loading='lazy' /></div>
                                 <div class="frame-1000004067">
-                                    <div class="user-research">Effortless Revision with NxtBytes</div>
+                                    <div class="user-research">Effortless Revision with Future Tech</div>
                                     <div class="we-take-pride-in-mak">Where you master key concepts through engaging
                                         reels
                                         and quizzes</div>
@@ -10187,17 +10472,7 @@ https://nxtwave-website-media-files.s3.ap-south-1.amazonaws.com/ccbp-website/nxt
 
 
 
-        <script type="module" src=https://forms.ccbp.in/webflow/runtime.04a87b6ca23119ec.js></script>
-        <script type="module" src=https://forms.ccbp.in/webflow/polyfills.1d5f1fd314a77b8e.js></script>
-        <script type="module" src=https://forms.ccbp.in/webflow/bookAFreeDemo.6625763167140730.js></script>
-        <script type="module"
-            src=https://forms.ccbp.in/webflow/techIntensiveDownloadCurriculum.3af1e68df6602c0f.js></script>
 
-        <script type="module" src=https://forms.ccbp.in/webflow/runtime.7ade6786083c3cdb.js></script>
-        <script type="module" src=https://forms.ccbp.in/webflow/polyfills.22b45ce383b6ed1d.js></script>
-        <script type="module" src=https://forms.ccbp.in/webflow/bookAFreeDemo.93619acbbc6cdbad.js></script>
-        <script type="module"
-            src=https://forms.ccbp.in/webflow/techIntensiveDownloadCurriculum.166c75ca908a2657.js></script>
         <script>
 
             document.addEventListener("DOMContentLoaded", () => {

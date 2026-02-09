@@ -8,3 +8,5 @@ python-multipart
 google-cloud-storage
 supabase
 python-dotenv
+gspread
+google-auth-oauthlib

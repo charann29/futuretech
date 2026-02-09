@@ -1,14 +1,6 @@
-import os
-import json
-import sys
-from pathlib import Path
+from src.config import settings
 
-# Add parent directory to path to import config (Optional fallback)
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-try:
-    from config import GROQ_API_KEY
-except ImportError:
-    GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_KEY = settings.GROQ_API_KEY
 
 from groq import Groq
 

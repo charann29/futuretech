@@ -20,7 +20,8 @@ from src.agents.enhancer_agent import EnhancerAgent
 from src.agents.skills_analyzer import SkillsAnalyzer
 from src.generators.resume_generator import ResumeGenerator
 from src.schemas.resume_schema import Resume
-from src.utils.cloud_storage import upload_resume_to_gcs
+from src.utils.cloud_storage import upload_resume_to_gcs, get_supabase_client
+from src.utils.sheets_sync import sync_lead_to_sheets
 
 app = FastAPI()
 
@@ -48,6 +49,12 @@ class GenerateRequest(BaseModel):
     resume: Resume
     user_id: str
     resume_id: str
+
+class LeadCapture(BaseModel):
+    full_name: str
+    whatsapp_number: str
+    highest_qualification: str
+    native_state: str
 
 @app.post("/process", response_model=ProcessResponse)
 async def process_resume_endpoint(resume: Resume):
@@ -237,6 +244,54 @@ async def delete_resume(resume_id: str):
         raise
     except Exception as e:
         traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/leads")
+async def capture_lead(lead: LeadCapture, background_tasks: BackgroundTasks):
+    """
+    Captures a new lead from the landing page.
+    Saves to Supabase first, then triggers background sync to Google Sheets.
+    """
+    try:
+        # 1. Validation for WhatsApp Number (+91 prefix)
+        if not lead.whatsapp_number.startswith("+91"):
+            # Auto-prepend if missed, though frontend should handle it
+            # But let's be strict for now or auto-fix
+            if len(lead.whatsapp_number) == 10:
+                lead.whatsapp_number = f"+91{lead.whatsapp_number}"
+            else:
+                 raise HTTPException(status_code=400, detail="Invalid WhatsApp number. Must start with +91")
+
+        print(f"📥 Capturing lead: {lead.full_name} ({lead.whatsapp_number})")
+
+        # 2. Save to Supabase
+        supabase = get_supabase_client()
+        lead_data = {
+            "full_name": lead.full_name,
+            "whatsapp_number": lead.whatsapp_number,
+            "highest_qualification": lead.highest_qualification,
+            "native_state": lead.native_state
+        }
+        
+        result = supabase.table("leads").insert(lead_data).execute()
+        
+        if len(result.data) == 0:
+            raise Exception("Failed to save lead to Supabase")
+
+        saved_lead = result.data[0]
+        print(f"✅ Lead saved to Supabase (ID: {saved_lead.get('id')})")
+
+        # 3. Trigger Google Sheets Sync in background
+        background_tasks.add_task(sync_lead_to_sheets, saved_lead)
+
+        return {"status": "success", "message": "Lead captured successfully", "id": saved_lead.get("id")}
+
+    except Exception as e:
+        print(f"🔥 Lead Capture Error: {str(e)}")
+        traceback.print_exc()
+        # If it's already an HTTPException, re-raise it
+        if isinstance(e, HTTPException):
+            raise e
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
