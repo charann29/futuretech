@@ -1,6 +1,7 @@
 FROM python:3.11-slim
 
 # Install LaTeX and system dependencies
+# Force cache invalidation: 2026-02-09-16-20
 RUN apt-get update && apt-get install -y \
     texlive-latex-base \
     texlive-fonts-recommended \
