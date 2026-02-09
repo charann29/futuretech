@@ -1456,9 +1456,13 @@
                                     try {
                                         // Auto-detect backend URL based on environment
                                         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+                                        // TODO: Update this URL to match your actual Railway backend deployment
                                         const backendUrl = isLocalhost
                                             ? 'http://localhost:8000'
-                                            : 'https://resumebuilder-production.up.railway.app';
+                                            : 'https://heroic-renewal-production.up.railway.app';
+
+                                        console.log('Submitting to:', `${backendUrl}/api/leads`);
 
                                         const response = await fetch(`${backendUrl}/api/leads`, {
                                             method: 'POST',
