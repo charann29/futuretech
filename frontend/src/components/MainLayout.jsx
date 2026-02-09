@@ -41,7 +41,15 @@ const MainLayout = ({ sidebar, children, preview, isSaving, lastSaved, onDownloa
                 </div>
             </header>
 
-            <div className={`main-layout ${isSidebarOpen ? 'sidebar-open' : 'sidebar-collapsed'}`}>
+            <div
+                className={`main-layout ${isSidebarOpen ? 'sidebar-open' : 'sidebar-collapsed'}`}
+                onClick={(e) => {
+                    // Close sidebar when clicking backdrop on mobile
+                    if (isSidebarOpen && e.target.classList.contains('main-layout')) {
+                        setIsSidebarOpen(false);
+                    }
+                }}
+            >
                 <aside className="sidebar">
                     {sidebar}
                 </aside>

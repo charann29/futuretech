@@ -268,6 +268,8 @@
     }
 }
 
+
+
 /* Resume Selector Page */
 .selector-page {
     padding: 6rem 2rem 4rem;
@@ -556,4 +558,61 @@
 
 .modal-close-btn:active {
     transform: rotate(90deg) scale(0.95);
+}
+
+/* Responsive Overrides for Selector Page */
+@media (max-width: 768px) {
+    .selector-page {
+        padding: 4.5rem 1rem 3rem !important;
+    }
+
+    .selector-header h1 {
+        font-size: 1.75rem !important;
+    }
+
+    .selector-header p {
+        font-size: 1rem !important;
+    }
+
+    .scratch-card {
+        padding: 1.25rem !important;
+    }
+
+    .existing-resumes-card {
+        padding: 1.25rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .selector-page {
+        padding-top: 5.5rem !important;
+    }
+
+    .resume-list-item {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 1rem !important;
+        padding: 1.25rem !important;
+    }
+
+    .resume-icon {
+        display: none !important;
+    }
+
+    .resume-item-actions {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        border-top: 1px solid var(--border) !important;
+        padding-top: 0.75rem !important;
+        margin-top: 0.25rem !important;
+    }
+
+    .resume-item-name {
+        font-size: 1rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    .divider {
+        margin: 1rem 0 !important;
+    }
 }

@@ -836,20 +836,22 @@
         }
 
         /* Footer Responsive */
-        .ft-footer-grid {
-            flex-direction: column !important;
-            gap: 40px !important;
-        }
+        @media screen and (max-width: 991px) {
+            .ft-footer-grid {
+                flex-direction: column !important;
+                gap: 40px !important;
+            }
 
-        .ft-footer-col,
-        .ft-footer-about {
-            width: 100% !important;
-            text-align: center !important;
-        }
+            .ft-footer-col,
+            .ft-footer-about {
+                width: 100% !important;
+                text-align: center !important;
+            }
 
-        .ft-social-links,
-        .ft-footer-list {
-            justify-content: center !important;
+            .ft-social-links,
+            .ft-footer-list {
+                justify-content: center !important;
+            }
         }
 
         .ft-huge-bg-text svg {

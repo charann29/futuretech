@@ -309,8 +309,20 @@ h3 {
 }
 
 /* Accordion Styles */
+.accordion-header {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+
 .accordion-header:hover {
   background: var(--bg-card-hover) !important;
+}
+
+.accordion-item {
+  position: relative;
+  overflow: visible;
 }
 
 .accordion-item.expanded {

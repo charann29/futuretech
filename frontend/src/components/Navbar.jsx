@@ -40,7 +40,7 @@ const Navbar = () => {
                     <div className="menu-button-6 w-nav-button" onClick={toggleMobileMenu}>
                         <div className="icon-34 w-icon-nav-menu"></div>
                     </div>
-                    <nav role="navigation" className={`nav-menu-home-3 w-nav-menu ${mobileMenuOpen ? 'open' : ''}`} style={{ display: 'flex', alignItems: 'center' }}>
+                    <nav role="navigation" className={`nav-menu-home-3 w-nav-menu ${mobileMenuOpen ? 'open' : ''}`}>
                         {/* Hidden logo-div removed as it was appearing on desktop */}
 
                         <a href={isLandingPage ? "#curriculum" : "/landing.html#curriculum"} className="desktop-navbar-items track-class w-nav-link" onClick={closeMobileMenu}>Curriculum</a>
