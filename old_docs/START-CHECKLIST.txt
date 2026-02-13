@@ -1,0 +1,100 @@
+╔═══════════════════════════════════════════════════════════════╗
+║           FUTURETECH - QUICK START CHECKLIST                  ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Complete these 4 steps to go live:
+
+[ ] 1. SETUP SUPABASE DATABASE
+   ────────────────────────────
+   → Open: https://app.supabase.com/project/gsqpobjgxrkeyxfqlakb/sql
+   → Open file: supabase-setup.sql
+   → Copy all content
+   → Paste in SQL Editor
+   → Click "Run"
+   → Verify tables created: leads, test_results, resumes
+
+[ ] 2. ENABLE GOOGLE OAUTH
+   ────────────────────────
+   → Open: https://app.supabase.com/project/gsqpobjgxrkeyxfqlakb/auth/providers
+   → Find "Google" provider
+   → Click "Enable"
+   → Add your Google OAuth credentials:
+     - Client ID: [from Google Cloud Console]
+     - Client Secret: [from Google Cloud Console]
+   → Add Redirect URLs:
+     - http://localhost:5000/index.html
+     - [your-production-url]/index.html
+
+   Don't have Google OAuth credentials?
+   → https://console.cloud.google.com/apis/credentials
+   → Create OAuth 2.0 Client ID
+   → Application type: Web application
+   → Authorized redirect URIs: Add your Supabase callback URL
+
+[ ] 3. ADD ANTHROPIC API KEY
+   ─────────────────────────
+   → Open file: .env
+   → Find line: ANTHROPIC_API_KEY=
+   → Add your key: ANTHROPIC_API_KEY=sk-ant-your-key-here
+   → Save file
+
+   Don't have Anthropic API key?
+   → https://console.anthropic.com/settings/keys
+   → Create new key
+   → Copy and paste
+
+[ ] 4. START SERVER
+   ────────────────
+   → Open terminal
+   → Run: npm start
+   → Server starts on: http://localhost:5000
+   → Test Google sign-in
+   → Test FSAT test flow
+   → Test AI Resume builder
+
+═══════════════════════════════════════════════════════════════
+
+VERIFY EVERYTHING WORKS:
+
+1. Open: http://localhost:5000
+2. Click "Sign in with Google"
+3. Authorize with Google
+4. Should see your profile in navbar
+5. Click "Take FSAT Test" from navbar
+6. Fill onboarding form (phone required)
+7. Complete test questions
+8. Submit test
+9. Check Supabase table: test_results
+
+═══════════════════════════════════════════════════════════════
+
+VIEW YOUR LEADS:
+
+Open Supabase Dashboard:
+https://app.supabase.com/project/gsqpobjgxrkeyxfqlakb/editor
+
+Run queries:
+→ SELECT * FROM leads;
+→ SELECT * FROM test_results;
+→ SELECT * FROM resumes;
+
+═══════════════════════════════════════════════════════════════
+
+PRODUCTION DEPLOYMENT:
+
+After testing locally, deploy to:
+- Railway, Vercel, or any Node.js host
+
+Set environment variables:
+- SUPABASE_URL
+- SUPABASE_ANON_KEY
+- ANTHROPIC_API_KEY
+- SITE_URL (production URL)
+
+Update Supabase:
+- Add production redirect URL
+- Update Site URL in Auth settings
+
+═══════════════════════════════════════════════════════════════
+
+Need help? Contact: support@futuretech.in

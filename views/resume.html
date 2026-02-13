@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder - FutureTech</title>
+    <link rel="icon" type="image/png" href="/public/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #DC0000;
+            --dark-red: #A00000;
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --medium-gray: #333333;
+            --light-gray: #666666;
+            --off-white: #f5f5f5;
+            --white: #ffffff;
+            --border-gray: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--off-white);
+            color: var(--black);
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--black);
+            color: var(--white);
+            padding: 20px;
+            border-bottom: 3px solid var(--primary-red);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .logo-text span {
+            color: var(--primary-red);
+        }
+
+        .back-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid var(--white);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-badge {
+            background: var(--primary-red);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-badge::before {
+            content: "👤";
+            font-size: 16px;
+        }
+
+        /* MAIN CONTENT */
+        .container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--black);
+        }
+
+        .hero h1 .red {
+            color: var(--primary-red);
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--light-gray);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        /* FORM SECTION */
+        .form-section {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid var(--black);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+
+        .form-section .subtitle {
+            color: var(--light-gray);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(220, 0, 0, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn-generate {
+            width: 100%;
+            background: var(--primary-red);
+            color: white;
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-generate:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+        }
+
+        .btn-generate:disabled {
+            background: var(--light-gray);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* INFO SECTION */
+        .info-section {
+            position: sticky;
+            top: 30px;
+        }
+
+        .info-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid var(--black);
+            margin-bottom: 30px;
+        }
+
+        .info-card h3 {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--black);
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-gray);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--primary-red);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--off-white);
+            border-radius: 10px;
+            border: 2px solid var(--primary-red);
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--primary-red);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--light-gray);
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .testimonial {
+            background: var(--black);
+            color: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            border: 3px solid var(--primary-red);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        /* RESULT SECTION */
+        .result-section {
+            display: none;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid var(--black);
+            margin-top: 40px;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h2 {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+        }
+
+        .resume-preview {
+            background: var(--off-white);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 2px solid var(--border-gray);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn-download,
+        .btn-new {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-download {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: var(--dark-red);
+        }
+
+        .btn-new {
+            background: var(--white);
+            color: var(--black);
+            border: 2px solid var(--black);
+        }
+
+        .btn-new:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* LOADING */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-gray);
+            border-top-color: var(--primary-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .form-section {
+                padding: 25px;
+            }
+
+            .info-section {
+                position: static;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="/public/logo.png" alt="FutureTech Logo" class="logo-img">
+                <div class="logo-text">Future<span>Tech</span></div>
+            </div>
+            <div class="user-info">
+                <div class="user-badge" id="userBadge">Loading...</div>
+                <a href="/" class="back-link">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="hero">
+            <h1><span class="red">AI Resume Builder</span></h1>
+            <p>Generate a professional, ATS-optimized resume in just 5 minutes</p>
+        </div>
+
+        <div class="content-grid">
+            <!-- Form Section -->
+            <div class="form-section" id="formSection">
+                <h2>Create Your Resume</h2>
+                <p class="subtitle">Fill in your details and let AI create the perfect resume for you</p>
+
+                <form id="resumeForm">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="name" name="name" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Education *</label>
+                        <textarea id="education" name="education"
+                            placeholder="B.Tech in Computer Science, XYZ University, 2018-2022" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Skills *</label>
+                        <textarea id="skills" name="skills"
+                            placeholder="Python, JavaScript, React, Node.js, SQL, Git..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience (if any)</label>
+                        <textarea id="experience" name="experience"
+                            placeholder="Software Intern at ABC Corp (June 2022 - Aug 2022)&#10;- Developed web applications using React..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-generate" id="btnGenerate">
+                        🚀 Generate AI Resume
+                    </button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="loading-spinner"></div>
+                    <h3>Generating Your Resume...</h3>
+                    <p style="color: var(--light-gray); margin-top: 10px;">AI is crafting the perfect resume for you</p>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section">
+                <div class="info-card">
+                    <h3>Why Use Our AI Resume Builder?</h3>
+                    <ul class="feature-list">
+                        <li>ATS-Optimized Format</li>
+                        <li>Industry-Specific Keywords</li>
+                        <li>Professional Layout</li>
+                        <li>Instant Generation</li>
+                        <li>100% Free Forever</li>
+                        <li>Download as PDF</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>Success Stats</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">87%</span>
+                            <span class="stat-label">More Calls</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1,247</span>
+                            <span class="stat-label">Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5 Min</span>
+                            <span class="stat-label">Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        "Applied to 15 companies with my old resume - got 0 calls. Used FutureTech AI Resume - got 9
+                        interview calls in 2 weeks!"
+                    </div>
+                    <div class="testimonial-author">- Karthik, Now at Wipro (₹5.2 LPA)</div>
+                </div>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection">
+                <div class="result-header">
+                    <h2>🎉 Your Resume is Ready!</h2>
+                    <p style="color: var(--light-gray);">Download it now and start applying for jobs</p>
+                </div>
+
+                <div class="resume-preview" id="resumePreview">
+                    <!-- AI-generated resume will be displayed here -->
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-download" onclick="downloadResume()">📥 Download Resume</button>
+                    <button class="btn-new" onclick="createNew()">✨ Create New Resume</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN (Load FIRST) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Authentication (Load SECOND) -->
+    <script src="/public/auth-fix.js"></script>
+
+    <!-- Main Resume Builder Script -->
+    <script>
+        let resumeData = null;
+
+        // Wait for auth to be ready
+        function waitForAuth() {
+            return new Promise((resolve) => {
+                if (window.authManager && window.authManager.initialized) {
+                    resolve();
+                } else {
+                    const checkInterval = setInterval(() => {
+                        if (window.authManager && window.authManager.initialized) {
+                            clearInterval(checkInterval);
+                            resolve();
+                        }
+                    }, 100);
+                }
+            });
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function () {
+            console.log('Resume Builder: Page loaded');
+
+            // Wait for auth to initialize
+            await waitForAuth();
+
+            // Check authentication
+            const isAuthed = await window.authManager.requireAuth('/');
+            if (!isAuthed) {
+                console.log('Resume Builder: User not authenticated, redirecting...');
+                return;
+            }
+
+            console.log('Resume Builder: User authenticated:', window.authManager.getUser()?.email);
+
+            // Update user badge in header
+            const user = window.authManager.getUser();
+            const userBadge = document.getElementById('userBadge');
+            if (user && userBadge) {
+                const userName = user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+                userBadge.textContent = userName;
+            }
+
+            // Pre-fill email from authenticated user
+            const userEmail = user?.email;
+            if (userEmail) {
+                document.getElementById('email').value = userEmail;
+            }
+
+            // Check if there's a stored resume
+            const storedResume = localStorage.getItem('generatedResume');
+            const storedData = localStorage.getItem('resumeData');
+
+            if (storedResume && storedData) {
+                // Ask if user wants to view previous resume
+                if (confirm('You have a previously generated resume. Would you like to view it?')) {
+                    document.getElementById('formSection').style.display = 'none';
+                    document.getElementById('resultSection').classList.add('show');
+                    document.getElementById('resumePreview').innerHTML = storedResume;
+                }
+            }
+
+            // Setup form handler
+            setupFormHandler();
+        });
+
+        function setupFormHandler() {
+            const form = document.getElementById('resumeForm');
+            const formSection = document.getElementById('formSection');
+            const loading = document.getElementById('loading');
+            const resultSection = document.getElementById('resultSection');
+            const resumePreview = document.getElementById('resumePreview');
+            const btnGenerate = document.getElementById('btnGenerate');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Get form data
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    education: document.getElementById('education').value,
+                    skills: document.getElementById('skills').value,
+                    experience: document.getElementById('experience').value
+                };
+
+                // Show loading
+                form.style.display = 'none';
+                loading.classList.add('show');
+                btnGenerate.disabled = true;
+
+                try {
+                    // Get auth token from Supabase
+                    const session = await window.supabase.auth.getSession();
+                    const token = session?.data?.session?.access_token;
+
+                    if (!token) {
+                        alert('🔐 Authentication required. Please sign in again.');
+                        window.location.href = '/';
+                        return;
+                    }
+
+                    console.log('Calling /api/generate-resume...');
+
+                    // Call API to generate resume
+                    const response = await fetch('/api/generate-resume', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+                    console.log('API Response:', data);
+
+                    // Check for errors
+                    if (!response.ok) {
+                        if (data.code === 'API_KEY_MISSING') {
+                            throw new Error('API_KEY_MISSING: ' + data.error);
+                        }
+                        throw new Error(data.error || 'Server error occurred');
+                    }
+
+                    if (data.success) {
+                        // Hide form section, show result
+                        formSection.style.display = 'none';
+                        resultSection.classList.add('show');
+
+                        // Display resume
+                        resumePreview.innerHTML = data.resume;
+
+                        // Store resume data
+                        localStorage.setItem('generatedResume', data.resume);
+                        localStorage.setItem('resumeData', JSON.stringify(formData));
+
+                        // Scroll to results
+                        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    } else {
+                        throw new Error('Failed to generate resume');
+                    }
+                } catch (error) {
+                    console.error('Resume Generation Error:', error);
+
+                    // Reset form state
+                    form.style.display = 'block';
+                    loading.classList.remove('show');
+                    btnGenerate.disabled = false;
+
+                    // Show user-friendly error message
+                    let errorMessage = 'Failed to generate resume. Please try again.';
+
+                    if (error.message && error.message.includes('API_KEY_MISSING')) {
+                        errorMessage = '⚠️ AI Service Unavailable\n\nThe AI resume generation service is currently not configured. Please contact the administrator or try again later.';
+                    } else if (error.message && error.message.includes('Authentication')) {
+                        errorMessage = '🔐 Authentication Error\n\nYour session has expired. Please refresh the page and sign in again.';
+                    } else if (!navigator.onLine) {
+                        errorMessage = '🌐 No Internet Connection\n\nPlease check your internet connection and try again.';
+                    }
+
+                    alert(errorMessage);
+                }
+            });
+        }
+
+        function downloadResume() {
+            const resumePreview = document.getElementById('resumePreview');
+            const resumeHTML = resumePreview.innerHTML;
+
+            const blob = new Blob([`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Resume</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            padding: 40px;
+                            max-width: 800px;
+                            margin: 0 auto;
+                            line-height: 1.6;
+                        }
+                        h1 {
+                            color: #DC0000;
+                            margin-bottom: 10px;
+                        }
+                        h2 {
+                            border-bottom: 2px solid #DC0000;
+                            padding-bottom: 5px;
+                            margin-top: 20px;
+                        }
+                        h3 {
+                            color: #333;
+                            margin-top: 15px;
+                        }
+                        p {
+                            margin: 8px 0;
+                        }
+                        ul {
+                            margin: 8px 0;
+                            padding-left: 25px;
+                        }
+                        li {
+                            margin: 4px 0;
+                        }
+                        @media print {
+                            body { padding: 20px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${resumeHTML}
+                </body>
+                </html>
+            `], { type: 'text/html' });
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Use user's name for filename
+            const userName = document.getElementById('name')?.value || 'resume';
+            a.download = `${userName.replace(/\s+/g, '_')}_resume.html`;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            alert('✅ Resume downloaded!\n\nYou can:\n• Open it in any browser\n• Press Ctrl+P (Cmd+P on Mac) to print as PDF\n• Share it directly');
+        }
+
+        function createNew() {
+            const form = document.getElementById('resumeForm');
+            const formSection = document.getElementById('formSection');
+            const loading = document.getElementById('loading');
+            const resultSection = document.getElementById('resultSection');
+            const btnGenerate = document.getElementById('btnGenerate');
+
+            // Reset form
+            form.reset();
+            form.style.display = 'block';
+            loading.classList.remove('show');
+            btnGenerate.disabled = false;
+
+            // Restore user email
+            const userEmail = window.authManager?.getUser()?.email;
+            if (userEmail) {
+                document.getElementById('email').value = userEmail;
+            }
+
+            // Hide result, show form
+            resultSection.classList.remove('show');
+            formSection.style.display = 'block';
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

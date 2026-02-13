@@ -1,0 +1,91 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                 QUICK START - 3 STEPS ONLY                    ║
+╚═══════════════════════════════════════════════════════════════╝
+
+✅ STATUS: All code is ready! JavaScript errors fixed!
+❌ BLOCKER: Google OAuth provider not enabled in Supabase
+
+═══════════════════════════════════════════════════════════════
+
+🔥 DO THESE 3 STEPS NOW:
+
+STEP 1: Enable Google OAuth in Supabase (2 minutes)
+──────────────────────────────────────────────────────────────
+1. Open: https://supabase.com/dashboard/project/gsqpobjgxrkeyxfqlakb
+2. Click "Authentication" → "Providers"
+3. Find "Google" and toggle it ON
+4. You'll see fields for Client ID and Secret (leave them for now)
+
+STEP 2: Get Google OAuth Credentials (5 minutes)
+──────────────────────────────────────────────────────────────
+1. Open: https://console.cloud.google.com
+2. Select project: project-353fe44f-aa79-48fc-91d
+3. Go to "APIs & Services" → "Credentials"
+4. Click "+ CREATE CREDENTIALS" → "OAuth 2.0 Client ID"
+5. Application type: "Web application"
+6. Name: "FutureTech Auth"
+7. Add Authorized redirect URI:
+   https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+8. Click "Create"
+9. Copy the Client ID and Client Secret
+
+STEP 3: Add Credentials to Supabase (1 minute)
+──────────────────────────────────────────────────────────────
+1. Go back to Supabase → Authentication → Providers → Google
+2. Paste Client ID from Step 2
+3. Paste Client Secret from Step 2
+4. Click "Save"
+
+═══════════════════════════════════════════════════════════════
+
+🎉 THAT'S IT! Now test:
+
+1. Visit: http://localhost:3000
+2. Click "Sign in with Google"
+3. Complete OAuth flow
+4. Your profile should appear in the navbar
+
+═══════════════════════════════════════════════════════════════
+
+📋 OPTIONAL: Setup Database Tables
+
+Run this in Supabase SQL Editor to create database tables:
+- Open: https://supabase.com/dashboard/project/gsqpobjgxrkeyxfqlakb/sql
+- Copy contents from: supabase-setup.sql
+- Click "Run"
+
+This creates tables for:
+✅ leads - User signup tracking
+✅ test_results - FSAT test submissions
+✅ resumes - AI-generated resumes
+
+═══════════════════════════════════════════════════════════════
+
+🐛 DEBUGGING:
+
+If you still see errors after setup:
+1. Check browser console (F12)
+2. Verify redirect URI exactly matches:
+   https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+3. Make sure Google provider is toggled ON in Supabase
+
+Your server logs everything with [Auth] and [AuthManager] prefixes.
+
+═══════════════════════════════════════════════════════════════
+
+📚 DETAILED GUIDES:
+
+- Full OAuth setup: GOOGLE-OAUTH-SETUP.txt
+- Fixed errors: AUTH-ERRORS-FIXED.txt
+- Interactive script: ./setup-oauth.sh
+
+═══════════════════════════════════════════════════════════════
+
+🚀 NEXT STEPS AFTER AUTH WORKS:
+
+1. Test FSAT Test: http://localhost:3000/test.html
+2. Test Resume Builder: http://localhost:3000/resume.html
+3. Advanced Resume: http://localhost:3000/builder/resumes
+4. All pages will capture leads automatically
+
+Your system is READY! Just complete the 3 steps above. ⬆️

@@ -1,0 +1,446 @@
+{
+  "sections": [
+    {
+      "id": "mcq",
+      "name": "Multiple Choice Questions",
+      "description": "Assess your technical knowledge and analytical thinking",
+      "duration": 15,
+      "questions": [
+        {
+          "id": "mcq1",
+          "type": "mcq",
+          "question": "You're designing a social media application. Which database would be most suitable for storing user posts with varying attributes (text, images, videos, locations)?",
+          "options": [
+            "PostgreSQL (SQL) - Relational database with fixed schema",
+            "MongoDB (NoSQL) - Document database with flexible schema",
+            "Redis (Key-Value) - In-memory cache",
+            "Neo4j (Graph) - Graph database for relationships"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Technical Knowledge", "System Design", "Analytical Thinking"],
+          "explanation": "MongoDB is ideal because: 1) Posts have varying attributes (flexible schema), 2) Easy horizontal scaling for millions of users, 3) Fast read/write for social feeds, 4) Handles unstructured data (images, videos). PostgreSQL would require complex schema changes for new post types. Redis is for caching, not primary storage. Neo4j excels at relationships but overhead for simple posts.",
+          "category": "Product Development"
+        },
+        {
+          "id": "mcq2",
+          "type": "mcq",
+          "question": "A startup wants to deploy a microservices application with automatic scaling. Which combination makes the most sense?",
+          "options": [
+            "Single EC2 instance with all services",
+            "Docker containers + Kubernetes for orchestration",
+            "Traditional VMs with manual scaling",
+            "Serverless functions only (AWS Lambda)"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["System Design", "DevOps Knowledge", "Problem Solving"],
+          "explanation": "Docker + Kubernetes is optimal: 1) Containers ensure consistency across environments, 2) K8s provides auto-scaling based on load, 3) Microservices can scale independently, 4) Health checks and self-healing, 5) Easy rollback and updates. Single EC2/VM doesn't scale well. Pure serverless has cold start issues and not suitable for all microservices.",
+          "category": "Product Development"
+        },
+        {
+          "id": "mcq3",
+          "type": "mcq",
+          "question": "You're building a customer support chatbot. Which AI approach would provide the best results with limited training data?",
+          "options": [
+            "Train a transformer model from scratch",
+            "Use RAG (Retrieval Augmented Generation) with LLM",
+            "Rule-based if-else logic",
+            "Traditional supervised ML classification"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["AI Knowledge", "Creativity", "Analytical Thinking"],
+          "explanation": "RAG is best because: 1) Leverages pre-trained LLMs (no training needed), 2) Retrieves relevant docs from knowledge base, 3) Generates accurate responses with context, 4) Handles diverse queries better than rules, 5) Easy to update (add new docs). Training from scratch needs huge data. Rules are rigid. Traditional ML struggles with language nuances.",
+          "category": "AI & Data Science"
+        },
+        {
+          "id": "mcq4",
+          "type": "mcq",
+          "question": "A website is vulnerable to SQL Injection. What's the BEST prevention method?",
+          "options": [
+            "Add input length validation only",
+            "Use Prepared Statements (Parameterized Queries)",
+            "Filter special characters with regex",
+            "Use a Web Application Firewall (WAF) only"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Security Knowledge", "Technical Knowledge", "Problem Solving"],
+          "explanation": "Prepared Statements are THE solution: 1) Separates SQL code from data, 2) Database treats input as data only (never as code), 3) Works even if attacker sends malicious input, 4) No need to filter special chars. Length validation doesn't stop injection. Regex filtering is error-prone (can be bypassed). WAF is additional layer, not primary defense.",
+          "category": "Cyber Security"
+        },
+        {
+          "id": "mcq5",
+          "type": "mcq",
+          "question": "Your team is debating test automation strategy. When should you prefer MANUAL testing over automation?",
+          "options": [
+            "Regression tests that run frequently",
+            "Exploratory testing and UX evaluation",
+            "API endpoint testing",
+            "Load and performance testing"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Testing Knowledge", "Logical Reasoning", "Critical Thinking"],
+          "explanation": "Manual testing excels at: 1) Exploratory testing (human intuition finds unexpected issues), 2) UX evaluation (humans judge aesthetics, usability), 3) Ad-hoc testing (creative scenarios), 4) One-time tests (automation cost > benefit). Automate: regression (runs often), API tests (consistent, repeatable), performance (needs volume). Automation for exploratory kills creativity.",
+          "category": "Software Testing"
+        },
+        {
+          "id": "mcq6",
+          "type": "mcq",
+          "question": "In UI/UX design, what's the most important principle when designing for accessibility?",
+          "options": [
+            "Make everything look beautiful and modern",
+            "Ensure sufficient color contrast and keyboard navigation",
+            "Use the latest design trends",
+            "Add lots of animations for engagement"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["UI/UX Knowledge", "Empathy", "Critical Thinking"],
+          "explanation": "Accessibility essentials: 1) Color contrast (4.5:1 ratio for text) helps visually impaired, 2) Keyboard navigation for motor disabilities, 3) Screen reader support, 4) Clear labels and alt text. Beauty is subjective. Trends don't ensure usability. Excessive animations can cause seizures (WCAG guidelines). Accessibility = inclusive design for ALL users including disabled.",
+          "category": "UI/UX"
+        },
+        {
+          "id": "mcq7",
+          "type": "mcq",
+          "question": "What's the main advantage of using Git branches in a team?",
+          "options": [
+            "It makes the repository larger",
+            "Multiple developers can work on features independently without conflicts",
+            "It creates backup copies automatically",
+            "It speeds up code execution"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Collaboration", "Technical Knowledge", "Logical Reasoning"],
+          "explanation": "Git branches enable: 1) Parallel development (features/fixes isolated), 2) No conflicts until merge (developers work independently), 3) Easy code review (PRs from branches), 4) Safe experimentation (delete branch if fails), 5) Version management (multiple releases). Branches don't increase size (just pointers). Not for backups (that's commits). Doesn't affect execution speed.",
+          "category": "Foundation"
+        },
+        {
+          "id": "mcq8",
+          "type": "mcq",
+          "question": "You need to visualize sales data to show trends over time and compare regions. Which chart type is MOST effective?",
+          "options": [
+            "Pie chart",
+            "Line chart with multiple series",
+            "Single bar chart",
+            "Scatter plot"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Data Visualization", "Analytical Thinking", "Communication"],
+          "explanation": "Line chart is optimal: 1) Shows time-based trends clearly, 2) Multiple lines = easy region comparison, 3) Patterns visible at glance (up/down trends), 4) Good for continuous data. Pie chart = proportions only (no time). Single bar = no trends. Scatter plot = correlation between variables, not time series. Right chart = clear communication of insights.",
+          "category": "AI & Data Science"
+        },
+        {
+          "id": "mcq9",
+          "type": "mcq",
+          "question": "An AI Agent system needs to book flights. What component is MOST critical for reliability?",
+          "options": [
+            "Fastest LLM model",
+            "Error handling and retry logic",
+            "Most parameters in prompts",
+            "Largest context window"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["System Design", "Reliability", "Problem Solving"],
+          "explanation": "Error handling is critical because: 1) APIs fail (network issues, rate limits), 2) LLMs hallucinate (need verification), 3) Booking has real-world impact (money, reservations), 4) Retry with exponential backoff handles transient errors, 5) Validation prevents wrong bookings. Speed is secondary to accuracy. More parameters ≠ better. Context window helps but doesn't ensure reliability.",
+          "category": "AI & Data Science"
+        },
+        {
+          "id": "mcq10",
+          "type": "mcq",
+          "question": "What's the key difference between REST API and GraphQL?",
+          "options": [
+            "REST is faster than GraphQL",
+            "GraphQL lets clients request exactly the data they need; REST returns fixed responses",
+            "REST is newer technology",
+            "GraphQL only works with NoSQL databases"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "dimensions": ["Technical Knowledge", "API Design", "Analytical Thinking"],
+          "explanation": "GraphQL advantage: 1) Client specifies needed fields (no over-fetching), 2) Single request for multiple resources (REST needs multiple endpoints), 3) Strongly typed schema, 4) No versioning needed (evolve API smoothly). REST isn't inherently faster. GraphQL is newer (2015 vs REST 2000). Works with any database. Trade-off: GraphQL has learning curve, caching is harder.",
+          "category": "Product Development"
+        }
+      ]
+    },
+    {
+      "id": "fitb",
+      "name": "Fill in the Blanks",
+      "description": "Test your conceptual understanding and technical vocabulary",
+      "duration": 10,
+      "questions": [
+        {
+          "id": "fitb1",
+          "type": "fitb",
+          "question": "In a CI/CD pipeline, _______ is the practice of automatically deploying code changes to production after passing all tests, while _______ requires manual approval before production deployment.",
+          "correctAnswers": ["Continuous Deployment", "Continuous Delivery"],
+          "alternativeAnswers": [
+            ["CD", "Continuous Integration"],
+            ["Auto deployment", "Manual deployment"],
+            ["Automated deployment", "Staged deployment"]
+          ],
+          "marks": 5,
+          "dimensions": ["Technical Knowledge", "DevOps Understanding"],
+          "explanation": "Continuous Deployment (CD) = Fully automated to production. Every commit that passes tests → production. Continuous Delivery = Automated to staging, manual push to production (approval gate). CI = Continuous Integration (frequent code merges + tests, but not deployment). DevOps pipeline: CI → Build → Test → CD/Delivery → Deploy. Choice depends on risk tolerance and compliance needs.",
+          "category": "Product Development"
+        },
+        {
+          "id": "fitb2",
+          "type": "fitb",
+          "question": "In Machine Learning, _______ learning uses labeled training data, while _______ learning finds patterns in unlabeled data without predefined categories.",
+          "correctAnswers": ["Supervised", "Unsupervised"],
+          "alternativeAnswers": [
+            ["Labeled", "Unlabeled"],
+            ["Guided", "Exploratory"]
+          ],
+          "marks": 5,
+          "dimensions": ["AI Knowledge", "Conceptual Understanding"],
+          "explanation": "Supervised Learning: Training data has labels (input → known output). E.g., spam detection (emails labeled spam/not spam), image classification (cat/dog labels). Model learns mapping. Unsupervised Learning: No labels. Model finds patterns/structure. E.g., customer segmentation (group similar customers), anomaly detection. Third type: Reinforcement Learning (rewards/penalties, e.g., game AI).",
+          "category": "AI & Data Science"
+        },
+        {
+          "id": "fitb3",
+          "type": "fitb",
+          "question": "The OWASP Top 10 vulnerability _______ occurs when untrusted data is sent to an interpreter as part of a command, allowing attackers to execute unintended commands.",
+          "correctAnswers": ["Injection"],
+          "alternativeAnswers": [
+            ["SQL Injection"],
+            ["Command Injection"],
+            ["Code Injection"]
+          ],
+          "marks": 5,
+          "dimensions": ["Security Knowledge", "Technical Understanding"],
+          "explanation": "Injection attacks: Malicious data inserted into queries/commands, treated as code. Types: SQL Injection (database queries), Command Injection (OS commands), LDAP Injection, XPath Injection. Prevention: 1) Prepared statements/parameterized queries, 2) Input validation, 3) Principle of least privilege, 4) WAF. #1 on OWASP Top 10 because widespread and severe impact (data theft, server compromise).",
+          "category": "Cyber Security"
+        },
+        {
+          "id": "fitb4",
+          "type": "fitb",
+          "question": "In UI/UX design, a _______ is a low-fidelity visual representation of a design layout, while a _______ is a high-fidelity interactive model that simulates the final product.",
+          "correctAnswers": ["Wireframe", "Prototype"],
+          "alternativeAnswers": [
+            ["Sketch", "Mockup"],
+            ["Blueprint", "Demo"],
+            ["Draft", "Interactive mockup"]
+          ],
+          "marks": 5,
+          "dimensions": ["UI/UX Knowledge", "Design Process Understanding"],
+          "explanation": "Design Process: 1) Wireframe (low-fi, basic layout, structure, no colors/images, quick sketches), 2) Mockup (high-fi, visual design, colors/fonts/images, static), 3) Prototype (interactive, clickable, simulates user flow). Tools: Wireframe (pen+paper, Balsamiq), Mockup/Prototype (Figma, Adobe XD). Each stage increases fidelity. Prototypes test usability before development (saves cost).",
+          "category": "UI/UX"
+        },
+        {
+          "id": "fitb5",
+          "type": "fitb",
+          "question": "In software testing, _______ testing verifies individual components work correctly in isolation, while _______ testing checks if different modules work together properly.",
+          "correctAnswers": ["Unit", "Integration"],
+          "alternativeAnswers": [
+            ["Component", "System"],
+            ["Module", "Combined"],
+            ["Isolated", "Connected"]
+          ],
+          "marks": 5,
+          "dimensions": ["Testing Knowledge", "Logical Structure Understanding"],
+          "explanation": "Testing Pyramid: 1) Unit Tests (bottom, most tests): Individual functions/methods, fast, isolated. 2) Integration Tests (middle): Module interactions, database connections, APIs. 3) End-to-End Tests (top, fewest): Complete user flows. Unit = isolated (mock dependencies). Integration = real dependencies. More units than integration (faster, pinpoint bugs). Both automated for CI/CD.",
+          "category": "Software Testing"
+        }
+      ]
+    },
+    {
+      "id": "programming",
+      "name": "Programming & Problem Solving",
+      "description": "Demonstrate your coding and algorithmic thinking skills",
+      "duration": 15,
+      "questions": [
+        {
+          "id": "prog1",
+          "type": "programming",
+          "question": "Write a function that finds the second largest number in an array. Handle edge cases (empty array, array with one element, duplicate values).",
+          "marks": 15,
+          "dimensions": ["Problem Solving", "Coding Skills", "Edge Case Handling", "Logical Thinking"],
+          "constraints": [
+            "Array can contain positive and negative numbers",
+            "Array might be empty or have only one element",
+            "Array might have duplicate values",
+            "Should work efficiently for large arrays"
+          ],
+          "sampleInput": "[5, 2, 8, 2, 1, 8, 3]",
+          "sampleOutput": "5",
+          "explanation": "Expected approach: 1) Handle edge cases first (empty, single element), 2) Track largest and second largest, 3) Single pass through array (O(n) time), 4) Handle duplicates (8 appears twice, second largest is 5 not 8). Alternative: Sort array and return second unique value (but O(n log n)).",
+          "testCases": [
+            {"input": "[5, 2, 8, 2, 1, 8, 3]", "output": "5"},
+            {"input": "[10]", "output": "null or error"},
+            {"input": "[]", "output": "null or error"},
+            {"input": "[5, 5, 5]", "output": "null or error"},
+            {"input": "[-1, -5, -3]", "output": "-3"}
+          ],
+          "category": "Foundation"
+        },
+        {
+          "id": "prog2",
+          "type": "programming",
+          "question": "Design a simple rate limiter function that allows maximum 3 requests per minute per user. Return true if request is allowed, false if rate limit exceeded.",
+          "marks": 15,
+          "dimensions": ["System Design", "Problem Solving", "Data Structures", "Creativity"],
+          "constraints": [
+            "Track requests per user",
+            "Sliding window of 1 minute",
+            "Clean up old request timestamps",
+            "Should be efficient"
+          ],
+          "sampleInput": "rateLimiter('user1') called 4 times in 30 seconds",
+          "sampleOutput": "true, true, true, false",
+          "explanation": "Approach: 1) Store timestamps of requests per user (object/map), 2) On each request, filter out timestamps older than 1 minute, 3) Check if count < 3, 4) If yes, add current timestamp and return true. Data structure: { userId: [timestamp1, timestamp2, ...] }. Real-world: Redis for distributed systems, Token Bucket algorithm for sophisticated rate limiting.",
+          "testCases": [
+            {"input": "3 requests in 30 sec", "output": "all true"},
+            {"input": "4 requests in 30 sec", "output": "last false"},
+            {"input": "3 requests, wait 61 sec, 1 request", "output": "all true"},
+            {"input": "Multiple users simultaneously", "output": "isolated per user"}
+          ],
+          "category": "Product Development"
+        }
+      ]
+    },
+    {
+      "id": "debugging",
+      "name": "Debugging & Code Analysis",
+      "description": "Identify and fix errors, demonstrate debugging skills",
+      "duration": 5,
+      "questions": [
+        {
+          "id": "debug1",
+          "type": "debugging",
+          "question": "The following code is supposed to fetch user data from an API and display it, but it has multiple errors. Identify ALL errors and provide the corrected code.",
+          "buggyCode": `async function getUserData() {
+    const response = fetch('https://api.example.com/user');
+    const data = response.json();
+    console.log('User name: ' + data.firstName + ' ' + data.lastname);
+    return data;
+}
+
+// Usage
+getUserData();
+displayUserProfile(data);`,
+          "marks": 10,
+          "dimensions": ["Debugging Skills", "Technical Knowledge", "Attention to Detail", "Problem Solving"],
+          "errors": [
+            {
+              "line": "2",
+              "error": "Missing 'await' keyword before fetch()",
+              "explanation": "fetch() returns a Promise. Without await, response is a Promise object, not the actual response. Need 'await' to resolve the promise."
+            },
+            {
+              "line": "3",
+              "error": "Missing 'await' keyword before response.json()",
+              "explanation": "response.json() also returns a Promise. Without await, data is a Promise, not the parsed JSON object."
+            },
+            {
+              "line": "4",
+              "error": "Typo: 'lastname' should be 'lastName' (case-sensitive)",
+              "explanation": "JavaScript is case-sensitive. If API returns 'lastName', accessing 'lastname' gives undefined. Results in 'User name: John undefined'."
+            },
+            {
+              "line": "9",
+              "error": "'data' is not in scope - it's local to getUserData()",
+              "explanation": "Variable 'data' only exists inside getUserData(). To use it outside, need to await getUserData() and store result: const data = await getUserData();"
+            },
+            {
+              "line": "9",
+              "error": "Missing 'await' when calling async function",
+              "explanation": "getUserData() is async and returns Promise. Need 'await getUserData()' or .then() to get the actual data before passing to displayUserProfile()."
+            }
+          ],
+          "correctedCode": `async function getUserData() {
+    const response = await fetch('https://api.example.com/user');
+    const data = await response.json();
+    console.log('User name: ' + data.firstName + ' ' + data.lastName);
+    return data;
+}
+
+// Usage (must be in async context)
+async function main() {
+    const data = await getUserData();
+    displayUserProfile(data);
+}
+
+main();`,
+          "category": "Foundation"
+        }
+      ]
+    }
+  ],
+  "dimensions": [
+    {
+      "id": "technical_knowledge",
+      "name": "Technical Knowledge",
+      "description": "Understanding of core technologies, tools, and concepts",
+      "color": "#3b82f6"
+    },
+    {
+      "id": "problem_solving",
+      "name": "Problem Solving",
+      "description": "Ability to break down complex problems and find solutions",
+      "color": "#10b981"
+    },
+    {
+      "id": "analytical_thinking",
+      "name": "Analytical Thinking",
+      "description": "Logical analysis and reasoning skills",
+      "color": "#8b5cf6"
+    },
+    {
+      "id": "creativity",
+      "name": "Creativity",
+      "description": "Innovative thinking and novel approaches",
+      "color": "#f59e0b"
+    },
+    {
+      "id": "debugging",
+      "name": "Debugging Skills",
+      "description": "Identifying and fixing errors systematically",
+      "color": "#ef4444"
+    },
+    {
+      "id": "system_design",
+      "name": "System Design",
+      "description": "Architecting scalable and robust systems",
+      "color": "#06b6d4"
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "description": "Explaining technical concepts clearly",
+      "color": "#ec4899"
+    },
+    {
+      "id": "collaboration",
+      "name": "Collaboration",
+      "description": "Working effectively in team environments",
+      "color": "#14b8a6"
+    },
+    {
+      "id": "security",
+      "name": "Security Awareness",
+      "description": "Understanding security principles and best practices",
+      "color": "#dc2626"
+    },
+    {
+      "id": "testing",
+      "name": "Testing & QA",
+      "description": "Quality assurance and testing methodologies",
+      "color": "#84cc16"
+    }
+  ],
+  "scoring": {
+    "total_marks": 100,
+    "mcq_marks": 50,
+    "fitb_marks": 25,
+    "programming_marks": 30,
+    "debugging_marks": 10,
+    "passing_percentage": 60
+  }
+}

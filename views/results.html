@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Analysis Results | FutureTech IT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #1a1a1a;
+            --color-primary-light: #333333;
+            --color-primary-dark: #000000;
+            --color-accent: #555555;
+            --color-accent-light: #888888;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            --text-primary: #0a0a0a;
+            --text-secondary: #3a3a3a;
+            --text-muted: #6a6a6a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f8f8 0%, #e0e0e0 25%, #d0d0d0 50%, #e8e8e8 75%, #f5f5f5 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Glassmorphism Card Base */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #000000 0%, #444444 50%, #222222 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Score Hero */
+        .score-hero {
+            padding: 48px 40px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .score-ring {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 28px;
+        }
+
+        .score-ring svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .score-ring .bg-circle {
+            fill: none;
+            stroke: rgba(26, 26, 26, 0.15);
+            stroke-width: 12;
+        }
+
+        .score-ring .progress-circle {
+            fill: none;
+            stroke: url(#scoreGradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 565;
+            stroke-dashoffset: 565;
+            transition: stroke-dashoffset 2s ease-out;
+        }
+
+        .score-inner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 56px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, rgba(60, 60, 60, 0.15) 0%, rgba(100, 100, 100, 0.15) 100%);
+            border: 1px solid rgba(60, 60, 60, 0.3);
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2a2a2a;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            padding: 24px 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Skills Section */
+        .skills-section {
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .radar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .radar-container {
+            position: relative;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .radar-chart {
+            width: 100%;
+            aspect-ratio: 1;
+        }
+
+        .skill-legend {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .legend-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-name {
+            flex: 1;
+            color: var(--text-secondary);
+        }
+
+        .legend-score {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Two Column Layout for Skills & Summary */
+        .analysis-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .analysis-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Hollow Bullet Points */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .bullet-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .hollow-bullet {
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--color-primary);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .bullet-item strong {
+            color: var(--text-primary);
+        }
+
+        /* AI Summary */
+        .ai-section {
+            padding: 0;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .ai-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ai-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #4a4a4a 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .ai-header-text h3 {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .ai-header-text p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .ai-body {
+            padding: 28px 32px;
+        }
+
+        .ai-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .ai-metric {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .ai-metric-value {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-analysis-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+        }
+
+        .ai-analysis-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        .ai-analysis-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .ai-recommendation {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 22px;
+            background: rgba(60, 60, 60, 0.06);
+            border-radius: 12px;
+            border-left: 4px solid #3a3a3a;
+        }
+
+        .ai-recommendation-icon {
+            width: 32px;
+            height: 32px;
+            background: #3a3a3a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ai-recommendation-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .ai-recommendation-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .ai-recommendation-text strong {
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 640px) {
+            .ai-metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ai-content {
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .ai-content strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Scholarship */
+        .scholarship-section {
+            padding: 36px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 50%, #2a2a2a 100%);
+            text-align: center;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .scholarship-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+
+        .scholarship-value {
+            font-size: 56px;
+            font-weight: 800;
+            margin: 12px 0;
+        }
+
+        .scholarship-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .scholarship-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .breakdown-item {
+            text-align: center;
+        }
+
+        .breakdown-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .breakdown-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-linkedin {
+            background: #0077b5;
+            color: white;
+        }
+
+        .btn-linkedin:hover {
+            background: #005885;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 119, 181, 0.3);
+        }
+
+        .btn-outline {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        /* Share Achievement Section */
+        .share-section {
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(40, 40, 40, 0.08) 0%, rgba(80, 80, 80, 0.08) 100%);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .share-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .share-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .btn-linkedin-large {
+            background: linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%);
+            color: white;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-linkedin-large:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid .stat-card:last-child {
+                grid-column: span 2;
+            }
+
+            .skill-legend {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .scholarship-breakdown {
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+
+        /* Share Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 560px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: #f1f5f9;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .template-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-copy {
+            flex: 1;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-copy.copied {
+            background: #22c55e;
+        }
+
+        .btn-open-linkedin {
+            flex: 1;
+            background: #0077b5;
+            color: white;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-open-linkedin:hover {
+            background: #005885;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Share Your Achievement</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">Copy this template and paste it on
+                LinkedIn:</p>
+            <div class="template-box" id="shareTemplate"></div>
+            <div class="modal-actions">
+                <button class="btn-copy" id="copyBtn" onclick="copyTemplate()">Copy Text</button>
+                <a href="https://www.linkedin.com/preload/sharebox/" target="_blank" class="btn-open-linkedin"
+                    onclick="copyTemplateBeforeOpen()">Open LinkedIn & Start Post</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header animate-in">
+            <h1>FutureTech Scholastic Assessment Test</h1>
+            <p>AI-Powered Analysis Report</p>
+        </div>
+
+        <!-- Score Hero -->
+        <div class="score-hero glass-card animate-in delay-1">
+            <div class="score-ring">
+                <svg viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1a1a1a" />
+                            <stop offset="100%" style="stop-color:#5a5a5a" />
+                        </linearGradient>
+                    </defs>
+                    <circle class="bg-circle" cx="100" cy="100" r="90" />
+                    <circle class="progress-circle" id="progressCircle" cx="100" cy="100" r="90" />
+                </svg>
+                <div class="score-inner">
+                    <div class="score-value" id="totalScore">0</div>
+                    <div class="score-label">out of 100</div>
+                </div>
+            </div>
+            <h2 class="result-title" id="studentName">Assessment Complete</h2>
+            <div class="rank-badge">
+                Rank #<span id="rankNumber">---</span> out of <span id="totalStudents">8,124+</span> students
+            </div>
+        </div>
+
+        <!-- Share Your Achievement -->
+        <div class="share-section glass-card animate-in delay-1">
+            <h3 class="share-title">Share Your Achievement</h3>
+            <p class="share-subtitle">Let your network know about your performance</p>
+            <button class="btn btn-linkedin-large" onclick="shareOnLinkedIn()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+                Share on LinkedIn
+            </button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid animate-in delay-2">
+            <div class="stat-card glass-card">
+                <div class="stat-value" id="answeredCount">0</div>
+                <div class="stat-label">Questions Answered</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Correct Answers</div>
+            </div>
+            <div class="stat-card glass-card">
+                <div class="stat-value" id="percentile">0%</div>
+                <div class="stat-label">Percentile</div>
+            </div>
+        </div>
+
+        <!-- Analysis Row: Skills + Summary Side by Side -->
+        <div class="analysis-row animate-in delay-2">
+            <!-- Skills Analysis -->
+            <div class="skills-section glass-card">
+                <h3 class="section-title">Skill Analysis</h3>
+                <div class="radar-wrapper">
+                    <div class="radar-container">
+                        <canvas id="radarChart" class="radar-chart"></canvas>
+                    </div>
+                    <div class="skill-legend" id="skillLegend"></div>
+                </div>
+            </div>
+
+            <!-- AI Summary -->
+            <div class="ai-section glass-card">
+                <div class="ai-header">
+                    <div class="ai-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                        </svg>
+                    </div>
+                    <div class="ai-header-text">
+                        <h3>FSAT Insights</h3>
+                        <p>FutureTech Scholastic Assessment</p>
+                    </div>
+                </div>
+                <div class="ai-body">
+                    <ul class="bullet-list" id="aiFeedback">
+                        <li class="bullet-item"><span class="hollow-bullet"></span>Loading analysis...</li>
+                    </ul>
+                    <div class="ai-recommendation" id="aiRecommendation" style="margin-top: 20px;">
+                        <div class="ai-recommendation-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+                            </svg>
+                        </div>
+                        <div class="ai-recommendation-text" id="aiRecommendationText">Loading recommendation...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scholarship -->
+        <div class="scholarship-section glass-card animate-in delay-3">
+            <div class="scholarship-title">Your Scholarship</div>
+            <div class="scholarship-value" id="scholarshipPercent">---</div>
+            <div class="scholarship-subtitle">on FutureTech IT Programs</div>
+            <div class="scholarship-breakdown">
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="originalFee">₹45,000</div>
+                    <div class="breakdown-label">Original Fee</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="savingsAmount">-₹0</div>
+                    <div class="breakdown-label">You Save</div>
+                </div>
+                <div class="breakdown-item">
+                    <div class="breakdown-value" id="finalFee">₹45,000</div>
+                    <div class="breakdown-label">Final Fee</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions animate-in delay-4">
+            <button class="btn btn-primary" onclick="enrollNow()">
+                Enroll Now
+            </button>
+            <button class="btn btn-outline" onclick="downloadReport()">
+                Download Report
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Skills configuration (grayscale)
+        const skillConfig = [
+            { id: 'analytical', name: 'Analytical', color: '#1a1a1a' },
+            { id: 'logical', name: 'Logical', color: '#3a3a3a' },
+            { id: 'coding', name: 'Coding', color: '#5a5a5a' },
+            { id: 'debugging', name: 'Debugging', color: '#6a6a6a' },
+            { id: 'conceptual', name: 'Conceptual', color: '#4a4a4a' },
+            { id: 'communication', name: 'Communication', color: '#2a2a2a' }
+        ];
+
+        // Calculate dynamic student pool
+        function getTotalStudents() {
+            const baseDate = new Date('2026-02-07');
+            const today = new Date();
+            const daysDiff = Math.floor((today - baseDate) / (1000 * 60 * 60 * 24));
+            const baseStudents = 8124;
+            const dailyIncrease = 2000;
+            let userCounter = parseInt(localStorage.getItem('globalUserCounter') || '0');
+            return baseStudents + (daysDiff * dailyIncrease) + userCounter;
+        }
+
+        function incrementUserCounter() {
+            let userCounter = parseInt(localStorage.getItem('globalUserCounter') || '0');
+            userCounter++;
+            localStorage.setItem('globalUserCounter', userCounter.toString());
+        }
+
+        function calculateRank(score) {
+            const baseRank = Math.max(1, Math.floor(1000 - (score * 10) + 1));
+            const variation = Math.floor(Math.random() * 50) - 25;
+            return Math.max(1, Math.min(1000, baseRank + variation));
+        }
+
+        // Render radar chart
+        function renderSkills(skills) {
+            const canvas = document.getElementById('radarChart');
+            const ctx = canvas.getContext('2d');
+
+            const size = 380;
+            canvas.width = size * 2;
+            canvas.height = size * 2;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+            ctx.scale(2, 2);
+
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const maxRadius = size / 2 - 50;
+            const numAxes = skillConfig.length;
+            const angleStep = (Math.PI * 2) / numAxes;
+
+            ctx.clearRect(0, 0, size, size);
+
+            // Draw grid circles
+            for (let i = 1; i <= 5; i++) {
+                const radius = (maxRadius / 5) * i;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(80, 80, 80, 0.15)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Draw axes
+            skillConfig.forEach((config, i) => {
+                const angle = angleStep * i - Math.PI / 2;
+                const x = centerX + Math.cos(angle) * maxRadius;
+                const y = centerY + Math.sin(angle) * maxRadius;
+
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = 'rgba(80, 80, 80, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Labels
+                const labelDistance = maxRadius + 30;
+                const labelX = centerX + Math.cos(angle) * labelDistance;
+                const labelY = centerY + Math.sin(angle) * labelDistance;
+                ctx.font = '600 12px Inter, sans-serif';
+                ctx.fillStyle = '#3a3a3a';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(config.name, labelX, labelY);
+            });
+
+            // Get values
+            const skillValues = skillConfig.map(config => skills[config.id] || 0);
+
+            // Draw filled area
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, maxRadius);
+            gradient.addColorStop(0, 'rgba(80, 80, 80, 0.35)');
+            gradient.addColorStop(0.5, 'rgba(100, 100, 100, 0.2)');
+            gradient.addColorStop(1, 'rgba(120, 120, 120, 0.1)');
+
+            ctx.beginPath();
+            skillValues.forEach((value, i) => {
+                const angle = angleStep * i - Math.PI / 2;
+                const radius = (value / 100) * maxRadius;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Draw outline
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.8)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Draw points
+            skillValues.forEach((value, i) => {
+                const angle = angleStep * i - Math.PI / 2;
+                const radius = (value / 100) * maxRadius;
+                const x = centerX + Math.cos(angle) * radius;
+                const y = centerY + Math.sin(angle) * radius;
+
+                ctx.beginPath();
+                ctx.arc(x, y, 6, 0, Math.PI * 2);
+                ctx.fillStyle = skillConfig[i].color;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = 'white';
+                ctx.fill();
+            });
+
+            // Render legend
+            const legend = document.getElementById('skillLegend');
+            legend.innerHTML = skillConfig.map((config, i) => `
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: ${config.color}"></div>
+                    <span class="legend-name">${config.name}</span>
+                    <span class="legend-score">${skillValues[i]}</span>
+                </div>
+            `).join('');
+        }
+
+        function animateValue(elementId, start, end, duration) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const range = end - start   const startTime = performance.now();
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                element.textContent = Math.floor(start + range * progress);
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+
+        function animateScoreRing(score) {
+            const circle = document.getElementById('progressCircle');
+            const circumference = 2 * Math.PI * 90;
+            const offset = circumference - (score / 100) * circumference;
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 300);
+        }
+
+        function loadResults() {
+            const evaluationText = localStorage.getItem('testEvaluation');
+            const answersData = localStorage.getItem('testAnswers');
+
+            if (!evaluationText && !answersData) {
+                alert('No test results found. Please complete the test first.');
+                window.location.href = 'test.html';
+                return;
+            }
+
+            const answers = answersData ? JSON.parse(answersData) : {};
+            const answeredCount = Object.keys(answers).length;
+            const totalScore = Math.min(100, Math.floor(answeredCount * 5.5 + Math.random() * 10));
+            const correctCount = Math.floor(answeredCount * 0.7);
+
+            incrementUserCounter();
+            const totalStudents = getTotalStudents();
+            const rank = calculateRank(totalScore);
+            const percentile = Math.round((1 - rank / 1000) * 100);
+
+            let scholarshipPercent = 10;
+            if (totalScore >= 90) scholarshipPercent = 60;
+            else if (totalScore >= 80) scholarshipPercent = 50;
+            else if (totalScore >= 70) scholarshipPercent = 40;
+            else if (totalScore >= 60) scholarshipPercent = 30;
+            else if (totalScore >= 50) scholarshipPercent = 20;
+
+            const originalFee = 45000;
+            const savings = Math.floor(originalFee * scholarshipPercent / 100);
+            const finalFee = originalFee - savings;
+
+            const skills = {
+                analytical: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                logical: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                coding: Math.min(100, Math.floor(totalScore + Math.random() * 25 - 15)),
+                debugging: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                conceptual: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                communication: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 5))
+            };
+
+            document.getElementById('studentName').textContent = 'Congratulations!';
+            animateValue('totalScore', 0, totalScore, 1500);
+            animateScoreRing(totalScore);
+            animateValue('answeredCount', 0, answeredCount, 1000);
+            animateValue('correctCount', 0, correctCount, 1000);
+            document.getElementById('percentile').textContent = `${percentile}%`;
+            document.getElementById('rankNumber').textContent = rank;
+            document.getElementById('totalStudents').textContent = totalStudents.toLocaleString() + '+';
+            document.getElementById('scholarshipPercent').textContent = `${scholarshipPercent}%`;
+            document.getElementById('originalFee').textContent = `₹${originalFee.toLocaleString('en-IN')}`;
+            document.getElementById('savingsAmount').textContent = `-₹${savings.toLocaleString('en-IN')}`;
+            document.getElementById('finalFee').textContent = `₹${finalFee.toLocaleString('en-IN')}`;
+
+
+            renderSkills(skills);
+
+            // Parse LLM-generated personalized insights
+            const bullet = '<span class="hollow-bullet"></span>';
+            let feedbackHTML = '';
+            let recommendation = '';
+            let llmInsights = null;
+
+            // Try to parse JSON evaluation from LLM
+            if (evaluationText) {
+                try {
+                    // Handle if it's wrapped in markdown code blocks
+                    let jsonStr = evaluationText;
+                    if (jsonStr.includes('```json')) {
+                        jsonStr = jsonStr.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+                    }
+                    if (jsonStr.includes('```')) {
+                        jsonStr = jsonStr.replace(/```\n?/g, '');
+                    }
+                    jsonStr = jsonStr.trim();
+
+                    // Try to find JSON object in response
+                    const jsonMatch = jsonStr.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        llmInsights = JSON.parse(jsonMatch[0]);
+                    }
+                } catch (e) {
+                    console.log('Could not parse LLM JSON:', e);
+                }
+            }
+
+            // Use LLM personalized insights if available
+            if (llmInsights && llmInsights.insights && Array.isArray(llmInsights.insights)) {
+                feedbackHTML = llmInsights.insights.slice(0, 3).map(insight =>
+                    `<li class="bullet-item">${bullet}${insight}</li>`
+                ).join('');
+
+                if (llmInsights.path) {
+                    recommendation = `<strong>Your Path:</strong> <strong>${llmInsights.path}</strong> is recommended for you.`;
+                }
+            } else {
+                // Fallback to score-based insights
+                const strengthInsights = {
+                    high: [
+                        "Your analytical thinking demonstrates exceptional problem-solving potential.",
+                        "You show the kind of logical clarity that top developers possess.",
+                        "Your approach to challenges reveals a natural aptitude for coding."
+                    ],
+                    medium: [
+                        "Your curiosity and willingness to learn are your biggest strengths.",
+                        "You have the foundational thinking that successful coders build upon.",
+                        "Your persistence in tackling problems shows real developer mindset."
+                    ],
+                    growing: [
+                        "Taking this step shows the initiative that great developers have.",
+                        "Your growth mindset is exactly what the tech industry values.",
+                        "Every expert was once a beginner – your journey starts strong."
+                    ]
+                };
+
+                let insights = strengthInsights.growing;
+                if (totalScore >= 70) insights = strengthInsights.high;
+                else if (totalScore >= 40) insights = strengthInsights.medium;
+
+                feedbackHTML = insights.map(insight =>
+                    `<li class="bullet-item">${bullet}${insight}</li>`
+                ).join('');
+            }
+
+            // Set recommendation if not from LLM
+            if (!recommendation) {
+                recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
+                if (totalScore >= 80) {
+                    recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
+                } else if (totalScore >= 60) {
+                    recommendation = `<strong>Your Path:</strong> Our <strong>Professional Development Track</strong> will unlock your potential.`;
+                } else if (totalScore >= 40) {
+                    recommendation = `<strong>Your Path:</strong> The <strong>Skill Builder Program</strong> is perfect for your growth.`;
+                }
+            }
+
+            <!-- Detailed Question Review Section -->
+            <div class="ai-analysis-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%); border: 1px solid rgba(0,0,0,0.1);">
+                <div class="ai-analysis-title" style="color: #333; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
+                    📚 Detailed Question Review & Explanations
+                </div>
+                <div id="questionReviewContainer">
+                    <p style="color: #666; font-style: italic;">Loading question details...</p>
+                </div>
+            </div>
+
+            document.getElementById('aiFeedback').innerHTML = feedbackHTML;
+            document.getElementById('aiRecommendationText').innerHTML = recommendation;
+
+            window.resultData = { score: totalScore, rank, totalStudents, scholarship: scholarshipPercent, skills };
+            
+            // Load question review
+            displayQuestionReview(answers);
+        }
+
+        // Function to display detailed question review
+        async function displayQuestionReview(userAnswers) {
+            const container = document.getElementById('questionReviewContainer');
+            if (!container) return;
+
+            try {
+                // Fetch questions configuration
+                const response = await fetch('/api/questions');
+                const data = await response.json();
+                const allQuestions = [];
+                
+                // Flatten sections if needed, or use direct array
+                if (data.sections) {
+                    Object.values(data.sections).forEach(section => {
+                        if (Array.isArray(section)) allQuestions.push(...section);
+                    });
+                } else if (Array.isArray(data)) {
+                    allQuestions.push(...data);
+                }
+
+                let reviewHTML = '';
+                
+                allQuestions.forEach((q, index) => {
+                    // Normalize user answer
+                    let userAnswer = userAnswers[q.id];
+                    
+                    let statusClass = 'neutral';
+                    let statusIcon = '➖';
+                    let statusText = 'Not Answered';
+                    let statusColor = '#999';
+                    let statusBg = '#f0f0f0';
+
+                    if (userAnswer) {
+                        if (q.type === 'mcq') {
+                            const selectedIdx = parseInt(userAnswer);
+                            if (selectedIdx === q.correctAnswer) {
+                                statusClass = 'correct';
+                                statusIcon = '✅';
+                                statusText = 'Correct';
+                                statusColor = '#10b981';
+                                statusBg = '#d1fae5';
+                            } else {
+                                statusClass = 'wrong';
+                                statusIcon = '❌';
+                                statusText = 'Incorrect';
+                                statusColor = '#ef4444';
+                                statusBg = '#fee2e2';
+                            }
+                        } else {
+                            statusClass = 'neutral'; // Manual/AI graded
+                            statusIcon = '📝';
+                            statusText = 'Submitted';
+                            statusColor = '#3b82f6';
+                            statusBg = '#dbeafe';
+                        }
+                    }
+
+                    // Format user answer text
+                    let userAnswerText = 'Not answered';
+                    if (userAnswer) {
+                        if (q.type === 'mcq') {
+                            userAnswerText = q.options[parseInt(userAnswer)];
+                        } else {
+                            userAnswerText = userAnswer;
+                        }
+                    }
+
+                    reviewHTML += `
+                        <div class="review-card" style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid ${statusColor}; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                                <h4 style="margin: 0; font-size: 16px; color: #333;">Q${index + 1}: ${q.question}</h4>
+                                <span style="background: ${statusBg}; color: ${statusColor}; padding: 4px 10px; border-radius: 15px; font-size: 12px; font-weight: bold; white-space: nowrap; margin-left: 10px;">
+                                    ${statusIcon} ${statusText}
+                                </span>
+                            </div>
+                            
+                            <div style="margin-top: 15px; font-size: 14px; color: #555;">
+                                <p><strong>Your Answer:</strong> <span style="color: #333;">${userAnswerText}</span></p>
+                            </div>
+
+                            ${q.type === 'mcq' && statusClass === 'wrong' ? `
+                            <div style="margin-top: 10px; font-size: 14px; color: #DC0000;">
+                                <p><strong>Correct Answer:</strong> ${q.options[q.correctAnswer]}</p>
+                            </div>
+                            ` : ''}
+
+                            <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px dashed #ccc;">
+                                <p style="margin: 0; font-size: 13px; color: #666;">
+                                    <strong>💡 Expected Understanding / Explanation:</strong><br>
+                                    ${formatExplanation(q.explanation)}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = reviewHTML;
+                
+            } catch (error) {
+                console.error('Failed to load questions for review:', error);
+                container.innerHTML = '<p>Unable to load detailed question review at this time.</p>';
+            }
+        }
+
+        function formatExplanation(explanation) {
+            if (!explanation) return 'No explanation available.';
+            if (typeof explanation === 'string') return explanation;
+            if (explanation.stepByStep) {
+                return `
+                    <ul style="padding-left: 20px; margin: 5px 0;">
+                        ${explanation.stepByStep.map(step => `<li>${step}</li>`).join('')}
+                    </ul>
+                    <p style="margin-top: 5px;"><strong>Answer:</strong> ${explanation.answer}</p>
+                `;
+            }
+            return JSON.stringify(explanation);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadResults);
+            const data = window.resultData || {};
+            const score = data.score || 0;
+            const rank = data.rank || 0;
+            const totalStudents = data.totalStudents || 8124;
+            const scholarship = data.scholarship || 0;
+
+            // Pre-filled post template
+            const postText = `I just completed the FSAT (FutureTech Scholastic Assessment Test) and scored ${score}/100!
+
+Rank: #${rank} out of ${totalStudents.toLocaleString()}+ students
+Scholarship Earned: ${scholarship}%
+
+This assessment helped me understand where I stand in my technical skills. It was a great experience writing this exam and getting detailed AI-powered feedback on my abilities.
+
+@Trailbliz #FutureTechIT #TechnicalAssessment #CodingSkills #CareerGrowth #SkillAssessment`;
+
+            // Show modal with template
+            document.getElementById('shareTemplate').textContent = postText;
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        function copyTemplate() {
+            const template = document.getElementById('shareTemplate').textContent;
+            navigator.clipboard.writeText(template).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy Text';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = template;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const btn = document.getElementById('copyBtn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy Text';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyTemplateBeforeOpen() {
+            const template = document.getElementById('shareTemplate').textContent;
+            navigator.clipboard.writeText(template).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = template;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            });
+        }
+
+        // Close modal on outside click
+        document.getElementById('shareModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        function enrollNow() {
+            const data = window.resultData || {};
+            const message = encodeURIComponent(
+                `Hi! I completed the FutureTech IT Assessment and scored ${data.score}/100 with ${data.scholarship}% scholarship. I'd like to enroll in a program.`
+            );
+            window.open(`https://wa.me/918977781696?text=${message}`, '_blank');
+        }
+
+        function downloadReport() {
+            alert('Report download feature coming soon!\n\nFor now, you can take a screenshot of this page or share on LinkedIn.');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadResults);
+    </script>
+</body>
+
+</html>

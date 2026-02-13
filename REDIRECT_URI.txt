@@ -1,0 +1,1 @@
+https://diacczkzcxylmlvysqar.supabase.co/auth/v1/callback

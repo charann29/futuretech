@@ -1,0 +1,61 @@
+{
+    "personal_info": {
+        "name": "Test User",
+        "email": "test@example.com",
+        "phone": "1234567890",
+        "linkedin": "https://linkedin.com/in/testuser",
+        "github": "https://github.com/testuser",
+        "website": "",
+        "location": "San Francisco, CA"
+    },
+    "education": [
+        {
+            "institution": "University of California",
+            "degree": "BS Computer Science",
+            "start_date": "2018",
+            "end_date": "2022",
+            "location": "Berkeley, CA",
+            "gpa": "3.8",
+            "details": []
+        }
+    ],
+    "experience": [
+        {
+            "company": "Google",
+            "role": "Software Engineer",
+            "start_date": "2022",
+            "end_date": "2024",
+            "location": "Mountain View, CA",
+            "details": []
+        }
+    ],
+    "projects": [
+        {
+            "name": "E-commerce Platform",
+            "technologies": [
+                "React",
+                "Node.js",
+                "MongoDB",
+                "AWS"
+            ],
+            "link": "https://github.com/testuser/ecommerce",
+            "details": []
+        }
+    ],
+    "skills": [
+        {
+            "category": "Programming Languages",
+            "skills": [
+                "Python",
+                "JavaScript",
+                "Java"
+            ]
+        }
+    ],
+    "certifications": [],
+    "languages": [
+        "English"
+    ],
+    "job_description": "Senior Software Engineer",
+    "summary": ""
+}

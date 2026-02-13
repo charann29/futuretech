@@ -1,0 +1,162 @@
+╔═══════════════════════════════════════════════════════════════╗
+║           GOOGLE OAUTH SETUP - STEP BY STEP                   ║
+╚═══════════════════════════════════════════════════════════════╝
+
+PART 1: GET GOOGLE OAUTH CREDENTIALS
+═════════════════════════════════════
+
+Step 1: Go to Google Cloud Console
+→ https://console.cloud.google.com/
+
+Step 2: Select Your Project
+→ Project: project-353fe44f-aa79-48fc-91d
+   (Or create new project if needed)
+
+Step 3: Enable Google+ API
+→ Go to: APIs & Services → Library
+→ Search: "Google+ API"
+→ Click: Enable
+
+Step 4: Create OAuth 2.0 Credentials
+→ Go to: APIs & Services → Credentials
+→ Click: "+ CREATE CREDENTIALS"
+→ Select: "OAuth client ID"
+
+Step 5: Configure OAuth Consent Screen (if not done)
+→ Click: "CONFIGURE CONSENT SCREEN"
+→ User Type: External
+→ Click: CREATE
+
+→ App Information:
+   App name: FutureTech
+   User support email: info@thefuturetechit.com
+   Developer contact: info@thefuturetechit.com
+→ Click: SAVE AND CONTINUE
+
+→ Scopes: (Click SAVE AND CONTINUE without adding)
+→ Test users: Add your email
+→ Click: SAVE AND CONTINUE
+→ Click: BACK TO DASHBOARD
+
+Step 6: Create OAuth Client ID
+→ Go back to: Credentials → + CREATE CREDENTIALS → OAuth client ID
+→ Application type: Web application
+→ Name: FutureTech Web App
+
+→ Authorized JavaScript origins:
+   http://localhost:3000
+   https://gsqpobjgxrkeyxfqlakb.supabase.co
+   https://yourdomain.com (production)
+
+→ Authorized redirect URIs:
+   https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+   http://localhost:3000/auth/callback
+
+→ Click: CREATE
+
+Step 7: SAVE YOUR CREDENTIALS
+You'll see:
+   Client ID: xxx.apps.googleusercontent.com
+   Client Secret: GOCSPX-xxxxx
+
+⚠️  COPY THESE NOW - You'll need them for Supabase!
+
+═════════════════════════════════════════════════════════════════
+
+PART 2: CONFIGURE SUPABASE
+═════════════════════════════
+
+Step 1: Open Supabase Dashboard
+→ https://app.supabase.com/project/gsqpobjgxrkeyxfqlakb
+
+Step 2: Go to Authentication Settings
+→ Click: Authentication (left sidebar)
+→ Click: Providers
+→ Scroll to: Google
+
+Step 3: Enable Google Provider
+→ Toggle: "Enable Sign in with Google" = ON
+
+Step 4: Add Google Credentials
+→ Authorized Client ID: [Paste from Google Console]
+→ Client Secret: [Paste from Google Console]
+
+Step 5: Configure Redirect URLs (IMPORTANT!)
+→ Site URL: http://localhost:3000
+→ Redirect URLs:
+   http://localhost:3000/*
+   http://localhost:3000/index.html
+   http://localhost:3000/test.html
+   http://localhost:3000/resume.html
+
+Step 6: Save Configuration
+→ Click: SAVE
+
+═════════════════════════════════════════════════════════════════
+
+PART 3: TEST THE SETUP
+═════════════════════════
+
+Step 1: Open Your Application
+→ http://localhost:3000
+
+Step 2: Click "Sign in with Google"
+
+Step 3: You Should See:
+→ Google OAuth consent screen
+→ Select your Google account
+→ Authorize the application
+→ Redirect back to http://localhost:3000
+
+Step 4: Verify Success
+→ User profile appears in navbar
+→ Check browser console: "User authenticated: your@email.com"
+→ Check Supabase dashboard: Users table has new entry
+
+═════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING
+═════════════════
+
+Error: "redirect_uri_mismatch"
+Fix: Add exact redirect URL in Google Console:
+     https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+
+Error: "access_denied"
+Fix: Add your email to test users in OAuth consent screen
+
+Error: "invalid_client"
+Fix: Check Client ID and Secret are correct in Supabase
+
+Error: "This app isn't verified"
+Fix: Click "Advanced" → "Go to FutureTech (unsafe)"
+     (This is normal for development)
+
+═════════════════════════════════════════════════════════════════
+
+QUICK REFERENCE
+═════════════════
+
+Google Console:
+https://console.cloud.google.com/apis/credentials?project=project-353fe44f-aa79-48fc-91d
+
+Supabase Auth:
+https://app.supabase.com/project/gsqpobjgxrkeyxfqlakb/auth/providers
+
+Supabase Callback URL:
+https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+
+Local Test URL:
+http://localhost:3000
+
+═════════════════════════════════════════════════════════════════
+
+AFTER SETUP IS COMPLETE:
+
+✅ Users can sign in with Google
+✅ User profiles saved to Supabase
+✅ Leads captured automatically
+✅ Access to test and resume pages
+✅ Full platform functionality
+
+═════════════════════════════════════════════════════════════════

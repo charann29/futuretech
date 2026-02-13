@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+openai
+jinja2
+pydantic
+groq
+python-multipart
+google-cloud-storage
+supabase
+python-dotenv

@@ -1,0 +1,250 @@
+╔═══════════════════════════════════════════════════════════════╗
+║         FUTURETECH COMPLETE INTEGRATION                       ║
+║         All Services Unified & Ready                          ║
+╚═══════════════════════════════════════════════════════════════╝
+
+WHAT'S INTEGRATED:
+
+✅ MAIN APPLICATION (Express + Node.js)
+   - Landing page (views/index.html)
+   - FSAT Test (views/test.html) with onboarding
+   - Quick AI Resume (views/resume.html) - 5 min, uses Claude
+   - Supabase authentication
+   - Lead capture system
+   - Port: 5000
+
+✅ ADVANCED RESUME BUILDER (React + Vite)
+   - Full-featured resume builder UI
+   - Multiple templates
+   - Profile management
+   - Resume selector
+   - Served at: http://localhost:5000/builder/
+   - Folder: frontend/
+
+✅ RESUME GENERATION SERVICE (Python + FastAPI)
+   - Advanced AI resume enhancement
+   - Job description parsing
+   - Skills analysis & categorization
+   - Uses Groq LLM
+   - Port: 8000 (optional, only for advanced features)
+   - Folder: resume/
+
+═══════════════════════════════════════════════════════════════
+
+QUICK START (3 OPTIONS):
+
+OPTION 1: BASIC SETUP (Main app + Quick Resume only)
+────────────────────────────────────────────────────
+npm install
+npm start
+
+This runs:
+- Landing page: http://localhost:5000
+- FSAT Test: http://localhost:5000/test
+- Quick Resume: http://localhost:5000/resume
+- Uses Claude API for resume generation
+
+OPTION 2: WITH ADVANCED BUILDER (Add React frontend)
+────────────────────────────────────────────────────
+./start-all.sh
+
+OR manually:
+cd frontend && npm install && npm run build && cd ..
+npm install
+npm start
+
+This adds:
+- Advanced Resume Builder: http://localhost:5000/builder/
+
+OPTION 3: FULL STACK (All services including Python)
+────────────────────────────────────────────────────
+Terminal 1 - Python Resume Service:
+cd resume
+pip install -r requirements.txt
+python -m uvicorn server:app --host 0.0.0.0 --port 8000
+
+Terminal 2 - Main Application:
+./start-all.sh
+
+This enables:
+- All features from Option 2
+- Advanced AI resume enhancement
+- Job description matching
+- Skills gap analysis
+
+═══════════════════════════════════════════════════════════════
+
+ENVIRONMENT SETUP:
+
+1. Main .env (root folder):
+   ANTHROPIC_API_KEY=sk-ant-your-key
+   SUPABASE_URL=https://gsqpobjgxrkeyxfqlakb.supabase.co
+   SUPABASE_ANON_KEY=[your-key]
+   RESUME_SERVICE_URL=http://localhost:8000
+   GROQ_API_KEY=[your-key] (optional, for Python service)
+
+2. Frontend .env (frontend/ folder):
+   Already configured ✓
+
+3. Resume .env (resume/ folder):
+   Create resume/.env:
+   GROQ_API_KEY=[your-key]
+   SUPABASE_URL=https://gsqpobjgxrkeyxfqlakb.supabase.co
+   SUPABASE_ANON_KEY=[your-key]
+
+═══════════════════════════════════════════════════════════════
+
+USER JOURNEY:
+
+Landing Page (/)
+    ↓ Sign in with Google
+User Dashboard
+    ↓ Choose option:
+
+Option A: FSAT Test
+    → /test
+    → Onboarding form (captures phone)
+    → 18 questions, 45 minutes
+    → AI evaluation
+    → Scholarship calculation
+    → Stored in Supabase
+
+Option B: Quick Resume (5 min)
+    → /resume
+    → Simple form
+    → Claude generates resume
+    → Download instantly
+    → Stored in Supabase
+
+Option C: Advanced Resume Builder
+    → /builder/resumes
+    → Full resume builder UI
+    → Multiple templates
+    → Job description matching
+    → Skills analysis
+    → Professional templates
+
+═══════════════════════════════════════════════════════════════
+
+ARCHITECTURE:
+
+                    ┌──────────────┐
+                    │   Browser    │
+                    └──────┬───────┘
+                           │
+                           ↓
+            ┌──────────────────────────┐
+            │  Express Server (5000)   │
+            │  ├─ Landing, Test        │
+            │  ├─ Quick Resume         │
+            │  ├─ Supabase Auth        │
+            │  └─ API Proxy            │
+            └──┬─────────────────────┬─┘
+               │                     │
+               ↓                     ↓
+    ┌──────────────────┐   ┌────────────────┐
+    │  React Frontend  │   │ Python Service │
+    │  (Built/Served)  │   │  (Port 8000)   │
+    │  /builder/*      │   │  /api/resume/* │
+    └──────────────────┘   └────────────────┘
+               │                     │
+               └──────────┬──────────┘
+                          ↓
+                  ┌───────────────┐
+                  │   Supabase    │
+                  │   Database    │
+                  └───────────────┘
+
+═══════════════════════════════════════════════════════════════
+
+API ENDPOINTS:
+
+Main Server (localhost:5000):
+  GET  /                     - Landing page
+  GET  /test                 - FSAT test
+  GET  /resume               - Quick resume builder
+  GET  /builder/*            - Advanced resume builder (React)
+
+  POST /api/save-lead        - Save lead data
+  POST /api/submit-test      - Submit FSAT test
+  POST /api/generate-resume  - Quick resume (Claude)
+
+  POST /api/resume/process   - Advanced resume (proxy to Python)
+  POST /api/resume/generate  - Generate PDF (proxy to Python)
+
+Python Service (localhost:8000):
+  GET  /                     - Health check
+  POST /process              - Process & enhance resume
+  POST /generate             - Generate PDF
+
+═══════════════════════════════════════════════════════════════
+
+DATABASE TABLES (Supabase):
+
+leads
+  - user_id, email, name, phone, source, avatar
+  - Captures all signups
+
+test_results
+  - user_id, score, percentage, scholarship, answers
+  - Stores FSAT test submissions
+
+resumes
+  - user_id, resume_html, contact info, skills
+  - Stores generated resumes
+
+═══════════════════════════════════════════════════════════════
+
+DEPLOYMENT:
+
+Development:
+  Run start-all.sh
+
+Production (Railway/Vercel):
+  1. Deploy main app (root folder)
+  2. Deploy Python service separately (resume/ folder)
+  3. Update RESUME_SERVICE_URL in .env
+  4. Build frontend: cd frontend && npm run build
+
+Environment Variables for Production:
+  ANTHROPIC_API_KEY
+  SUPABASE_URL
+  SUPABASE_ANON_KEY
+  RESUME_SERVICE_URL (Python service URL)
+  GROQ_API_KEY (for Python service)
+  SITE_URL (production domain)
+
+═══════════════════════════════════════════════════════════════
+
+TESTING:
+
+1. Start services (choose option above)
+2. Open http://localhost:5000
+3. Click "Sign in with Google"
+4. Test each feature:
+   - Take FSAT test
+   - Generate quick resume
+   - Try advanced resume builder
+5. Check Supabase tables for data
+
+═══════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+Issue: Advanced builder shows 503 error
+Fix: Build frontend first - cd frontend && npm run build
+
+Issue: Python service unavailable
+Fix: Advanced features need Python service running
+     Or use quick resume instead (works without Python)
+
+Issue: Google sign-in fails
+Fix: Enable Google OAuth in Supabase dashboard
+
+Issue: AI features not working
+Fix: Add ANTHROPIC_API_KEY to .env (for quick resume)
+     Add GROQ_API_KEY for Python service (advanced)
+
+═══════════════════════════════════════════════════════════════
+
+EVERYTHING INTEGRATED AND READY TO USE! 🚀

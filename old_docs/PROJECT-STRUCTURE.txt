@@ -1,0 +1,156 @@
+╔═══════════════════════════════════════════════════════════════╗
+║              FUTURETECH - CLEAN PROJECT STRUCTURE             ║
+╚═══════════════════════════════════════════════════════════════╝
+
+futuretech_deploy/
+│
+├── views/                          ← MAIN HTML PAGES
+│   ├── index.html                  ← Landing page (Google auth, sections)
+│   ├── test.html                   ← FSAT Test (with onboarding form)
+│   ├── resume.html                 ← Quick Resume Builder (Claude AI)
+│   ├── testscript.js               ← Test logic (auth integrated)
+│   └── resultscript.js             ← Results display
+│
+├── public/                         ← STATIC ASSETS
+│   ├── logo.png                    ← FutureTech logo (used everywhere)
+│   └── supabase-auth.js            ← Authentication client
+│
+├── config/                         ← CONFIGURATION
+│   └── questions.json              ← 18 FSAT test questions
+│
+├── frontend/                       ← REACT RESUME BUILDER (ADVANCED)
+│   ├── src/                        ← React components
+│   │   ├── pages/                  ← BuilderPage, ProfilePage, etc.
+│   │   ├── components/             ← UI components
+│   │   ├── context/                ← AuthContext
+│   │   └── utils/                  ← API, Supabase client
+│   ├── public/                     ← (cleaned - no duplicates)
+│   ├── dist/                       ← Built files (generated)
+│   ├── package.json
+│   ├── vite.config.js
+│   └── .env                        ← Supabase + API config
+│
+├── resume/                         ← PYTHON AI SERVICE (OPTIONAL)
+│   ├── src/                        ← Resume agents & generators
+│   │   ├── agents/                 ← AI agents (parser, enhancer)
+│   │   ├── generators/             ← Resume generators
+│   │   ├── schemas/                ← Data schemas
+│   │   └── utils/                  ← LLM client, storage
+│   ├── data/                       ← Profile data
+│   ├── server.py                   ← FastAPI server
+│   ├── main.py                     ← CLI interface
+│   └── requirements.txt            ← Python dependencies
+│
+├── server.js                       ← MAIN EXPRESS SERVER
+├── package.json                    ← Node.js dependencies
+├── .env                            ← Environment variables
+├── supabase-setup.sql              ← Database setup script
+├── start-all.sh                    ← Startup script
+│
+└── DOCS/
+    ├── COMPLETE-INTEGRATION.txt    ← Full integration guide
+    ├── INTEGRATION-SUMMARY.txt     ← Quick reference
+    ├── START-CHECKLIST.txt         ← Setup checklist
+    └── QUICKSTART.txt              ← Quick start guide
+
+═══════════════════════════════════════════════════════════════
+
+FILE ORGANIZATION:
+
+✅ NO DUPLICATES
+   - Removed old test.html from frontend/public/
+   - Removed duplicate logo, questions
+   - Single source of truth for each file
+
+✅ CLEAR SEPARATION
+   views/      = Main HTML pages (served by Express)
+   frontend/   = React app (advanced builder)
+   resume/     = Python service (AI enhancement)
+   public/     = Shared assets (logo, auth)
+   config/     = Configuration files
+
+✅ PROPER NAMING
+   - index.html (landing)
+   - test.html (FSAT test)
+   - resume.html (quick resume)
+   - testscript.js (test logic)
+   - supabase-auth.js (auth client)
+
+═══════════════════════════════════════════════════════════════
+
+WHAT EACH COMPONENT DOES:
+
+VIEWS (Main Pages):
+  index.html    → Landing with auth, FSAT info, success stories
+  test.html     → FSAT test with onboarding, auth protection
+  resume.html   → Quick 5-min resume with Claude AI
+  testscript.js → Test logic, auto-save, anti-cheat, API calls
+
+PUBLIC (Assets):
+  logo.png           → FutureTech logo (Red & Black)
+  supabase-auth.js   → Google OAuth, session management
+
+CONFIG:
+  questions.json → 18 test questions with marks
+
+FRONTEND (React App):
+  BuilderPage      → Advanced resume builder UI
+  ResumeSelectorPage → User's saved resumes
+  ProfilePage      → User profile management
+  LoginPage        → Login form
+  Uses Supabase for auth, proxied through main server
+
+RESUME (Python Service):
+  server.py        → FastAPI endpoints (/process, /generate)
+  Agents           → AI agents for parsing, enhancing
+  Generators       → PDF/HTML generation
+  Uses Groq LLM for advanced AI features
+
+SERVER.JS (Main):
+  - Serves views/ pages
+  - Serves React app at /builder/*
+  - Proxies to Python service at /api/resume/*
+  - Handles authentication
+  - Manages API endpoints
+
+═══════════════════════════════════════════════════════════════
+
+HOW IT ALL CONNECTS:
+
+User visits localhost:5000
+    ↓
+Landing Page (views/index.html)
+    ↓ Sign in with Google
+Auth via Supabase (public/supabase-auth.js)
+    ↓
+User Profile stored in database
+    ↓
+User chooses:
+
+    Option 1: FSAT Test
+    → /test (views/test.html)
+    → Onboarding captures phone
+    → Takes test (views/testscript.js)
+    → Results stored in Supabase
+
+    Option 2: Quick Resume
+    → /resume (views/resume.html)
+    → Simple form
+    → Claude AI generates (server.js)
+    → Download instantly
+
+    Option 3: Advanced Builder
+    → /builder/resumes (frontend/dist/)
+    → React UI loads
+    → Multiple templates
+    → Python service for AI (resume/server.py)
+    → Professional output
+
+All authenticated via Supabase
+All data stored in same database
+
+═══════════════════════════════════════════════════════════════
+
+CLEAN STRUCTURE ✓
+NO DUPLICATES ✓
+FULLY INTEGRATED ✓

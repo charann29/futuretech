@@ -1,0 +1,966 @@
+{
+  "sections": [
+    {
+      "id": "mcq",
+      "name": "Multiple Choice Questions",
+      "description": "Test your analytical thinking and problem-solving skills",
+      "duration": 15,
+      "questions": [
+        {
+          "id": "mcq1",
+          "type": "mcq",
+          "question": "If you have 5 apples and you give 2 apples to your friend, how many apples do you have left?",
+          "options": [
+            "7 apples",
+            "3 apples",
+            "2 apples",
+            "5 apples"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Basic Math", "Logical Thinking"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Start with 5 apples",
+              "Step 2: Give away 2 apples to friend",
+              "Step 3: Calculate: 5 - 2 = 3",
+              "Step 4: Answer = 3 apples remaining"
+            ],
+            "codeExample": "// Simple subtraction in programming\nlet totalApples = 5;\nlet givenAway = 2;\nlet remaining = totalApples - givenAway;\nconsole.log(remaining); // Output: 3",
+            "commonMistakes": [
+              "Adding instead of subtracting (5 + 2 = 7)",
+              "Counting the given apples as yours (answer 2)",
+              "Not doing any calculation (answer 5)"
+            ],
+            "realWorldUse": "This is basic arithmetic used in everyday life - shopping, sharing items, budgeting money. In programming, we use subtraction to update quantities, calculate remaining resources, or track inventory.",
+            "keyLearnings": [
+              "Subtraction operation: number1 - number2",
+              "Order matters: 5 - 2 ≠ 2 - 5",
+              "Variables can store and update values"
+            ]
+          },
+          "category": "Aptitude"
+        },
+        {
+          "id": "mcq2",
+          "type": "mcq",
+          "question": "What comes next in this sequence? 2, 4, 6, 8, ?",
+          "options": [
+            "9",
+            "10",
+            "12",
+            "16"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Pattern Recognition", "Analytical Thinking"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Look at the difference between numbers",
+              "Step 2: 4 - 2 = 2, 6 - 4 = 2, 8 - 6 = 2",
+              "Step 3: Pattern = Add 2 each time",
+              "Step 4: Next number = 8 + 2 = 10"
+            ],
+            "codeExample": "// Generate sequence in code\nfor (let i = 2; i <= 10; i = i + 2) {\n  console.log(i);\n}\n// Output: 2, 4, 6, 8, 10",
+            "comparisonTable": {
+              "headers": ["Number", "Calculation", "Result"],
+              "rows": [
+                ["1st", "Starting", "2"],
+                ["2nd", "2 + 2", "4"],
+                ["3rd", "4 + 2", "6"],
+                ["4th", "6 + 2", "8"],
+                ["5th", "8 + 2", "10"]
+              ]
+            },
+            "commonMistakes": [
+              "Answer 9: Just adding 1 (not noticing the +2 pattern)",
+              "Answer 12: Doubling numbers (2×6=12, but pattern is addition)",
+              "Answer 16: Doubling the last number (8×2=16, wrong operation)"
+            ],
+            "realWorldUse": "Pattern recognition is used in: predicting trends, understanding sequences in data, programming loops, finding bugs in repeated code, analyzing charts and graphs.",
+            "keyLearnings": [
+              "Always find the pattern/rule first",
+              "Check multiple examples to confirm pattern",
+              "Arithmetic sequences: add/subtract same number",
+              "Loops in programming repeat patterns"
+            ]
+          },
+          "category": "Analytical"
+        },
+        {
+          "id": "mcq3",
+          "type": "mcq",
+          "question": "If today is Monday, what day will it be after 3 days?",
+          "options": [
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "correctAnswer": 2,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Logical Reasoning", "Sequential Thinking"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Start from Monday (Day 0)",
+              "Step 2: After 1 day → Tuesday",
+              "Step 3: After 2 days → Wednesday",
+              "Step 4: After 3 days → Thursday"
+            ],
+            "codeExample": "// Days of week in programming\nconst days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];\nlet currentDay = 0; // Monday is index 0\nlet afterDays = 3;\nlet newDay = (currentDay + afterDays) % 7;\nconsole.log(days[newDay]); // Output: Thursday",
+            "comparisonTable": {
+              "headers": ["Days Added", "Day Name", "Calculation"],
+              "rows": [
+                ["0", "Monday", "Start"],
+                ["1", "Tuesday", "Monday + 1"],
+                ["2", "Wednesday", "Monday + 2"],
+                ["3", "Thursday", "Monday + 3"]
+              ]
+            },
+            "commonMistakes": [
+              "Counting Monday as day 1 instead of starting point",
+              "Skipping a day in counting (Tuesday → Thursday)",
+              "Getting confused with forward/backward counting"
+            ],
+            "realWorldUse": "Date calculations are used in: scheduling apps, calendar systems, booking systems, reminder apps, project deadlines, subscription renewals. Programs need to calculate dates correctly.",
+            "keyLearnings": [
+              "Sequential counting: start point + steps",
+              "Arrays/lists store ordered items (days, months)",
+              "Modulo operator (%) wraps around (useful for repeating cycles)",
+              "Index counting often starts from 0 in programming"
+            ]
+          },
+          "category": "Logical Reasoning"
+        },
+        {
+          "id": "mcq4",
+          "type": "mcq",
+          "question": "You have a bag with 3 red balls and 2 blue balls. What is the total number of balls?",
+          "options": [
+            "2 balls",
+            "3 balls",
+            "5 balls",
+            "6 balls"
+          ],
+          "correctAnswer": 2,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Basic Counting", "Addition"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Count red balls = 3",
+              "Step 2: Count blue balls = 2",
+              "Step 3: Total = red + blue",
+              "Step 4: Total = 3 + 2 = 5 balls"
+            ],
+            "codeExample": "// Counting items in programming\nlet redBalls = 3;\nlet blueBalls = 2;\nlet totalBalls = redBalls + blueBalls;\nconsole.log('Total balls:', totalBalls); // Output: Total balls: 5\n\n// Using arrays\nlet bag = ['red', 'red', 'red', 'blue', 'blue'];\nconsole.log('Count:', bag.length); // Output: Count: 5",
+            "commonMistakes": [
+              "Only counting one color (3 or 2)",
+              "Multiplying instead of adding (3×2=6)",
+              "Forgetting what the question asks"
+            ],
+            "realWorldUse": "Counting and adding totals is fundamental in: inventory management, shopping carts (total items), database queries (count records), analytics (total users), game scores, file systems (count files).",
+            "keyLearnings": [
+              "Addition combines quantities: a + b",
+              "Variables store different types of data",
+              "Arrays/lists can hold multiple items",
+              "length/count property gives total items"
+            ]
+          },
+          "category": "Aptitude"
+        },
+        {
+          "id": "mcq5",
+          "type": "mcq",
+          "question": "Which shape has 4 equal sides and 4 right angles?",
+          "options": [
+            "Triangle",
+            "Circle",
+            "Square",
+            "Pentagon"
+          ],
+          "correctAnswer": 2,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Visual Recognition", "Spatial Awareness"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Check each shape's properties",
+              "Step 2: Triangle has 3 sides (not 4)",
+              "Step 3: Circle has no sides (curved)",
+              "Step 4: Square has 4 EQUAL sides + 4 right angles ✓",
+              "Step 5: Pentagon has 5 sides (not 4)"
+            ],
+            "codeExample": "// Shapes in programming (Object-Oriented)\nclass Square {\n  constructor(side) {\n    this.sides = 4;\n    this.sideLength = side;\n    this.angles = 90; // degrees\n  }\n  \n  area() {\n    return this.sideLength * this.sideLength;\n  }\n  \n  perimeter() {\n    return 4 * this.sideLength;\n  }\n}\n\nlet mySquare = new Square(5);\nconsole.log('Sides:', mySquare.sides); // 4\nconsole.log('Area:', mySquare.area()); // 25\nconsole.log('Perimeter:', mySquare.perimeter()); // 20",
+            "comparisonTable": {
+              "headers": ["Shape", "Sides", "Equal Sides?", "Right Angles"],
+              "rows": [
+                ["Triangle", "3", "Can vary", "Can have 1"],
+                ["Circle", "0", "N/A", "0"],
+                ["Square", "4", "Yes (all equal)", "4 (all 90°)"],
+                ["Pentagon", "5", "Can vary", "None or 3"]
+              ]
+            },
+            "commonMistakes": [
+              "Confusing square with rectangle (rectangle has 4 sides but not all equal)",
+              "Not checking the 'equal sides' condition",
+              "Forgetting about right angles requirement"
+            ],
+            "realWorldUse": "Shapes are used in: UI/UX design (buttons, icons), game development (collision detection), graphics programming, image processing, architectural design, logo design, layout grids.",
+            "keyLearnings": [
+              "Geometry basics are foundation for graphics",
+              "Properties define objects (sides, angles)",
+              "Classes model real-world objects in code",
+              "Methods perform calculations (area, perimeter)"
+            ]
+          },
+          "category": "Spatial Reasoning"
+        },
+        {
+          "id": "mcq6",
+          "type": "mcq",
+          "question": "If A is taller than B, and B is taller than C, who is the shortest?",
+          "options": [
+            "A",
+            "B",
+            "C",
+            "Cannot determine"
+          ],
+          "correctAnswer": 2,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Logical Deduction", "Comparative Reasoning"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Write down what we know",
+              "Step 2: A > B (A is taller than B)",
+              "Step 3: B > C (B is taller than C)",
+              "Step 4: Therefore: A > B > C",
+              "Step 5: C is at the bottom = shortest"
+            ],
+            "codeExample": "// Comparison in programming\nlet heightA = 180; // cm\nlet heightB = 170; // cm\nlet heightC = 160; // cm\n\nif (heightA > heightB && heightB > heightC) {\n  console.log('C is shortest');\n}\n\n// Using array and sorting\nlet people = [\n  {name: 'A', height: 180},\n  {name: 'B', height: 170},\n  {name: 'C', height: 160}\n];\n\npeople.sort((a, b) => a.height - b.height);\nconsole.log('Shortest:', people[0].name); // C",
+            "comparisonTable": {
+              "headers": ["Person", "Height Relation", "Rank"],
+              "rows": [
+                ["A", "Taller than B", "1st (Tallest)"],
+                ["B", "Taller than C, shorter than A", "2nd (Middle)"],
+                ["C", "Shorter than B", "3rd (Shortest)"]
+              ]
+            },
+            "commonMistakes": [
+              "Not following the chain of logic (A→B→C)",
+              "Confusing taller with shorter",
+              "Thinking 'cannot determine' without trying"
+            ],
+            "realWorldUse": "Comparisons and ordering are used in: sorting algorithms, ranking systems (scores, prices), database queries (ORDER BY), filters (show top 10), priority queues, recommendation systems.",
+            "keyLearnings": [
+              "Transitive property: if A>B and B>C, then A>C",
+              "Comparison operators: >, <, >=, <=, ==",
+              "Sorting arranges items by some criteria",
+              "Logical chains help solve complex problems"
+            ]
+          },
+          "category": "Logical Reasoning"
+        },
+        {
+          "id": "mcq7",
+          "type": "mcq",
+          "question": "You want to buy a toy that costs ₹50. You have ₹30. How much more money do you need?",
+          "options": [
+            "₹80",
+            "₹20",
+            "₹30",
+            "₹50"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Practical Math", "Problem Solving"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Toy price = ₹50",
+              "Step 2: Money you have = ₹30",
+              "Step 3: Money needed = Price - Money you have",
+              "Step 4: Money needed = ₹50 - ₹30 = ₹20"
+            ],
+            "codeExample": "// Calculate remaining amount in code\nlet toyPrice = 50;\nlet moneyIHave = 30;\nlet moneyNeeded = toyPrice - moneyIHave;\n\nif (moneyNeeded > 0) {\n  console.log(`You need ₹${moneyNeeded} more`);\n} else {\n  console.log('You have enough money!');\n}\n// Output: You need ₹20 more\n\n// Function to check affordability\nfunction canAfford(price, money) {\n  if (money >= price) {\n    return `You can buy it! Change: ₹${money - price}`;\n  } else {\n    return `Need ₹${price - money} more`;\n  }\n}\n\nconsole.log(canAfford(50, 30)); // Need ₹20 more\nconsole.log(canAfford(50, 60)); // You can buy it! Change: ₹10",
+            "commonMistakes": [
+              "Adding the amounts (30+50=80)",
+              "Just saying the price (50)",
+              "Just saying what you have (30)",
+              "Not understanding what 'need' means"
+            ],
+            "realWorldUse": "This calculation is used in: shopping apps (check if affordable), budget apps (track spending vs savings), loan calculators (remaining balance), progress bars (% complete), discount calculations.",
+            "keyLearnings": [
+              "Difference = Larger number - Smaller number",
+              "if/else statements make decisions in code",
+              "Functions reuse logic for different inputs",
+              "String templates (${}) embed variables in text"
+            ]
+          },
+          "category": "Aptitude"
+        },
+        {
+          "id": "mcq8",
+          "type": "mcq",
+          "question": "Which is the odd one out? Cat, Dog, Cow, Chair",
+          "options": [
+            "Cat",
+            "Dog",
+            "Cow",
+            "Chair"
+          ],
+          "correctAnswer": 3,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Categorization", "Abstract Thinking"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Find what's common in most items",
+              "Step 2: Cat = Animal ✓",
+              "Step 3: Dog = Animal ✓",
+              "Step 4: Cow = Animal ✓",
+              "Step 5: Chair = Furniture (not an animal) ✗",
+              "Step 6: Chair is the odd one out"
+            ],
+            "codeExample": "// Categorization in programming\nlet items = ['Cat', 'Dog', 'Cow', 'Chair'];\nlet animals = ['Cat', 'Dog', 'Cow', 'Lion', 'Tiger'];\nlet furniture = ['Chair', 'Table', 'Bed', 'Sofa'];\n\nitems.forEach(item => {\n  if (animals.includes(item)) {\n    console.log(`${item} is an animal`);\n  } else if (furniture.includes(item)) {\n    console.log(`${item} is furniture - ODD ONE OUT`);\n  }\n});\n// Output: Cat is an animal\n// Dog is an animal\n// Cow is an animal\n// Chair is furniture - ODD ONE OUT\n\n// Using object types\nconst things = {\n  Cat: 'animal',\n  Dog: 'animal',\n  Cow: 'animal',\n  Chair: 'furniture'\n};\n\nfor (let thing in things) {\n  if (things[thing] !== 'animal') {\n    console.log(`${thing} is the odd one (${things[thing]})`);\n  }\n}",
+            "commonMistakes": [
+              "Choosing based on size instead of category",
+              "Choosing based on alphabetical order",
+              "Not identifying the common category first"
+            ],
+            "realWorldUse": "Categorization is used in: data filtering, search engines (grouping results), machine learning (classification), file organization, product catalogs, spam detection, sentiment analysis.",
+            "keyLearnings": [
+              "Find the common pattern/category first",
+              "Arrays store related items",
+              "includes() checks if item exists in array",
+              "Objects map keys to values (thing → type)",
+              "Loops iterate through items to check conditions"
+            ]
+          },
+          "category": "Analytical"
+        },
+        {
+          "id": "mcq9",
+          "type": "mcq",
+          "question": "If you read 10 pages of a book every day, how many pages will you read in 3 days?",
+          "options": [
+            "13 pages",
+            "30 pages",
+            "10 pages",
+            "3 pages"
+          ],
+          "correctAnswer": 1,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Multiplication", "Pattern Extension"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Pages per day = 10",
+              "Step 2: Number of days = 3",
+              "Step 3: Total pages = Pages per day × Days",
+              "Step 4: Total = 10 × 3 = 30 pages"
+            ],
+            "codeExample": "// Multiplication in loops\nlet pagesPerDay = 10;\nlet days = 3;\nlet totalPages = pagesPerDay * days;\nconsole.log(`Total pages: ${totalPages}`); // 30\n\n// Using a loop to show daily progress\nlet total = 0;\nfor (let day = 1; day <= days; day++) {\n  total = total + pagesPerDay;\n  console.log(`Day ${day}: Read ${total} pages so far`);\n}\n// Output:\n// Day 1: Read 10 pages so far\n// Day 2: Read 20 pages so far\n// Day 3: Read 30 pages so far\n\n// Function for any number of days\nfunction pagesRead(perDay, numDays) {\n  return perDay * numDays;\n}\n\nconsole.log('In 7 days:', pagesRead(10, 7)); // 70\nconsole.log('In 30 days:', pagesRead(10, 30)); // 300",
+            "comparisonTable": {
+              "headers": ["Day", "Pages Read Today", "Total So Far"],
+              "rows": [
+                ["1", "10", "10"],
+                ["2", "10", "20"],
+                ["3", "10", "30"]
+              ]
+            },
+            "commonMistakes": [
+              "Adding days and pages (10+3=13)",
+              "Only counting one day (10)",
+              "Only counting days (3)",
+              "Adding instead of multiplying (10+10+10 works but is slower)"
+            ],
+            "realWorldUse": "Multiplication is used in: calculating totals (price × quantity), area calculations, loops (repeat n times), scaling (2x speed), compound operations, array operations, matrix math.",
+            "keyLearnings": [
+              "Multiplication is repeated addition",
+              "Operator: a * b",
+              "Loops can accumulate values",
+              "Functions make code reusable for different inputs",
+              "Variables track running totals"
+            ]
+          },
+          "category": "Aptitude"
+        },
+        {
+          "id": "mcq10",
+          "type": "mcq",
+          "question": "What is the best way to remember a friend's phone number?",
+          "options": [
+            "Just memorize it without writing",
+            "Write it down in a notebook",
+            "Save it in your phone contacts",
+            "Ask them every time you need it"
+          ],
+          "correctAnswer": 2,
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Practical Reasoning", "Best Practices"],
+          "explanation": {
+            "stepByStep": [
+              "Step 1: Evaluate each option",
+              "Step 2: Memorizing = Can forget, no backup",
+              "Step 3: Notebook = Can lose notebook, hard to search",
+              "Step 4: Phone contacts = Digital, searchable, backed up ✓",
+              "Step 5: Asking every time = Annoying, inconvenient"
+            ],
+            "codeExample": "// Storing data in programming (similar concept)\n\n// BAD: Hard-coded values (like memorizing)\nfunction callFriend() {\n  let phone = '9876543210'; // Have to remember/update everywhere\n  console.log('Calling', phone);\n}\n\n// BETTER: Store in a variable\nconst friendPhone = '9876543210';\nfunction callFriend() {\n  console.log('Calling', friendPhone); // Single source of truth\n}\n\n// BEST: Store in a data structure (like phone contacts)\nconst contacts = {\n  'John': '9876543210',\n  'Sarah': '9876543211',\n  'Mike': '9876543212'\n};\n\nfunction callFriend(name) {\n  if (contacts[name]) {\n    console.log(`Calling ${name}: ${contacts[name]}`);\n  } else {\n    console.log('Contact not found');\n  }\n}\n\ncallFriend('John'); // Calling John: 9876543210\n\n// BEST PRACTICE: Use database or file storage\n// In real apps, use: localStorage, database, config files",
+            "comparisonTable": {
+              "headers": ["Method", "Pros", "Cons", "Best for"],
+              "rows": [
+                ["Memorize", "No tools needed", "Can forget, no backup", "Very few numbers"],
+                ["Notebook", "Written record", "Can lose, hard to search", "Temporary notes"],
+                ["Phone contacts", "Digital, searchable, backed up", "Need device", "Regular use ✓"],
+                ["Ask every time", "Always accurate", "Annoying, inconvenient", "Never recommended"]
+              ]
+            },
+            "commonMistakes": [
+              "Choosing memorize: Doesn't scale, no backup",
+              "Choosing notebook: Old-fashioned, not searchable",
+              "Choosing ask every time: Impractical"
+            ],
+            "realWorldUse": "Data storage concepts: Variables (temporary), Files/Database (permanent), Cache (quick access), Backup (safety). In programming: localStorage, databases, config files, environment variables.",
+            "keyLearnings": [
+              "Store data in searchable, persistent systems",
+              "Objects/dictionaries map keys to values (name → phone)",
+              "Single source of truth = easier to update",
+              "Error handling (if contact not found)",
+              "Choose right storage based on needs"
+            ]
+          },
+          "category": "Creative Thinking"
+        }
+      ]
+    },
+    {
+      "id": "fitb",
+      "name": "Fill in the Blanks",
+      "description": "Complete the sentences with correct answers",
+      "duration": 10,
+      "questions": [
+        {
+          "id": "fitb1",
+          "type": "fitb",
+          "question": "In mathematics, 5 + 3 = ___",
+          "correctAnswers": ["8"],
+          "alternativeAnswers": [
+            ["eight"]
+          ],
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Basic Arithmetic"],
+          "explanation": {
+            "whyCorrect": "5 + 3 = 8 is a basic addition operation. When you combine 5 items with 3 items, you get 8 items total.",
+            "codeExample": "// Addition in programming\nlet a = 5;\nlet b = 3;\nlet result = a + b;\nconsole.log(result); // Output: 8\n\n// String concatenation (be careful!)\nlet x = '5';\nlet y = '3';\nconsole.log(x + y); // Output: '53' (not 8!)\nconsole.log(Number(x) + Number(y)); // Output: 8",
+            "comparisonWithAlternatives": "Writing '8' (number) is correct. Writing 'eight' (word) is also acceptable. Both represent the same value. In programming, use numbers for calculations, strings for text.",
+            "bestPractices": [
+              "Use numbers for math operations",
+              "Use descriptive variable names (sum, total)",
+              "Check data types (number vs string)",
+              "Test edge cases (0, negatives)"
+            ],
+            "commonMistakes": [
+              "String concatenation: '5' + '3' = '53'",
+              "Subtraction: 5 - 3 = 2 (wrong operation)",
+              "Typos: 58 or 3"
+            ]
+          },
+          "category": "Foundation"
+        },
+        {
+          "id": "fitb2",
+          "type": "fitb",
+          "question": "A computer program that repeats the same action multiple times uses a ___",
+          "correctAnswers": ["loop"],
+          "alternativeAnswers": [
+            ["for loop", "while loop", "repeat", "iteration"]
+          ],
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Programming Concepts"],
+          "explanation": {
+            "whyCorrect": "A LOOP is a programming construct that repeats a block of code multiple times. Instead of writing the same code 100 times, you write it once inside a loop and specify how many times to repeat.",
+            "codeExample": "// FOR LOOP - repeat a fixed number of times\nfor (let i = 1; i <= 5; i++) {\n  console.log('Hello ' + i);\n}\n// Output: Hello 1, Hello 2, Hello 3, Hello 4, Hello 5\n\n// WHILE LOOP - repeat while condition is true\nlet count = 1;\nwhile (count <= 5) {\n  console.log('Count: ' + count);\n  count++;\n}\n\n// Real example: Print multiplication table\nfor (let i = 1; i <= 10; i++) {\n  console.log(`5 × ${i} = ${5 * i}`);\n}",
+            "comparisonWithAlternatives": {
+              "forLoop": "Best when you know exact number of repetitions (for i=1 to 10)",
+              "whileLoop": "Best when you don't know how many times (while user hasn't quit)",
+              "doWhileLoop": "Execute at least once, then check condition",
+              "forEach": "Loop through array items"
+            },
+            "bestPractices": [
+              "Use for loop when count is known",
+              "Always have an exit condition (avoid infinite loops)",
+              "Keep loop body simple and focused",
+              "Use meaningful variable names (i for index, count, etc.)"
+            ],
+            "commonMistakes": [
+              "Infinite loop: forgetting to update counter (i++ missing)",
+              "Off-by-one error: i < 10 vs i <= 10",
+              "Wrong starting value: starting from 0 vs 1",
+              "Modifying loop variable inside loop unexpectedly"
+            ]
+          },
+          "category": "Foundation"
+        },
+        {
+          "id": "fitb3",
+          "type": "fitb",
+          "question": "The largest ocean on Earth is the ___ Ocean",
+          "correctAnswers": ["Pacific"],
+          "alternativeAnswers": [
+            ["pacific"]
+          ],
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["General Knowledge"],
+          "explanation": {
+            "whyCorrect": "The Pacific Ocean is the largest and deepest ocean on Earth, covering more than 30% of Earth's surface. It's larger than all of Earth's land area combined!",
+            "codeExample": "// Storing ocean data in programming\nconst oceans = [\n  { name: 'Pacific', size: 165200000, rank: 1 },\n  { name: 'Atlantic', size: 106460000, rank: 2 },\n  { name: 'Indian', size: 70560000, rank: 3 },\n  { name: 'Southern', size: 20327000, rank: 4 },\n  { name: 'Arctic', size: 14090000, rank: 5 }\n];\n\n// Find largest ocean\nlet largest = oceans[0];\nfor (let ocean of oceans) {\n  if (ocean.size > largest.size) {\n    largest = ocean;\n  }\n}\nconsole.log('Largest:', largest.name); // Pacific\n\n// Sort by size\noceans.sort((a, b) => b.size - a.size);\nconsole.log('Biggest:', oceans[0].name); // Pacific",
+            "comparisonWithAlternatives": "There are 5 oceans. Size comparison (million km²): Pacific (165) > Atlantic (106) > Indian (71) > Southern (20) > Arctic (14). Pacific is more than 1.5x bigger than Atlantic!",
+            "bestPractices": [
+              "Capitalize proper nouns (Pacific Ocean)",
+              "Store structured data in objects/arrays",
+              "Use comparison operators to find max/min",
+              "Sort arrays for ordered data"
+            ],
+            "commonMistakes": [
+              "Writing 'Atlantic' (2nd largest, not largest)",
+              "Writing 'Indian' (3rd largest)",
+              "Lowercase 'pacific' (acceptable but proper noun should be capitalized)"
+            ]
+          },
+          "category": "General Knowledge"
+        },
+        {
+          "id": "fitb4",
+          "type": "fitb",
+          "question": "If you want to save your work on a computer before closing, you click ___",
+          "correctAnswers": ["Save"],
+          "alternativeAnswers": [
+            ["save", "Ctrl+S", "Command+S", "Save button"]
+          ],
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Computer Literacy"],
+          "explanation": {
+            "whyCorrect": "'Save' is the universal command to store your work to disk. Without saving, your work stays in RAM (temporary memory) and is lost when you close the program or computer shuts down.",
+            "codeExample": "// File saving in programming concepts\n\n// JavaScript (Browser)\nfunction saveData() {\n  let data = document.getElementById('textInput').value;\n  // Save to browser storage\n  localStorage.setItem('myWork', data);\n  console.log('Saved!');\n}\n\nfunction loadData() {\n  let saved = localStorage.getItem('myWork');\n  if (saved) {\n    document.getElementById('textInput').value = saved;\n    console.log('Loaded!');\n  }\n}\n\n// Save to file (Node.js)\nconst fs = require('fs');\nlet data = 'My work content';\nfs.writeFileSync('mywork.txt', data);\nconsole.log('File saved!');\n\n// Auto-save (like Google Docs)\nsetInterval(() => {\n  saveData();\n  console.log('Auto-saved');\n}, 30000); // Save every 30 seconds",
+            "comparisonWithAlternatives": {
+              "SaveButton": "Click File → Save menu",
+              "KeyboardShortcut": "Ctrl+S (Windows/Linux) or Cmd+S (Mac)",
+              "AutoSave": "Automatic saving (like Google Docs)",
+              "SaveAs": "Save with new name or location"
+            },
+            "bestPractices": [
+              "Save frequently (every few minutes)",
+              "Use Ctrl+S / Cmd+S shortcuts (faster)",
+              "Enable auto-save if available",
+              "Save before closing or risky operations",
+              "Use version control (Git) for code"
+            ],
+            "commonMistakes": [
+              "Forgetting to save before closing",
+              "Clicking Close without saving",
+              "Not knowing keyboard shortcuts",
+              "Overwriting important files (use Save As)"
+            ]
+          },
+          "category": "Computer Basics"
+        },
+        {
+          "id": "fitb5",
+          "type": "fitb",
+          "question": "The opposite of 'start' is ___",
+          "correctAnswers": ["stop"],
+          "alternativeAnswers": [
+            ["end", "finish", "halt", "quit", "exit"]
+          ],
+          "marks": 5,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Language", "Antonyms"],
+          "explanation": {
+            "whyCorrect": "'Stop' is the direct opposite/antonym of 'start'. In programming and computing, start/stop are common operations for processes, services, timers, and loops.",
+            "codeExample": "// Start/Stop in programming\n\n// Timer example\nlet timer;\nfunction startTimer() {\n  console.log('Timer STARTED');\n  let seconds = 0;\n  timer = setInterval(() => {\n    seconds++;\n    console.log(`Time: ${seconds}s`);\n  }, 1000);\n}\n\nfunction stopTimer() {\n  clearInterval(timer);\n  console.log('Timer STOPPED');\n}\n\n// Process control\nclass GameEngine {\n  start() {\n    console.log('Game started');\n    this.running = true;\n    this.gameLoop();\n  }\n  \n  stop() {\n    console.log('Game stopped');\n    this.running = false;\n  }\n  \n  gameLoop() {\n    if (this.running) {\n      // Game logic here\n      requestAnimationFrame(() => this.gameLoop());\n    }\n  }\n}\n\n// Loop control\nfor (let i = 0; i < 100; i++) {\n  if (i === 50) {\n    break; // STOP the loop\n  }\n  console.log(i);\n}",
+            "comparisonWithAlternatives": {
+              "stop": "Immediate opposite, pause temporarily",
+              "end": "Finish completely, no resume",
+              "finish": "Complete normally, task done",
+              "halt": "Sudden stop, often error",
+              "quit/exit": "Leave program, close"
+            },
+            "bestPractices": [
+              "Provide clear start/stop controls",
+              "Clean up resources when stopping (close files, connections)",
+              "Save state before stopping",
+              "Use try/finally to ensure cleanup"
+            ],
+            "commonMistakes": [
+              "Not cleaning up on stop (memory leaks)",
+              "Stopping without saving state",
+              "Confusing pause (resume later) with stop (end)",
+              "Forgetting to update flags (running = false)"
+            ]
+          },
+          "category": "Language"
+        }
+      ]
+    },
+    {
+      "id": "programming",
+      "name": "Programming Problems",
+      "description": "Write simple code to solve problems",
+      "duration": 15,
+      "questions": [
+        {
+          "id": "prog1",
+          "type": "programming",
+          "question": "Write a program to check if a number is positive, negative, or zero. The program should display an appropriate message for each case.",
+          "marks": 15,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Coding", "Conditional Logic", "Problem Solving"],
+          "hints": [
+            "Use if-else statements",
+            "Check if number > 0 (positive)",
+            "Check if number < 0 (negative)",
+            "Otherwise it's zero"
+          ],
+          "completeSolution": {
+            "solution1": {
+              "name": "Basic Solution",
+              "code": "function checkNumber(num) {\n  if (num > 0) {\n    console.log(num + ' is positive');\n  } else if (num < 0) {\n    console.log(num + ' is negative');\n  } else {\n    console.log(num + ' is zero');\n  }\n}\n\n// Test cases\ncheckNumber(5);   // 5 is positive\ncheckNumber(-3);  // -3 is negative\ncheckNumber(0);   // 0 is zero",
+              "explanation": "This solution uses if-else-if chain to check three conditions: positive (>0), negative (<0), and zero (else). The else catches the case when number is neither positive nor negative, which means it's zero."
+            },
+            "solution2": {
+              "name": "With Return Value",
+              "code": "function checkNumber(num) {\n  if (num > 0) {\n    return 'positive';\n  } else if (num < 0) {\n    return 'negative';\n  } else {\n    return 'zero';\n  }\n}\n\n// Test and use\nlet result = checkNumber(10);\nconsole.log('The number is ' + result); // The number is positive\n\nlet numbers = [5, -3, 0, 10, -7];\nnumbers.forEach(n => {\n  console.log(`${n} is ${checkNumber(n)}`);\n});",
+              "explanation": "This version returns a string instead of printing. This is more flexible because the calling code can use the result in different ways (display, save, use in other logic)."
+            },
+            "solution3": {
+              "name": "Ternary Operator (Advanced)",
+              "code": "function checkNumber(num) {\n  return num > 0 ? 'positive' : num < 0 ? 'negative' : 'zero';\n}\n\n// Test\nconsole.log(checkNumber(5));   // positive\nconsole.log(checkNumber(-3));  // negative\nconsole.log(checkNumber(0));   // zero",
+              "explanation": "Ternary operator (? :) is a shorthand for if-else. Format: condition ? valueIfTrue : valueIfFalse. Can be chained for multiple conditions. More concise but can be harder to read for beginners."
+            }
+          },
+          "stepByStepApproach": [
+            "Step 1: Create a function that takes a number as input",
+            "Step 2: Use if statement to check if number > 0 (positive case)",
+            "Step 3: Use else if to check if number < 0 (negative case)",
+            "Step 4: Use else for remaining case (zero)",
+            "Step 5: Display appropriate message or return result",
+            "Step 6: Test with positive, negative, and zero values"
+          ],
+          "testCases": [
+            {
+              "input": "5",
+              "expectedOutput": "5 is positive",
+              "explanation": "5 is greater than 0, so it's positive"
+            },
+            {
+              "input": "-3",
+              "expectedOutput": "-3 is negative",
+              "explanation": "-3 is less than 0, so it's negative"
+            },
+            {
+              "input": "0",
+              "expectedOutput": "0 is zero",
+              "explanation": "0 is neither positive nor negative"
+            },
+            {
+              "input": "100",
+              "expectedOutput": "100 is positive",
+              "explanation": "Any number > 0 is positive"
+            },
+            {
+              "input": "-100",
+              "expectedOutput": "-100 is negative",
+              "explanation": "Any number < 0 is negative"
+            }
+          ],
+          "commonMistakes": [
+            {
+              "mistake": "Using = instead of ==",
+              "code": "if (num = 0) // WRONG",
+              "fix": "if (num == 0) or if (num === 0) // CORRECT",
+              "explanation": "Single = assigns value, double == or triple === compares values"
+            },
+            {
+              "mistake": "Wrong order of conditions",
+              "code": "if (num < 0) negative\nelse if (num > 0) positive\nelse zero",
+              "fix": "Order doesn't matter here, but be consistent",
+              "explanation": "With separate ranges (<0, >0, =0), order doesn't matter. But with overlapping conditions, check specific cases first."
+            },
+            {
+              "mistake": "Forgetting else case",
+              "code": "if (num > 0) positive\nelse if (num < 0) negative\n// Missing else for zero",
+              "fix": "Always add else to handle remaining cases",
+              "explanation": "Without else, zero case is not handled"
+            }
+          ],
+          "executionTrace": {
+            "example": "checkNumber(-3)",
+            "steps": [
+              "1. Function called with num = -3",
+              "2. Check: num > 0? Is -3 > 0? NO",
+              "3. Check: num < 0? Is -3 < 0? YES",
+              "4. Execute: console.log('-3 is negative')",
+              "5. Function ends"
+            ]
+          },
+          "category": "Foundation"
+        },
+        {
+          "id": "prog2",
+          "type": "programming",
+          "question": "Write a program to print numbers from 1 to 5 using a loop. Then modify it to print only even numbers from 2 to 10.",
+          "marks": 15,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Loops", "Patterns", "Basic Coding"],
+          "hints": [
+            "Use a for loop to repeat",
+            "For even numbers, start from 2 and increment by 2",
+            "Or use if statement to check if number is even (num % 2 === 0)"
+          ],
+          "completeSolution": {
+            "solution1": {
+              "name": "Part 1: Print 1 to 5",
+              "code": "// Print 1 to 5\nfor (let i = 1; i <= 5; i++) {\n  console.log(i);\n}\n// Output: 1 2 3 4 5 (each on new line)",
+              "explanation": "Loop starts at i=1, continues while i<=5, increments i by 1 each time. Prints i in each iteration."
+            },
+            "solution2": {
+              "name": "Part 2: Even numbers 2 to 10 (Method 1)",
+              "code": "// Print even numbers 2 to 10\nfor (let i = 2; i <= 10; i = i + 2) {\n  console.log(i);\n}\n// Output: 2 4 6 8 10",
+              "explanation": "Start at 2 (first even), increment by 2 each time (i = i + 2 or i += 2). This directly generates even numbers, very efficient."
+            },
+            "solution3": {
+              "name": "Part 2: Even numbers (Method 2 - with if)",
+              "code": "// Print even numbers 2 to 10\nfor (let i = 1; i <= 10; i++) {\n  if (i % 2 === 0) {\n    console.log(i);\n  }\n}\n// Output: 2 4 6 8 10",
+              "explanation": "Loop through all numbers 1-10, but only print if divisible by 2 (i % 2 === 0). Modulo operator % gives remainder: 4%2=0 (even), 5%2=1 (odd)."
+            },
+            "solution4": {
+              "name": "While Loop Alternative",
+              "code": "// Using while loop\nlet i = 2;\nwhile (i <= 10) {\n  console.log(i);\n  i = i + 2;\n}\n// Output: 2 4 6 8 10",
+              "explanation": "While loop is an alternative to for loop. Remember to initialize variable before loop (i=2) and update it inside loop (i=i+2), otherwise infinite loop!"
+            }
+          },
+          "stepByStepApproach": [
+            "Part 1 Steps:",
+            "1. Write for loop: for (let i = 1; i <= 5; i++)",
+            "2. Inside loop: console.log(i)",
+            "3. Loop runs 5 times, printing 1,2,3,4,5",
+            "",
+            "Part 2 Steps:",
+            "Option A (Increment by 2):",
+            "1. Start at 2: for (let i = 2; ...)",
+            "2. Continue until 10: i <= 10",
+            "3. Increment by 2: i = i + 2",
+            "",
+            "Option B (Check if even):",
+            "1. Loop 1 to 10: for (let i = 1; i <= 10; i++)",
+            "2. Check if even: if (i % 2 === 0)",
+            "3. Print if condition true"
+          ],
+          "testCases": [
+            {
+              "input": "Loop 1 to 5",
+              "expectedOutput": "1\n2\n3\n4\n5",
+              "explanation": "Each number on new line"
+            },
+            {
+              "input": "Even numbers 2 to 10",
+              "expectedOutput": "2\n4\n6\n8\n10",
+              "explanation": "Only even numbers"
+            }
+          ],
+          "patternVariations": [
+            {
+              "pattern": "Odd numbers 1 to 9",
+              "code": "for (let i = 1; i <= 9; i += 2) {\n  console.log(i);\n}\n// Output: 1 3 5 7 9"
+            },
+            {
+              "pattern": "Numbers 10 to 1 (reverse)",
+              "code": "for (let i = 10; i >= 1; i--) {\n  console.log(i);\n}\n// Output: 10 9 8 7 6 5 4 3 2 1"
+            },
+            {
+              "pattern": "Multiples of 5 from 5 to 50",
+              "code": "for (let i = 5; i <= 50; i += 5) {\n  console.log(i);\n}\n// Output: 5 10 15 20 25 30 35 40 45 50"
+            }
+          ],
+          "commonMistakes": [
+            {
+              "mistake": "Infinite loop - forgetting to increment",
+              "code": "let i = 1;\nwhile (i <= 5) {\n  console.log(i);\n  // Missing: i++\n}",
+              "fix": "Add i++ inside while loop",
+              "explanation": "Without incrementing i, condition i<=5 stays true forever. Infinite loop crashes browser/computer."
+            },
+            {
+              "mistake": "Off-by-one error",
+              "code": "for (let i = 1; i < 5; i++) // Prints 1,2,3,4 (missing 5)",
+              "fix": "Use i <= 5 (not i < 5)",
+              "explanation": "i < 5 stops before 5. i <= 5 includes 5."
+            },
+            {
+              "mistake": "Wrong even check",
+              "code": "if (i % 2 === 1) // This checks for ODD",
+              "fix": "if (i % 2 === 0) // Checks for EVEN",
+              "explanation": "Even: remainder 0 when divided by 2. Odd: remainder 1."
+            }
+          ],
+          "executionTrace": {
+            "example": "for (let i = 2; i <= 6; i += 2) { console.log(i); }",
+            "steps": [
+              "Iteration 1: i=2, Check 2<=6? YES, Print 2, Update i=2+2=4",
+              "Iteration 2: i=4, Check 4<=6? YES, Print 4, Update i=4+2=6",
+              "Iteration 3: i=6, Check 6<=6? YES, Print 6, Update i=6+2=8",
+              "Iteration 4: i=8, Check 8<=6? NO, Exit loop",
+              "Final output: 2 4 6"
+            ]
+          },
+          "category": "Foundation"
+        }
+      ]
+    },
+    {
+      "id": "debugging",
+      "name": "Debugging Challenge",
+      "description": "Find and fix errors in the given code",
+      "duration": 5,
+      "questions": [
+        {
+          "id": "debug1",
+          "type": "debugging",
+          "question": "The following code is supposed to add two numbers and display the result, but it has errors. Find ALL the errors and fix them.",
+          "buggyCode": "funtion addNumbers(a, b) {\n  let result = a + b\n  consol.log('The sum is' + result);\n  return result\n}",
+          "marks": 10,
+          "difficulty": "very_easy",
+          "cognitiveSkills": ["Attention to Detail", "Debugging", "Syntax Knowledge"],
+          "allErrors": [
+            {
+              "lineNumber": 1,
+              "error": "Typo: 'funtion' should be 'function'",
+              "errorType": "Syntax Error - Typo",
+              "explanation": "JavaScript keyword 'function' is misspelled as 'funtion'. This will cause 'Unexpected identifier' error. Always use correct spelling for keywords.",
+              "howToSpot": "Code editor will show red underline. Browser console shows 'Unexpected identifier' error.",
+              "fix": "Change 'funtion' to 'function'",
+              "prevention": "Use code editor with syntax highlighting. Pay attention to red underlines."
+            },
+            {
+              "lineNumber": 2,
+              "error": "Missing semicolon after 'let result = a + b'",
+              "errorType": "Syntax Error - Missing Semicolon",
+              "explanation": "While JavaScript has Automatic Semicolon Insertion (ASI), it's best practice to always include semicolons. Can cause unexpected behavior in some cases.",
+              "howToSpot": "Linters like ESLint will warn about this. Some editors show subtle hints.",
+              "fix": "Add semicolon: let result = a + b;",
+              "prevention": "Configure editor to auto-add semicolons. Use a linter (ESLint)."
+            },
+            {
+              "lineNumber": 3,
+              "error": "Typo: 'consol' should be 'console'",
+              "errorType": "Runtime Error - Undefined Variable",
+              "explanation": "'console' is misspelled as 'consol'. This will cause 'consol is not defined' error at runtime. 'console' is a built-in object in JavaScript for output.",
+              "howToSpot": "Browser console shows 'ReferenceError: consol is not defined'.",
+              "fix": "Change 'consol.log' to 'console.log'",
+              "prevention": "Use autocomplete in editor. Type 'cons' and press Tab to auto-complete to 'console'."
+            },
+            {
+              "lineNumber": 3,
+              "error": "Missing space in string: 'The sum is' + result should have space after 'is'",
+              "errorType": "Logic Error - Missing Space",
+              "explanation": "String 'The sum is' doesn't have trailing space, so output will be 'The sum is8' instead of 'The sum is 8'. Not a syntax error but produces wrong output.",
+              "howToSpot": "Test the code and look at output. Will be squished together.",
+              "fix": "Add space: 'The sum is ' + result (note space after 'is')",
+              "prevention": "Always test your output. Use template literals: `The sum is ${result}` (auto-adds space)."
+            },
+            {
+              "lineNumber": 4,
+              "error": "Missing semicolon after 'return result'",
+              "errorType": "Style Issue - Missing Semicolon",
+              "explanation": "Same as line 2 - missing semicolon. While code may still work due to ASI, it's not best practice.",
+              "howToSpot": "Linter will warn. Good practice to always include.",
+              "fix": "Add semicolon: return result;",
+              "prevention": "Consistent semicolon usage. Configure editor/linter."
+            }
+          ],
+          "correctedCode": "function addNumbers(a, b) {\n  let result = a + b;\n  console.log('The sum is ' + result);\n  return result;\n}\n\n// Test the function\nlet sum = addNumbers(5, 3);\n// Output: The sum is 8\nconsole.log('Returned value:', sum); // 8",
+          "executionTrace": {
+            "buggyCodeExecution": [
+              "Line 1: Error! 'funtion' is not recognized → SyntaxError: Unexpected identifier",
+              "Code fails to run. Nothing after this line executes.",
+              "Browser console shows error and line number."
+            ],
+            "fixedCodeExecution": [
+              "Line 1: function addNumbers(a, b) { → Function declared",
+              "Call: addNumbers(5, 3) → Function called with a=5, b=3",
+              "Line 2: let result = 5 + 3 → result = 8",
+              "Line 3: console.log('The sum is ' + 8) → Prints 'The sum is 8'",
+              "Line 4: return 8 → Function returns 8",
+              "Calling code: sum = 8 → Variable sum gets value 8"
+            ]
+          },
+          "alternativeSolutions": [
+            {
+              "name": "Using Template Literals (Modern)",
+              "code": "function addNumbers(a, b) {\n  let result = a + b;\n  console.log(`The sum is ${result}`);\n  return result;\n}",
+              "explanation": "Template literals (backticks) allow embedding variables with ${} syntax. Cleaner than string concatenation with +. Automatically handles spacing."
+            },
+            {
+              "name": "Arrow Function (Concise)",
+              "code": "const addNumbers = (a, b) => {\n  let result = a + b;\n  console.log(`The sum is ${result}`);\n  return result;\n};\n\n// Or even shorter:\nconst addNumbers = (a, b) => a + b; // No log, just returns",
+              "explanation": "Arrow function is modern ES6 syntax. More concise. For simple returns, can omit braces and return keyword."
+            }
+          ],
+          "debuggingTips": [
+            {
+              "tip": "Read Error Messages",
+              "explanation": "Browser console shows error type, line number, and description. Read carefully!"
+            },
+            {
+              "tip": "Check Spelling",
+              "explanation": "Many errors are simple typos. Keywords like 'function', 'console', 'return' must be exact."
+            },
+            {
+              "tip": "Use Console.log for Debugging",
+              "explanation": "Add console.log() to check values: console.log('a:', a, 'b:', b, 'result:', result);"
+            },
+            {
+              "tip": "Use Browser Developer Tools",
+              "explanation": "Press F12 → Console tab shows errors. Sources tab allows breakpoints and step-through debugging."
+            },
+            {
+              "tip": "Use Linter (ESLint)",
+              "explanation": "Linters catch errors as you type. Shows red underlines, suggests fixes. Install ESLint extension in VS Code."
+            },
+            {
+              "tip": "Test Incrementally",
+              "explanation": "Don't write 100 lines then test. Write a few lines, test, repeat. Easier to find bugs."
+            },
+            {
+              "tip": "Comment Out Code",
+              "explanation": "If unsure where error is, comment out code sections (//). Uncomment piece by piece to isolate bug."
+            }
+          ],
+          "category": "Foundation"
+        }
+      ]
+    }
+  ],
+  "totalMarks": 100,
+  "passingMarks": 40,
+  "duration": 45,
+  "instructions": [
+    "Read each question carefully",
+    "MCQs have only one correct answer",
+    "Fill in the blanks with appropriate words/numbers",
+    "For programming questions, you can write code in any language or pseudocode",
+    "For debugging, identify ALL errors and explain each one",
+    "Show your working/thinking process",
+    "Partial marks will be given for partially correct answers"
+  ]
+}

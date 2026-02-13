@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutureTech - Transform Into ₹4.5-8 LPA Software Developer</title>
+    <meta name="description"
+        content="No coding background? Join 2,847+ students who got placed at top companies. Get up to 60% scholarship through FSAT test.">
+    <link rel="icon" type="image/png" href="../public/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #DC0000;
+            --dark-red: #A00000;
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --medium-gray: #333333;
+            --light-gray: #666666;
+            --off-white: #f5f5f5;
+            --white: #ffffff;
+            --border-gray: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--black);
+            overflow-x: hidden;
+            background: var(--white);
+        }
+
+        /* ===== ANNOUNCEMENT BAR ===== */
+        .announcement-bar {
+            background: var(--black);
+            color: var(--white);
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+            z-index: 999;
+        }
+
+        .announcement-bar strong {
+            font-weight: 700;
+            color: var(--primary-red);
+        }
+
+        .announcement-bar a {
+            color: var(--primary-red);
+            text-decoration: underline;
+            margin-left: 10px;
+            font-weight: 600;
+        }
+
+        /* ===== STICKY NAVBAR ===== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 998;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--black);
+        }
+
+        .logo-text span {
+            color: var(--primary-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--black);
+            font-weight: 600;
+            transition: color 0.3s;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-red);
+        }
+
+        .cta-btn {
+            background: var(--primary-red);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--black);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        /* ===== AUTH UI ===== */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #authButtons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .auth-btn {
+            background: var(--white);
+            color: var(--black);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 2px solid var(--black);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth-btn:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .auth-btn-primary {
+            background: var(--primary-red);
+            color: var(--white);
+            border-color: var(--primary-red);
+        }
+
+        .auth-btn-primary:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+        }
+
+        #userProfile {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        #userAvatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-red);
+            object-fit: cover;
+        }
+
+        #userName {
+            font-weight: 600;
+            color: var(--black);
+            font-size: 14px;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .user-menu-btn:hover {
+            background: var(--off-white);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 10px;
+            background: var(--white);
+            border: 2px solid var(--black);
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 200px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown.active {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            color: var(--black);
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background: var(--off-white);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--border-gray);
+            margin: 8px 0;
+        }
+
+        .dropdown-item.logout {
+            color: var(--primary-red);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 2px solid #FFD700;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--black);
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary-red);
+        }
+
+        .hero .subheadline {
+            font-size: 22px;
+            color: var(--light-gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .cta-primary {
+            background: var(--primary-red);
+            color: white;
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+        }
+
+        .cta-primary:hover {
+            background: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(220, 0, 0, 0.4);
+        }
+
+        .cta-secondary {
+            background: var(--white);
+            color: var(--black);
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            border: 3px solid var(--black);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-secondary:hover {
+            background: var(--black);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .trust-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            padding: 20px;
+            background: var(--off-white);
+            border-radius: 10px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .trust-item::before {
+            content: "✓";
+            color: var(--primary-red);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* ===== LIVE TICKER ===== */
+        .live-ticker {
+            background: var(--black);
+            color: var(--white);
+            padding: 15px;
+            margin: 40px 0;
+            overflow: hidden;
+        }
+
+        .ticker-content {
+            display: flex;
+            gap: 60px;
+            animation: scroll 30s linear infinite;
+        }
+
+        .ticker-item {
+            white-space: nowrap;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .ticker-item .highlight {
+            color: var(--primary-red);
+            font-weight: 700;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* ===== FSAT SECTION ===== */
+        .fsat-section {
+            background: var(--black);
+            color: white;
+            padding: 80px 20px;
+            margin: 60px 0;
+        }
+
+        .fsat-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .fsat-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .fsat-header h2 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .fsat-header h2 .red {
+            color: var(--primary-red);
+        }
+
+        .fsat-header p {
+            font-size: 20px;
+            opacity: 0.9;
+        }
+
+        .scholarship-calculator {
+            background: white;
+            color: var(--black);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(220, 0, 0, 0.3);
+        }
+
+        .scholarship-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .scholarship-table th,
+        .scholarship-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .scholarship-table th {
+            background: var(--black);
+            color: var(--white);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .scholarship-table td {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .discount-badge {
+            background: var(--primary-red);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            display: inline-block;
+            font-size: 14px;
+        }
+
+        .final-price {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--primary-red);
+        }
+
+        .test-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .test-detail-item {
+            text-align: center;
+            padding: 25px;
+            background: var(--off-white);
+            border-radius: 10px;
+            border: 2px solid var(--primary-red);
+        }
+
+        .test-detail-item .icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .test-detail-item .label {
+            font-size: 13px;
+            color: var(--light-gray);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .test-detail-item .value {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--black);
+        }
+
+        .fsat-cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .fsat-cta .cta-primary {
+            font-size: 22px;
+            padding: 22px 50px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* ===== SUCCESS STORIES ===== */
+        .success-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--black);
+        }
+
+        .section-header h2 .red {
+            color: var(--primary-red);
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--light-gray);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .story-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border: 2px solid var(--border-gray);
+        }
+
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(220, 0, 0, 0.2);
+            border-color: var(--primary-red);
+        }
+
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .story-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .story-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--black);
+        }
+
+        .story-info p {
+            font-size: 13px;
+            color: var(--light-gray);
+        }
+
+        .story-journey {
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--off-white);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .journey-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .journey-label {
+            font-weight: 600;
+            color: var(--light-gray);
+        }
+
+        .journey-value {
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .before,
+        .after {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .before {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+        }
+
+        .after {
+            background: #e8f5e9;
+            border: 2px solid var(--primary-red);
+        }
+
+        .before h4,
+        .after h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .before p,
+        .after p {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        .story-quote {
+            font-style: italic;
+            color: var(--light-gray);
+            border-left: 3px solid var(--primary-red);
+            padding-left: 15px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        /* ===== AI RESUME SECTION ===== */
+        .resume-section {
+            background: var(--off-white);
+            padding: 80px 20px;
+        }
+
+        .resume-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .resume-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .resume-left h2 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--black);
+        }
+
+        .resume-left h2 .red {
+            color: var(--primary-red);
+        }
+
+        .resume-left p {
+            font-size: 18px;
+            color: var(--light-gray);
+            margin-bottom: 20px;
+        }
+
+        .comparison {
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .comparison-item.bad {
+            background: #ffebee;
+        }
+
+        .comparison-item.good {
+            background: #e8f5e9;
+        }
+
+        .comparison-item .icon {
+            font-size: 24px;
+            margin-top: 3px;
+        }
+
+        .comparison-item h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--black);
+        }
+
+        .comparison-item p {
+            font-size: 14px;
+            color: var(--light-gray);
+            margin: 0;
+        }
+
+        .resume-form {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--primary-red);
+        }
+
+        .resume-form h3 {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+
+        .resume-form .subtitle {
+            color: var(--light-gray);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--black);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 3px rgba(220, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--primary-red);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--light-gray);
+            font-weight: 600;
+        }
+
+        /* ===== PRICING SECTION ===== */
+        .pricing-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+            border: 3px solid var(--primary-red);
+        }
+
+        .price-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .price-original {
+            font-size: 28px;
+            text-decoration: line-through;
+            color: var(--light-gray);
+        }
+
+        .price-current {
+            font-size: 64px;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin: 10px 0;
+        }
+
+        .price-note {
+            color: var(--light-gray);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+
+        .features-list li {
+            padding: 15px 0;
+            border-bottom: 2px solid var(--border-gray);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: var(--primary-red);
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--black);
+            color: white;
+            padding: 60px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-red);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 2px solid var(--medium-gray);
+            color: #999;
+        }
+
+        /* ===== FLOATING WHATSAPP ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                border-top: 2px solid var(--primary-red);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .auth-container {
+                order: -1;
+                margin-right: auto;
+                margin-left: 15px;
+            }
+
+            .auth-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            #userName {
+                display: none;
+            }
+
+            .user-dropdown {
+                right: auto;
+                left: 0;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero .subheadline {
+                font-size: 16px;
+            }
+
+            .hero-ctas {
+                flex-direction: column;
+            }
+
+            .trust-bar {
+                gap: 15px;
+            }
+
+            .fsat-header h2 {
+                font-size: 32px;
+            }
+
+            .scholarship-calculator {
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            .scholarship-table {
+                font-size: 13px;
+            }
+
+            .scholarship-table th,
+            .scholarship-table td {
+                padding: 12px 8px;
+            }
+
+            .section-header h2 {
+                font-size: 32px;
+            }
+
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-content {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-left h2 {
+                font-size: 32px;
+            }
+
+            .before-after {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card {
+                padding: 30px 20px;
+            }
+
+            .price-current {
+                font-size: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        🎉 <strong>New Offline Center Launched in Hyderabad!</strong> Limited seats available - <a href="test.html">Take
+            FSAT Test Now</a>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-section">
+                <img src="../public/logo.png" alt="FutureTech Logo" class="logo-img">
+                <div class="logo-text">Future<span>Tech</span></div>
+            </a>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#fsat">FSAT Test</a></li>
+                <li><a href="#success-stories">Success Stories</a></li>
+                <li><a href="resume.html">AI Resume</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="test.html" style="color: white;" class="cta-btn">Take FSAT Test</a></li>
+            </ul>
+
+            <!-- Auth UI -->
+            <div class="auth-container">
+                <!-- Buttons shown when logged out -->
+                <div id="authButtons" style="display: flex;">
+                    <button class="auth-btn auth-btn-primary" onclick="authManager.signInWithGoogle()">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path
+                                d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"
+                                fill="currentColor" />
+                            <path
+                                d="M9.003 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.96v2.332C2.44 15.983 5.485 18 9.003 18z"
+                                fill="currentColor" />
+                            <path
+                                d="M3.964 10.712c-.18-.54-.282-1.117-.282-1.71 0-.593.102-1.17.282-1.71V4.96H.957C.347 6.175 0 7.55 0 9.002c0 1.452.348 2.827.957 4.042l3.007-2.332z"
+                                fill="currentColor" />
+                            <path
+                                d="M9.003 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.464.891 11.428 0 9.003 0 5.485 0 2.44 2.017.96 4.958L3.967 7.29c.708-2.127 2.692-3.71 5.036-3.71z"
+                                fill="currentColor" />
+                        </svg>
+                        Sign in with Google
+                    </button>
+                </div>
+
+                <!-- User profile shown when logged in -->
+                <div id="userProfile" style="display: none;">
+                    <div class="user-menu">
+                        <button class="user-menu-btn" onclick="toggleUserDropdown()">
+                            <img id="userAvatar" src="" alt="User"
+                                style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary-red);">
+                            <span id="userName">User</span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <a href="test.html" class="dropdown-item">📝 Take FSAT Test</a>
+                            <a href="resume.html" class="dropdown-item">📄 Quick Resume (5 min)</a>
+                            <a href="/builder/resumes" class="dropdown-item">🎨 Advanced Resume Builder</a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item logout" onclick="authManager.signOut()">🚪 Sign Out</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">🎓 2,847 Students Placed in Last 6 months</div>
+        <h1>Graduated But <span class="highlight">No Job?</span><br>You're Not Alone.</h1>
+        <p class="subheadline">
+            Transform Into a ₹4.5-8 LPA Software Developer in Just 3-5 Months<br>
+            <strong>No Coding Background Required</strong>
+        </p>
+        <div class="hero-ctas">
+            <a href="test.html" class="cta-primary">
+                🎯 Take Free FSAT Test → Get Up To 60% Scholarship<br>
+                <small style="font-size: 14px; opacity: 0.9;">(Save ₹27,000 on ₹45,000 course fee)</small>
+            </a>
+            <a href="resume.html" class="cta-secondary">
+                📄 Get Free AI Resume Builder<br>
+                <small style="font-size: 14px;">(Job-Ready CV in 5 Minutes)</small>
+            </a>
+        </div>
+        <div class="trust-bar">
+            <div class="trust-item">200+ Companies Hiring Our Students</div>
+            <div class="trust-item">Trained by IIT Alumni & Industry Experts</div>
+            <div class="trust-item">9AM-9PM Live Doubt Support</div>
+        </div>
+    </section>
+
+    <!-- Live Ticker -->
+    <div class="live-ticker">
+        <div class="ticker-content">
+            <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
+                    class="highlight">Wipro</span></span>
+            <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
+                hours ago</span>
+            <span class="ticker-item">🎓 Priya from Vijayawada scored 92 in FSAT, got <span class="highlight">60%
+                    scholarship</span> - 45 mins ago</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
+                    class="highlight">Wipro</span></span>
+            <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
+                hours ago</span>
+            <span class="ticker-item">🎓 Priya from Vijayawada scored 92 in FSAT, got <span class="highlight">60%
+                    scholarship</span> - 45 mins ago</span>
+        </div>
+    </div>
+
+    <!-- FSAT Section -->
+    <section class="fsat-section" id="fsat">
+        <div class="fsat-container">
+            <div class="fsat-header">
+                <h2>🎓 <span class="red">FSAT</span> - FutureTech Scholastic Assessment Test</h2>
+                <p>Take Our Free Test. Discover Your Potential. Earn Your Scholarship.</p>
+            </div>
+
+            <div class="scholarship-calculator">
+                <h3 style="text-align: center; margin-bottom: 30px; font-size: 32px; font-weight: 900;">
+                    Your Scholarship Calculator
+                </h3>
+
+                <table class="scholarship-table">
+                    <thead>
+                        <tr>
+                            <th>Your Score</th>
+                            <th>Your Scholarship</th>
+                            <th>Original Fee</th>
+                            <th>You Pay</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>90-100 marks</strong></td>
+                            <td><span class="discount-badge">100% FREE</span></td>
+                            <td>₹45,000</td>
+                            <td><span class="final-price">₹0</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>80-89 marks</strong></td>
+                            <td><span class="discount-badge">60% OFF</span> (₹27,000)</td>
+                            <td>₹45,000</td>
+                            <td><span class="final-price">₹18,000</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>70-79 marks</strong></td>
+                            <td><span class="discount-badge">50% OFF</span> (₹22,500)</td>
+                            <td>₹45,000</td>
+                            <td><span class="final-price">₹22,500</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>50-69 marks</strong></td>
+                            <td><span class="discount-badge">40% OFF</span> (₹18,000)</td>
+                            <td>₹45,000</td>
+                            <td><span class="final-price">₹27,000</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>35-49 marks</strong></td>
+                            <td><span class="discount-badge">25% OFF</span> (₹11,250)</td>
+                            <td>₹45,000</td>
+                            <td><span class="final-price">₹33,750</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div
+                    style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center; border: 2px solid var(--primary-red);">
+                    <strong style="color: var(--black); font-size: 18px;">
+                        💡 Even if you score just 35%, you get 25% scholarship guaranteed!<br>
+                        Minimum ₹11,250 savings confirmed!
+                    </strong>
+                </div>
+
+                <div class="test-details">
+                    <div class="test-detail-item">
+                        <div class="icon">📊</div>
+                        <div class="label">Questions</div>
+                        <div class="value">18 Questions</div>
+                    </div>
+                    <div class="test-detail-item">
+                        <div class="icon">⏱️</div>
+                        <div class="label">Duration</div>
+                        <div class="value">45 Minutes</div>
+                    </div>
+                    <div class="test-detail-item">
+                        <div class="icon">💯</div>
+                        <div class="label">Total Marks</div>
+                        <div class="value">100 Marks</div>
+                    </div>
+                    <div class="test-detail-item">
+                        <div class="icon">📱</div>
+                        <div class="label">Platform</div>
+                        <div class="value">Mobile-Friendly</div>
+                    </div>
+                    <div class="test-detail-item">
+                        <div class="icon">🏆</div>
+                        <div class="label">Results</div>
+                        <div class="value">Instant</div>
+                    </div>
+                    <div class="test-detail-item">
+                        <div class="icon">🎁</div>
+                        <div class="label">Guarantee</div>
+                        <div class="value">Min 25% OFF</div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: var(--off-white); padding: 20px; border-radius: 10px; margin: 30px 0; border: 2px solid var(--primary-red);">
+                    <h4 style="margin-bottom: 15px; font-weight: 700;">📈 Last Week's Results:</h4>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 8px 0;">✅ <strong>847 students</strong> took FSAT</li>
+                        <li style="padding: 8px 0;">✅ Average score: <strong>67/100</strong></li>
+                        <li style="padding: 8px 0;">✅ Average scholarship: <strong>42% (₹18,900 saved)</strong></li>
+                        <li style="padding: 8px 0;">✅ Highest scorer: <strong>Ramesh (92/100) saved ₹27,000</strong>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="fsat-cta">
+                    <a href="test.html" class="cta-primary">
+                        🚀 Start Free FSAT Test Now → Confirm Your Scholarship
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="success-section" id="success-stories">
+        <div class="section-header">
+            <h2>Your Seniors Got <span class="red">Placed</span>.<br>Now It's Your Turn.</h2>
+            <p>Real students. Real transformations. Real results.</p>
+        </div>
+
+        <div class="story-grid">
+            <!-- Story Card 1 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">VS</div>
+                    <div class="story-info">
+                        <h3>Venkat Sai</h3>
+                        <p>Mechanical Engineering → Software Developer</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "After graduation, I worked as a delivery boy at Swiggy earning ₹15,000/month. My parents were
+                    worried. Friends had jobs, I had nothing."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">58/100 → 40% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Course:</span>
+                        <span class="journey-value">MERN Full Stack</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Duration:</span>
+                        <span class="journey-value">6 months</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>₹15,000/month<br>Delivery Job</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹5.2 LPA<br>Software Developer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Card 2 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">SV</div>
+                    <div class="story-info">
+                        <h3>Surya Vamsi</h3>
+                        <p>Mechanical | 47% B.Tech | 2.1 Year Gap</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "4 backlogs in college. Low percentage. 2 years gap after graduation. No company was hiring me."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">72/100 → 50% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Interview Success:</span>
+                        <span class="journey-value">8 out of 23 companies</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Offers Received:</span>
+                        <span class="journey-value">3 offers</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>Unemployed<br>2+ years</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹9 LPA<br>Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Card 3 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">DV</div>
+                    <div class="story-info">
+                        <h3>Devi Vyshnavi</h3>
+                        <p>B.Sc Graduate (Non-Engineering)</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "B.Sc - no IT subject. Didn't know what coding was. But I wanted a software job."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">81/100 → 50% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Started From:</span>
+                        <span class="journey-value">HTML Basics</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Time Taken:</span>
+                        <span class="journey-value">7 months</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>B.Sc<br>No Tech Background</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹4.8 LPA<br>Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Card 4 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">B</div>
+                    <div class="story-info">
+                        <h3>Bhargavi</h3>
+                        <p>CSE, JNTU | Multiple Interview Failures</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "CSE student, but kept failing interviews. Theory knowledge, but practical coding weak. 15
+                    interviews, 0 offers."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">88/100 → 50% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Practice Hours:</span>
+                        <span class="journey-value">3 hours daily labs</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">New Success Rate:</span>
+                        <span class="journey-value">7 out of 10 offers</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>15 Failed<br>Interviews</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹6.2 LPA<br>Developer at MNC</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Card 5 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">AK</div>
+                    <div class="story-info">
+                        <h3>Anil Kumar</h3>
+                        <p>B.Com Graduate | Call Center Background</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "Worked in a call center for 3 years. ₹18,000 salary, no growth. Wanted to switch to IT but had zero
+                    coding knowledge."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">65/100 → 40% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Course:</span>
+                        <span class="journey-value">Java Full Stack</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Projects Built:</span>
+                        <span class="journey-value">12 live projects</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>₹18,000/month<br>Call Center</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹5.6 LPA<br>Software Developer</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Story Card 6 -->
+            <div class="story-card">
+                <div class="story-header">
+                    <div class="story-avatar">SR</div>
+                    <div class="story-info">
+                        <h3>Swetha Reddy</h3>
+                        <p>BCA Graduate | No Campus Placements</p>
+                    </div>
+                </div>
+                <div class="story-quote">
+                    "BCA degree but college had no placements. Applied to 50+ jobs on Naukri - all rejected. Felt
+                    hopeless."
+                </div>
+                <div class="story-journey">
+                    <div class="journey-item">
+                        <span class="journey-label">FSAT Score:</span>
+                        <span class="journey-value">94/100 → 60% scholarship</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Companies Appeared:</span>
+                        <span class="journey-value">18 companies</span>
+                    </div>
+                    <div class="journey-item">
+                        <span class="journey-label">Final Offers:</span>
+                        <span class="journey-value">5 offers received</span>
+                    </div>
+                </div>
+                <div class="before-after">
+                    <div class="before">
+                        <h4>Before</h4>
+                        <p>50+ Rejections<br>Unemployed</p>
+                    </div>
+                    <div class="after">
+                        <h4>After</h4>
+                        <p>₹7.5 LPA<br>Full Stack Developer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="test.html" class="cta-primary">I Want Results Like This → Take FSAT Test</a>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="success-section" id="courses">
+        <div class="section-header">
+            <h2><span class="red">FUTURETECH</span> Training Programs</h2>
+            <p>IT CONSULTING | TRAINING | PLACEMENTS</p>
+        </div>
+
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 50px;">
+                <!-- Foundation Cohort -->
+                <div
+                    style="background: white; padding: 30px; border-radius: 15px; border: 2px solid var(--black); box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--primary-red); font-size: 22px; margin-bottom: 20px; font-weight: 800;">📚
+                        Foundation Cohort</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li style="padding: 5px 0;">✅ Basic Logic Building & Programming</li>
+                        <li style="padding: 5px 0;">✅ Data Structure & Algorithms</li>
+                        <li style="padding: 5px 0;">✅ Leetcode & Codechef Practice</li>
+                    </ul>
+                </div>
+
+                <!-- Product Development -->
+                <div
+                    style="background: white; padding: 30px; border-radius: 15px; border: 2px solid var(--black); box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--primary-red); font-size: 22px; margin-bottom: 20px; font-weight: 800;">💻
+                        Product Development & DevOps</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li style="padding: 5px 0;">✅ Full Stack with JAVA</li>
+                        <li style="padding: 5px 0;">✅ Full Stack with PYTHON</li>
+                        <li style="padding: 5px 0;">✅ MERN Stack Development</li>
+                        <li style="padding: 5px 0;">✅ LLMs API Integrations</li>
+                        <li style="padding: 5px 0;">✅ Agentic AI Development</li>
+                        <li style="padding: 5px 0;">✅ Docker & Kubernetes</li>
+                    </ul>
+                </div>
+
+                <!-- UI/UX & AI -->
+                <div
+                    style="background: white; padding: 30px; border-radius: 15px; border: 2px solid var(--black); box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--primary-red); font-size: 22px; margin-bottom: 20px; font-weight: 800;">🎨
+                        UI/UX, AI & Data Science</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li style="padding: 5px 0;">✅ Generative AI (RAG, MCP)</li>
+                        <li style="padding: 5px 0;">✅ LLMs & AI Agents</li>
+                        <li style="padding: 5px 0;">✅ AI Orchestration</li>
+                        <li style="padding: 5px 0;">✅ Figma & Adobe XD</li>
+                        <li style="padding: 5px 0;">✅ Power BI & Tableau</li>
+                        <li style="padding: 5px 0;">✅ Machine Learning</li>
+                    </ul>
+                </div>
+
+                <!-- Cyber Security & Testing -->
+                <div
+                    style="background: white; padding: 30px; border-radius: 15px; border: 2px solid var(--black); box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h3 style="color: var(--primary-red); font-size: 22px; margin-bottom: 20px; font-weight: 800;">🔒
+                        Cyber Security & Testing</h3>
+                    <ul style="list-style: none; padding: 0; line-height: 2;">
+                        <li style="padding: 5px 0;">✅ Web & Network Security</li>
+                        <li style="padding: 5px 0;">✅ Vulnerability Assessment</li>
+                        <li style="padding: 5px 0;">✅ Manual Testing</li>
+                        <li style="padding: 5px 0;">✅ Automation Testing</li>
+                        <li style="padding: 5px 0;">✅ Performance Testing</li>
+                        <li style="padding: 5px 0;">✅ Selenium Automation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Assurance Banner -->
+            <div
+                style="background: linear-gradient(135deg, #f4de62 0%, #FFA500 100%); padding: 30px; border-radius: 15px; text-align: center; border: 3px solid #000; margin-bottom: 30px;">
+                <h3 style="font-size: 28px; font-weight: 900; color: #000; margin-bottom: 15px;">🎓 Our Commitment</h3>
+                <p style="font-size: 20px; font-weight: 700; color: #000; margin: 0;">
+                    ✅ Certification Included<br>
+                    ✅ At Least 5 Placement Drives Assured
+                </p>
+            </div>
+
+            <!-- Contact Information -->
+            <div style="background: var(--black); color: white; padding: 40px; border-radius: 15px;">
+                <h3 style="color: var(--primary-red); margin-bottom: 25px; font-size: 24px; font-weight: 800;">📍 Get In
+                    Touch</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px;">
+                    <div>
+                        <h4 style="color: var(--primary-red); margin-bottom: 10px; font-size: 16px;">📞 Phone</h4>
+                        <p style="margin: 5px 0;"><a href="tel:8977781696"
+                                style="color: white; text-decoration: none;">8977781696</a></p>
+                        <p style="margin: 5px 0;"><a href="tel:7794076655"
+                                style="color: white; text-decoration: none;">7794076655</a></p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary-red); margin-bottom: 10px; font-size: 16px;">🌐 Online</h4>
+                        <p style="margin: 5px 0;"><a href="https://thefuturetechit.com" target="_blank"
+                                style="color: white; text-decoration: none;">thefuturetechit.com</a></p>
+                        <p style="margin: 5px 0;"><a href="mailto:info@thefuturetechit.com"
+                                style="color: white; text-decoration: none;">info@thefuturetechit.com</a></p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--primary-red); margin-bottom: 10px; font-size: 16px;">📍 Address</h4>
+                        <p style="margin: 0; line-height: 1.6;">
+                            #201, 2nd Floor, Manjeera Square,<br>
+                            Opp: Aster Prime Hospital,<br>
+                            Beside Punjab National Bank,<br>
+                            Mythrivanam, Ameerpet,<br>
+                            Hyderabad - 500 016, Telangana
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Resume Builder -->
+    <section class="resume-section" id="ai-resume">
+        <div class="resume-container">
+            <div class="section-header">
+                <h2>Free <span class="red">AI Resume Builder</span></h2>
+                <p>Get Interview Calls in 48 Hours with Professional, ATS-Optimized Resume</p>
+            </div>
+
+            <div class="resume-content">
+                <div class="resume-left">
+                    <h2>Why Aren't You Getting <span class="red">Interview Calls?</span></h2>
+                    <p><strong>It's not your skills. It's your resume.</strong></p>
+                    <p>Generic resumes get rejected by ATS (Applicant Tracking Systems) before any human even sees them.
+                    </p>
+
+                    <div class="comparison">
+                        <div class="comparison-item bad">
+                            <div class="icon">❌</div>
+                            <div class="text">
+                                <h4>Your Current Resume</h4>
+                                <p>Generic template. Missing keywords. No project showcase. ATS rejection rate: 87%</p>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item good">
+                            <div class="icon">✅</div>
+                            <div class="text">
+                                <h4>AI-Powered Resume</h4>
+                                <p>ATS-optimized format. Industry keywords. Project highlights. ATS approval rate: 94%
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">87%</span>
+                            <span class="stat-label">More Interview Calls</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1,247</span>
+                            <span class="stat-label">Students Used This</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5 Min</span>
+                            <span class="stat-label">Creation Time</span>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px solid var(--primary-red);">
+                        <strong style="color: var(--black);">Karthik's Success Story:</strong>
+                        <p style="margin: 10px 0; color: var(--black);">"Applied to 15 companies with my old resume -
+                            got 0 calls. Used FutureTech AI Resume - got 9 interview calls in 2 weeks!"</p>
+                        <p style="margin: 0; color: var(--primary-red); font-weight: 700;"><strong>Now at Wipro - ₹5.2
+                                LPA</strong></p>
+                    </div>
+                </div>
+
+                <div class="resume-right">
+                    <div class="resume-form">
+                        <h3>Generate Your Free AI Resume</h3>
+                        <p class="subtitle">Enter your WhatsApp number for instant access</p>
+
+                        <form action="resume.html" method="GET">
+                            <div class="form-group">
+                                <label>WhatsApp Number</label>
+                                <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+                            </div>
+
+                            <button type="submit" class="cta-primary" style="width: 100%; margin-top: 20px;">
+                                📄 Generate My Free AI Resume Now
+                            </button>
+
+                            <p style="text-align: center; font-size: 12px; color: var(--light-gray); margin-top: 15px;">
+                                ✓ No spam, we respect your privacy<br>
+                                ✓ Instant download link via WhatsApp<br>
+                                ✓ 100% Free - No hidden fees
+                            </p>
+                        </form>
+
+                        <div
+                            style="margin-top: 30px; padding: 20px; background: var(--off-white); border-radius: 10px;">
+                            <h4 style="margin-bottom: 15px; font-weight: 700;">How It Works:</h4>
+                            <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
+                                <div
+                                    style="background: var(--primary-red); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+                                    1</div>
+                                <div>
+                                    <strong>Enter Basic Details</strong>
+                                    <p style="font-size: 14px; color: var(--light-gray); margin: 5px 0 0 0;">Name,
+                                        education, skills (2 minutes)</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px;">
+                                <div
+                                    style="background: var(--primary-red); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+                                    2</div>
+                                <div>
+                                    <strong>AI Generates Resume</strong>
+                                    <p style="font-size: 14px; color: var(--light-gray); margin: 5px 0 0 0;">
+                                        ATS-optimized instantly (1 minute)</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 15px;">
+                                <div
+                                    style="background: var(--primary-red); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+                                    3</div>
+                                <div>
+                                    <strong>Download & Apply</strong>
+                                    <p style="font-size: 14px; color: var(--light-gray); margin: 5px 0 0 0;">PDF +
+                                        editable version (instantly)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="section-header">
+            <h2>Your Investment in Your <span class="red">Future</span></h2>
+            <p>Choose the plan that works best for you</p>
+        </div>
+
+        <div class="pricing-card">
+            <div class="price-header">
+                <div class="price-original">₹75,000</div>
+                <div class="price-current">₹45,000</div>
+                <div class="price-note">Pay once, no more payments ever</div>
+            </div>
+
+            <div
+                style="background: linear-gradient(135deg, #f4de62 0%, #FFA500 100%); color: #000; padding: 30px; border-radius: 15px; margin: 30px 0; text-align: center; border: 3px solid #000;">
+                <h3 style="margin-bottom: 15px; font-size: 24px; color: #000; font-weight: 900;">🎓 <span
+                        style="color: #000;">FSAT</span> Scholarship Available!</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+                    <div
+                        style="background: linear-gradient(135deg, #ffeb7b, #FFA500); color: #000; padding: 15px; border-radius: 10px; border: 3px solid var(--primary-red);">
+                        <div style="font-size: 32px; font-weight: 900; color: #000;">100% FREE</div>
+                        <div style="font-size: 14px; font-weight: 700; color: #000;">Score 90-100</div>
+                    </div>
+                    <div style="background: var(--primary-red); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 28px; font-weight: 900; color: white;">₹18,000</div>
+                        <div style="font-size: 14px; color: white;">Score 80-89 (60% off)</div>
+                    </div>
+                    <div style="background: var(--primary-red); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 28px; font-weight: 900; color: white;">₹22,500</div>
+                        <div style="font-size: 14px; color: white;">Score 70-79 (50% off)</div>
+                    </div>
+                    <div style="background: var(--primary-red); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 28px; font-weight: 900; color: white;">₹27,000</div>
+                        <div style="font-size: 14px; color: white;">Score 50-69 (40% off)</div>
+                    </div>
+                    <div style="background: var(--primary-red); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 28px; font-weight: 900; color: white;">₹33,750</div>
+                        <div style="font-size: 14px; color: white;">Score 35-49 (25% off)</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <h3 style="margin-bottom: 20px; font-weight: 900;">What's Included:</h3>
+            <ul class="features-list">
+                <li><strong>Fundamentals of IT</strong> (2 months mandatory for all)</li>
+                <li><strong>Choose Your Job Track:</strong> Java/MERN Full Stack (6 months) OR QA/Data Analytics (3
+                    months)</li>
+                <li><strong>3 Hours Live Classes + 3 Hours Labs</strong> Every Day</li>
+                <li><strong>1500+ Mentors Available</strong> for doubt clarification (9AM-9PM)</li>
+                <li><strong>IIT Alumni & Top MNC Experts</strong> as trainers</li>
+                <li><strong>10+ Real-Time Projects</strong> for strong portfolio</li>
+                <li><strong>24/7 Online Lab Access</strong> - Practice anytime, anywhere</li>
+                <li><strong>Complete Placement Support</strong> - Aptitude, Soft Skills, Mock Interviews, Resume Prep
+                </li>
+                <li><strong>Up to 16 Months Placement Support</strong> from joining date</li>
+                <li><strong>Job Guarantee:</strong> Keep learning until you get placed</li>
+            </ul>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="test.html" class="cta-primary" style="font-size: 20px; padding: 20px 50px;">
+                    🚀 Take FSAT Test → Get Your Scholarship
+                </a>
+                <p style="margin-top: 20px; color: var(--light-gray); font-weight: 600;">
+                    ⚡ Batch Starts Soon - Book Your Seat for ₹2,000 Only
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>FutureTech</h3>
+                <p>India's largest student community for learning tech skills, networking with peers, and accelerating
+                    your career growth.</p>
+                <div style="margin-top: 20px;">
+                    <strong>📞 Phone:</strong> 8977781696<br>
+                    <strong>📧 Email:</strong> support@futuretech.in<br>
+                    <strong>📍 Address:</strong> Hyderabad (Offline Center)
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h3>Programs</h3>
+                <ul>
+                    <li><a href="#fsat">Full Stack Web Development</a></li>
+                    <li><a href="#fsat">Java Full Stack</a></li>
+                    <li><a href="#fsat">Data Analytics</a></li>
+                    <li><a href="#fsat">QA Automation</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="resume.html">AI Resume Builder</a></li>
+                    <li><a href="test.html">FSAT Test</a></li>
+                    <li><a href="#success-stories">Success Stories</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 FutureTech. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                ✓ 8,124+ Students Enrolled | ✓ 89% Placement Rate | ✓ ₹5.4 LPA Average Package
+            </p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <div class="whatsapp-float" onclick="window.open('https://wa.me/918977781696', '_blank')">
+        💬
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Navbar shadow on scroll
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.2)';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // User dropdown toggle
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function (e) {
+            const userMenu = document.querySelector('.user-menu');
+            const dropdown = document.getElementById('userDropdown');
+            if (userMenu && !userMenu.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- Supabase Authentication (Fixed) -->
+    <script src="../public/auth-fix.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+╔═══════════════════════════════════════════════════════════════╗
+║        GET GOOGLE OAUTH CREDENTIALS - STEP BY STEP           ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Your Supabase shows Google is ENABLED ✅
+Now you need to add the Client ID and Secret.
+
+═══════════════════════════════════════════════════════════════
+STEP 1: GO TO GOOGLE CLOUD CONSOLE
+═══════════════════════════════════════════════════════════════
+
+Open this URL in new tab:
+https://console.cloud.google.com/apis/credentials?project=project-353fe44f-aa79-48fc-91d
+
+This will take you directly to your project's credentials page.
+
+═══════════════════════════════════════════════════════════════
+STEP 2: CREATE OAUTH 2.0 CLIENT ID
+═══════════════════════════════════════════════════════════════
+
+1. Click the blue button: "+ CREATE CREDENTIALS"
+
+2. Select: "OAuth client ID"
+
+3. If you see "Configure Consent Screen" warning:
+   - Click "CONFIGURE CONSENT SCREEN"
+   - Choose "External"
+   - Click "CREATE"
+   - Fill in:
+     • App name: FutureTech
+     • User support email: support@futuretech.in
+     • Developer contact: support@futuretech.in
+   - Click "SAVE AND CONTINUE"
+   - Skip "Scopes" (click "SAVE AND CONTINUE")
+   - Skip "Test users" (click "SAVE AND CONTINUE")
+   - Click "BACK TO DASHBOARD"
+   - Go back to "Credentials" tab
+
+4. Now create the OAuth client:
+   - Click "+ CREATE CREDENTIALS" again
+   - Select "OAuth client ID"
+   - Application type: "Web application"
+   - Name: "FutureTech Auth"
+
+5. Under "Authorized redirect URIs", click "+ ADD URI"
+
+   Paste this EXACT URL (very important!):
+   https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+
+6. Click "CREATE"
+
+7. A popup will show your credentials:
+   • Client ID (starts with something like: 123456-abc...)
+   • Client secret (shorter string)
+
+   ⚠️  COPY BOTH - you'll need them in the next step!
+
+═══════════════════════════════════════════════════════════════
+STEP 3: ADD CREDENTIALS TO SUPABASE
+═══════════════════════════════════════════════════════════════
+
+1. Go back to your Supabase Authentication page
+   (the page you showed in the screenshot)
+
+2. Click on "Google" provider (the one showing "Enabled")
+
+3. You'll see configuration fields:
+   - Paste your Client ID
+   - Paste your Client Secret
+
+4. Scroll down and click "Save"
+
+═══════════════════════════════════════════════════════════════
+STEP 4: TEST IT!
+═══════════════════════════════════════════════════════════════
+
+1. Visit: http://localhost:3000
+
+2. Open browser console (F12)
+
+3. Click "Sign in with Google"
+
+4. You should now see Google's sign-in page! ✅
+
+5. After signing in, you'll be redirected back to your site
+   with your profile showing in the navbar
+
+═══════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+If you still see errors:
+
+❌ "redirect_uri_mismatch"
+   → Your redirect URI doesn't match exactly
+   → Make sure it's: https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+   → No trailing slash, must be https://
+
+❌ "invalid_client"
+   → Client ID or Secret is wrong
+   → Copy them again from Google Cloud Console
+   → Make sure no extra spaces when pasting
+
+❌ "access_denied"
+   → User cancelled sign-in
+   → Try again
+
+═══════════════════════════════════════════════════════════════
+
+📋 CHECKLIST:
+
+□ Go to Google Cloud Console
+□ Create OAuth 2.0 Client ID
+□ Add redirect URI: https://gsqpobjgxrkeyxfqlakb.supabase.co/auth/v1/callback
+□ Copy Client ID
+□ Copy Client Secret
+□ Open Google provider in Supabase
+□ Paste Client ID
+□ Paste Client Secret
+□ Click Save
+□ Test sign-in at http://localhost:3000
+
+═══════════════════════════════════════════════════════════════
+
+⏱️  Time to complete: 5 minutes
+
+After this, your authentication will be FULLY WORKING! 🚀

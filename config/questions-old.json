@@ -1,0 +1,198 @@
+{
+  "testConfig": {
+    "totalMarks": 300,
+    "duration": 3600,
+    "passingPercentage": 35,
+    "warningLimit": 3
+  },
+  "questions": [
+    {
+      "id": 1,
+      "question": "Explain the concept of Object-Oriented Programming (OOP) and describe its four main principles with real-world examples.",
+      "description": "Discuss encapsulation, inheritance, polymorphism, and abstraction. Provide a practical scenario where each principle is applied. Also explain why OOP is preferred over procedural programming in large-scale applications. Include examples of how these principles are implemented in at least one programming language (Java, Python, or C++).",
+      "marks": 30,
+      "concepts": ["OOP", "Programming Fundamentals", "Design Patterns"],
+      "difficulty": "medium",
+      "expectedLength": "500-800 words",
+      "evaluationCriteria": [
+        "Clear explanation of all four OOP principles",
+        "Real-world examples for each principle",
+        "Comparison with procedural programming",
+        "Code examples or pseudo-code"
+      ]
+    },
+    {
+      "id": 2,
+      "question": "What is the difference between Process and Thread? Explain context switching and how multithreading improves application performance.",
+      "description": "Describe the memory structure of processes and threads, explain the overhead of context switching, discuss the advantages and disadvantages of multithreading, and provide examples of when to use multi-processing vs multithreading. Address race conditions and synchronization mechanisms.",
+      "marks": 25,
+      "concepts": ["Operating Systems", "Concurrency", "System Design"],
+      "difficulty": "medium",
+      "expectedLength": "400-600 words",
+      "evaluationCriteria": [
+        "Clear distinction between process and thread",
+        "Memory layout explanation",
+        "Context switching overhead analysis",
+        "Practical use cases"
+      ]
+    },
+    {
+      "id": 3,
+      "question": "Design a URL shortener service like bit.ly. Explain your approach to generate unique short URLs, handle collisions, and scale the system.",
+      "description": "Discuss your database schema, the algorithm for generating short codes, how you would handle billions of URLs, caching strategies, and how to track analytics (click counts, geographic data). Also address security concerns like preventing malicious URLs. Include considerations for distributed systems and high availability.",
+      "marks": 35,
+      "concepts": ["System Design", "Databases", "Scalability", "Algorithms", "Distributed Systems"],
+      "difficulty": "hard",
+      "expectedLength": "600-1000 words",
+      "evaluationCriteria": [
+        "Comprehensive system design",
+        "Database schema design",
+        "Scalability considerations",
+        "Security measures",
+        "Performance optimization"
+      ]
+    },
+    {
+      "id": 4,
+      "question": "Explain the CAP theorem in distributed systems. Given a real-world scenario, how would you choose between consistency and availability?",
+      "description": "Define Consistency, Availability, and Partition Tolerance. Explain why you can't achieve all three simultaneously. Provide examples of systems that favor CP (Consistency and Partition Tolerance) vs AP (Availability and Partition Tolerance), and justify the trade-offs. Discuss eventual consistency and strong consistency models.",
+      "marks": 30,
+      "concepts": ["Distributed Systems", "Database Design", "System Architecture"],
+      "difficulty": "hard",
+      "expectedLength": "500-800 words",
+      "evaluationCriteria": [
+        "Clear understanding of CAP theorem",
+        "Real-world examples",
+        "Trade-off analysis",
+        "Consistency models explanation"
+      ]
+    },
+    {
+      "id": 5,
+      "question": "What are RESTful APIs? Design a REST API for an e-commerce platform with proper endpoints, HTTP methods, and status codes.",
+      "description": "Explain REST principles (statelessness, client-server architecture, cacheability, uniform interface). Design APIs for user management, product catalog, shopping cart, and orders. Include authentication/authorization mechanisms (JWT, OAuth), versioning strategy, rate limiting, and error handling approaches. Provide specific endpoint examples with request/response formats.",
+      "marks": 30,
+      "concepts": ["API Design", "Web Development", "Backend Development", "HTTP Protocol"],
+      "difficulty": "medium",
+      "expectedLength": "600-900 words",
+      "evaluationCriteria": [
+        "REST principles understanding",
+        "Complete API design",
+        "Authentication implementation",
+        "Error handling strategy"
+      ]
+    },
+    {
+      "id": 6,
+      "question": "Explain how JWT (JSON Web Tokens) work for authentication. What are the security considerations and alternatives?",
+      "description": "Describe the structure of JWT (header, payload, signature), explain how tokens are validated, discuss token expiration and refresh token mechanisms. Compare JWT with session-based authentication and OAuth 2.0. What are the potential security vulnerabilities (token theft, XSS attacks, CSRF)? How do you store tokens securely on the client side?",
+      "marks": 25,
+      "concepts": ["Security", "Authentication", "Web Development"],
+      "difficulty": "medium",
+      "expectedLength": "400-700 words",
+      "evaluationCriteria": [
+        "JWT structure explanation",
+        "Security vulnerabilities awareness",
+        "Comparison with alternatives",
+        "Best practices for implementation"
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Write a detailed explanation of how you would implement a real-time chat application with features like typing indicators, online status, and message delivery confirmation.",
+      "description": "Discuss WebSocket protocol vs HTTP polling vs Server-Sent Events and when to use each. Explain your database schema for messages, users, and chat rooms. How would you handle scalability with multiple servers? Describe the architecture including message queue systems (like RabbitMQ or Kafka), caching strategies (Redis), and load balancing. Address message ordering and delivery guarantees.",
+      "marks": 35,
+      "concepts": ["Real-time Systems", "WebSockets", "System Design", "Backend Development", "Scalability"],
+      "difficulty": "hard",
+      "expectedLength": "700-1000 words",
+      "evaluationCriteria": [
+        "Protocol comparison and selection",
+        "Database design",
+        "Scalability architecture",
+        "Real-time feature implementation"
+      ]
+    },
+    {
+      "id": 8,
+      "question": "Explain Big O notation and analyze the time complexity of common algorithms (binary search, merge sort, quicksort, hash table operations).",
+      "description": "Define time and space complexity, explain best case, average case, and worst case scenarios. Provide step-by-step complexity analysis for each algorithm mentioned. Discuss why understanding complexity is crucial for optimizing production systems and when to choose one algorithm over another. Include examples of how complexity impacts real-world applications at scale.",
+      "marks": 25,
+      "concepts": ["Data Structures", "Algorithms", "Complexity Analysis", "Performance Optimization"],
+      "difficulty": "medium",
+      "expectedLength": "500-800 words",
+      "evaluationCriteria": [
+        "Big O notation understanding",
+        "Correct complexity analysis",
+        "Practical implications",
+        "Algorithm comparison"
+      ]
+    },
+    {
+      "id": 9,
+      "question": "What is Docker and how does containerization differ from virtualization? Explain a typical CI/CD pipeline using Docker and Kubernetes.",
+      "description": "Describe Docker architecture (images, containers, registries, Dockerfile), explain the benefits of containerization over VMs in terms of resource utilization and portability. Design a complete CI/CD workflow that includes: code commit, automated testing, Docker image building, pushing to registry, and deployment to Kubernetes cluster. Include concepts like rolling updates, blue-green deployments, and health checks.",
+      "marks": 30,
+      "concepts": ["DevOps", "Containerization", "CI/CD", "Cloud Computing", "Kubernetes"],
+      "difficulty": "hard",
+      "expectedLength": "600-900 words",
+      "evaluationCriteria": [
+        "Docker vs VM comparison",
+        "CI/CD pipeline design",
+        "Kubernetes concepts",
+        "Deployment strategies"
+      ]
+    },
+    {
+      "id": 10,
+      "question": "Explain the concept of Machine Learning and differentiate between supervised, unsupervised, and reinforcement learning with practical examples.",
+      "description": "Define ML and its applications, explain each learning paradigm with real-world use cases (e.g., image classification for supervised learning, customer segmentation for unsupervised learning, game playing for reinforcement learning). Discuss the typical workflow of an ML project including data preprocessing, feature engineering, model training, evaluation metrics, and deployment. Address overfitting, underfitting, and cross-validation.",
+      "marks": 35,
+      "concepts": ["Machine Learning", "AI Fundamentals", "Data Science", "Model Training"],
+      "difficulty": "medium",
+      "expectedLength": "600-900 words",
+      "evaluationCriteria": [
+        "ML paradigm understanding",
+        "Real-world applications",
+        "ML workflow knowledge",
+        "Common challenges awareness"
+      ]
+    }
+  ],
+  "scholarshipTiers": [
+    {
+      "minPercentage": 90,
+      "maxPercentage": 100,
+      "scholarshipPercent": 60,
+      "label": "Outstanding Performance",
+      "message": "Exceptional! You've demonstrated outstanding knowledge."
+    },
+    {
+      "minPercentage": 70,
+      "maxPercentage": 89,
+      "scholarshipPercent": 50,
+      "label": "Excellent Performance",
+      "message": "Great job! You have strong technical fundamentals."
+    },
+    {
+      "minPercentage": 50,
+      "maxPercentage": 69,
+      "scholarshipPercent": 40,
+      "label": "Good Performance",
+      "message": "Well done! You're on the right track."
+    },
+    {
+      "minPercentage": 35,
+      "maxPercentage": 49,
+      "scholarshipPercent": 25,
+      "label": "Qualifying Performance",
+      "message": "Good start! We'll help you strengthen your skills."
+    },
+    {
+      "minPercentage": 0,
+      "maxPercentage": 34,
+      "scholarshipPercent": 15,
+      "label": "Participation Recognition",
+      "message": "Thank you for participating! We're here to help you learn."
+    }
+  ]
+}

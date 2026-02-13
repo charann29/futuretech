@@ -1,0 +1,139 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "Explain the concept of problem-solving and algorithmic thinking. How would you approach breaking down a complex problem into smaller, manageable steps?",
+      "description": "Describe your systematic approach to problem-solving. Include how you identify the core problem, break it into sub-problems, design a solution strategy, and verify your approach. Provide a real-world example where you applied logical thinking to solve a challenge.",
+      "marks": 25,
+      "category": "Foundation",
+      "skills": ["Logic Building", "Problem Solving", "Analytical Thinking"],
+      "difficulty": "easy"
+    },
+    {
+      "id": 2,
+      "question": "What are Data Structures and why are they important? Compare and contrast Arrays vs Linked Lists, explaining when you would use each.",
+      "description": "Define data structures and their role in programming. Discuss the characteristics, advantages, and disadvantages of Arrays and Linked Lists. Include time complexity for common operations (insertion, deletion, access) and provide practical scenarios where each is most suitable.",
+      "marks": 30,
+      "category": "Foundation",
+      "skills": ["Data Structures", "Algorithms", "Programming Fundamentals"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 3,
+      "question": "Design a complete web application architecture for an e-commerce platform. Explain the frontend, backend, database, and deployment strategy.",
+      "description": "Provide a comprehensive system design including: frontend framework choice (React/Angular/Vue), backend technology (Java/Python/Node.js), database design (SQL vs NoSQL), API architecture (REST/GraphQL), authentication mechanism, and scalability considerations. Justify your technology choices.",
+      "marks": 35,
+      "category": "Product Development",
+      "skills": ["Full Stack Development", "System Design", "Architecture"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 4,
+      "question": "Explain DevOps practices and describe how you would set up a CI/CD pipeline for a modern application. Include Docker and Kubernetes in your explanation.",
+      "description": "Define DevOps culture and principles. Detail a CI/CD pipeline including: source control (Git), build automation, testing stages, containerization with Docker, orchestration with Kubernetes, and deployment strategies (blue-green, canary). Explain how these tools improve development workflow and reliability.",
+      "marks": 35,
+      "category": "Product Development",
+      "skills": ["DevOps", "Docker", "Kubernetes", "CI/CD"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 5,
+      "question": "What is Generative AI and how does it differ from traditional Machine Learning? Explain the concept of Large Language Models (LLMs) and their practical applications.",
+      "description": "Describe Generative AI fundamentals, the architecture of LLMs (transformers, attention mechanism), training approaches, and how they generate content. Discuss practical applications like chatbots, code generation, content creation, and the difference between pre-training and fine-tuning. Include ethical considerations.",
+      "marks": 30,
+      "category": "AI & Data Science",
+      "skills": ["Generative AI", "LLMs", "Machine Learning"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 6,
+      "question": "Explain RAG (Retrieval Augmented Generation) and how it enhances LLM capabilities. Describe a practical use case where RAG would be beneficial.",
+      "description": "Define RAG architecture, explain how it combines information retrieval with generation, discuss vector databases and embeddings, and describe the retrieval and generation process. Design a RAG system for a specific domain (e.g., customer support, documentation assistant) including data preparation, retrieval strategy, and LLM integration.",
+      "marks": 35,
+      "category": "AI & Data Science",
+      "skills": ["RAG", "LLMs", "Vector Databases", "AI Agents"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 7,
+      "question": "What is UI/UX Design and why is it important? Describe the key principles of good user interface design and explain your approach to creating user-centered designs.",
+      "description": "Define UI and UX, explain their differences and how they complement each other. Discuss design principles (consistency, feedback, simplicity, accessibility), the design process (research, wireframing, prototyping, testing), and how tools like Figma or Adobe XD facilitate design workflow. Include examples of good vs bad design patterns.",
+      "marks": 25,
+      "category": "UI/UX",
+      "skills": ["UI/UX Design", "Figma", "User Research"],
+      "difficulty": "easy"
+    },
+    {
+      "id": 8,
+      "question": "Explain Data Visualization and its importance in Data Science. Compare PowerBI vs Tableau and describe how you would create an effective dashboard for business insights.",
+      "description": "Discuss why data visualization matters for decision-making. Compare PowerBI and Tableau in terms of features, use cases, and integration capabilities. Design a business dashboard including KPIs to track, chart types to use, interactivity features, and best practices for presenting data to stakeholders. Explain how visualization helps identify trends and patterns.",
+      "marks": 30,
+      "category": "AI & Data Science",
+      "skills": ["Data Visualization", "PowerBI", "Tableau", "Analytics"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 9,
+      "question": "What is Cybersecurity and why is it critical for modern applications? Explain common security vulnerabilities (OWASP Top 10) and how to prevent them.",
+      "description": "Define cybersecurity and its importance. Describe at least 5 OWASP Top 10 vulnerabilities (SQL Injection, XSS, CSRF, Authentication issues, etc.) with examples of how they can be exploited and specific prevention techniques. Include security best practices for web applications, network security basics, and the concept of defense in depth.",
+      "marks": 30,
+      "category": "Cyber Security",
+      "skills": ["Web Security", "Network Security", "Vulnerability Assessment"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 10,
+      "question": "Explain Software Testing and its types. Compare Manual vs Automation Testing and describe how you would design a comprehensive testing strategy for a web application.",
+      "description": "Define software testing and its role in quality assurance. Explain different testing types (Unit, Integration, System, Acceptance). Compare manual and automation testing with pros/cons of each. Describe a testing strategy including: test planning, test case design, execution approach, tools (Selenium for automation), performance testing basics, and how to ensure comprehensive test coverage.",
+      "marks": 30,
+      "category": "Software Testing",
+      "skills": ["Manual Testing", "Automation Testing", "Selenium", "QA"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 11,
+      "question": "Describe AI Agents and Agentic AI. How do they differ from traditional AI systems? Explain the Model Context Protocol (MCP) and its role in AI agent communication.",
+      "description": "Define AI agents and agentic AI systems. Explain autonomy, goal-oriented behavior, and how agents perceive and act in environments. Describe the Model Context Protocol (MCP), how it enables communication between AI models and external systems, and practical applications. Include orchestration concepts and how multiple agents can work together to solve complex tasks.",
+      "marks": 35,
+      "category": "AI & Data Science",
+      "skills": ["AI Agents", "MCP", "Agentic AI", "Orchestration"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 12,
+      "question": "Explain the software development lifecycle and the importance of version control. How would you use Git in a team environment with multiple developers?",
+      "description": "Describe the SDLC phases (planning, design, development, testing, deployment, maintenance). Explain version control concepts, Git workflow (branching, merging, pull requests), collaboration strategies, handling merge conflicts, and best practices for commit messages. Include how Git enables continuous integration and team collaboration.",
+      "marks": 25,
+      "category": "Foundation",
+      "skills": ["SDLC", "Git", "Version Control", "Collaboration"],
+      "difficulty": "easy"
+    },
+    {
+      "id": 13,
+      "question": "What are APIs and why are they important in modern software development? Explain RESTful APIs and how you would integrate LLM APIs (like OpenAI or Anthropic) into an application.",
+      "description": "Define APIs and their role in connecting systems. Explain REST principles, HTTP methods, status codes, and API authentication. Describe how to integrate LLM APIs including: API key management, making API calls, handling responses, error handling, rate limiting, and cost optimization. Provide a practical example of building an AI-powered feature using LLM APIs.",
+      "marks": 35,
+      "category": "Product Development",
+      "skills": ["API Integration", "LLM APIs", "Backend Development"],
+      "difficulty": "hard"
+    },
+    {
+      "id": 14,
+      "question": "Explain the difference between SQL and NoSQL databases. When would you choose MongoDB over PostgreSQL and vice versa? Include examples of use cases for each.",
+      "description": "Compare SQL (relational) and NoSQL (document, key-value, graph) databases. Discuss ACID properties, schema flexibility, scalability, query capabilities, and performance characteristics. Provide specific scenarios where MongoDB (NoSQL) is preferable (e.g., flexible schemas, horizontal scaling) and where PostgreSQL (SQL) excels (e.g., complex queries, data integrity). Include how to choose the right database for a project.",
+      "marks": 30,
+      "category": "Product Development",
+      "skills": ["Databases", "SQL", "NoSQL", "Data Modeling"],
+      "difficulty": "medium"
+    },
+    {
+      "id": 15,
+      "question": "What is Machine Learning and what are its main types? Explain supervised vs unsupervised learning with practical examples, and describe the typical ML workflow.",
+      "description": "Define Machine Learning and its applications. Explain supervised learning (classification, regression) with examples like spam detection or house price prediction. Describe unsupervised learning (clustering, dimensionality reduction) with examples like customer segmentation. Detail the ML workflow: problem definition, data collection, preprocessing, feature engineering, model selection, training, evaluation, and deployment. Include common challenges and how to address them.",
+      "marks": 30,
+      "category": "AI & Data Science",
+      "skills": ["Machine Learning", "Data Science", "Model Training"],
+      "difficulty": "medium"
+    }
+  ]
+}
