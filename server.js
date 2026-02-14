@@ -255,6 +255,41 @@ app.get('/api/questions', (req, res) => {
     }
 });
 
+// --- New Dashboard API ---
+app.get('/api/user-results', requireAuth, async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from('test_results')
+            .select('id, score, scholarship_percentage, submitted_at, student_name')
+            .eq('user_id', req.user.id)
+            .order('submitted_at', { ascending: false });
+
+        if (error) throw error;
+        res.json({ success: true, results: data });
+    } catch (error) {
+        console.error('Error fetching user results:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/api/test-result/:id', requireAuth, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { data, error } = await supabase
+            .from('test_results')
+            .select('*')
+            .eq('id', id)
+            .eq('user_id', req.user.id)
+            .single();
+
+        if (error) throw error;
+        res.json({ success: true, ...data });
+    } catch (error) {
+        console.error('Error fetching single result:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post('/api/submit-test', requireAuth, async (req, res) => {
     // Setup logging
     const logFile = path.join(__dirname, 'debug_error.log');
@@ -462,8 +497,8 @@ function generateMockEvaluation(answers, questions) {
         dimensionScores[dim] = Math.min(98, Math.max(45, percentage + variance));
     });
 
-    // Force percentage into 50-69% range so everyone gets 40% scholarship
-    percentage = Math.max(50, Math.min(69, 50 + Math.floor(Math.random() * 20)));
+    // percentage check - ensure it's within realistic bounds but reflecting performance
+    percentage = Math.max(1, Math.min(100, percentage));
 
     // Generate Feedback Text
     const intro = introPhrases[Math.floor(Math.random() * introPhrases.length)];

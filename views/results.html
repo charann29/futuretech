@@ -1152,45 +1152,53 @@
             }, 300);
         }
 
-        function loadResults() {
-            // Retrieve data
-            const testResultData = localStorage.getItem('testResult');
-            const evaluationText = localStorage.getItem('testEvaluation');
-            const answersData = localStorage.getItem('testAnswers');
+        // Handle dashboard button visibility
+        const sessionData = await window.supabase.auth.getSession();
+        if (sessionData.data.session) {
+            document.getElementById('dashboardBtn').style.display = 'block';
+        }
 
-            let totalScore = 0;
-            let percentage = 0;
-            let scholarshipPercent = 0;
-            let rank = 0;
-            let totalStudents = getTotalStudents();
-            let skills = {};
-            let feedbackHTML = '';
-            let recommendation = '';
-            let answers = {};
-            let studentName = 'Champion';
+        // Check for ID in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const resultId = urlParams.get('id');
 
-            // 1. Try to use server-side result (Primary)
-            if (testResultData) {
-                try {
-                    const result = JSON.parse(testResultData);
-                    if (result.success && result.results) {
-                        const r = result.results;
-                        totalScore = r.totalScore || 0;
-                        percentage = r.percentage || 0;
+        // Retrieve local data as fallback
+        const testResultData = localStorage.getItem('testResult');
+        const evaluationText = localStorage.getItem('testEvaluation');
+        const answersData = localStorage.getItem('testAnswers');
 
-                        // Use server scholarship if consistent, else fallback to consistent logic
-                        // Server logic: <50 -> 25%, 50-69 -> 40%, 70-79 -> 50%, 80-89 -> 60%, 90+ -> 100%
-                        // Client logic (below) uses fixed 40% for demo? 
-                        // Let's use server logic if available, but for now stick to the "Everyone gets 40%" override 
-                        // as per previous code block 1173: "Everyone gets 40% scholarship"
-                        scholarshipPercent = 40;
+        let totalScore = 0;
+        let percentage = 0;
+        let scholarshipPercent = 0;
+        let rank = 0;
+        let totalStudents = getTotalStudents();
+        let skills = {};
+        let feedbackHTML = '';
+        let recommendation = '';
+        let answers = {};
+        let studentName = 'Champion';
 
-                        if (result.student && result.student.name) {
-                            studentName = result.student.name;
-                        }
+        // 1. Try to load from server if ID exists
+        if (resultId) {
+            console.log('[Results] Loading historical result:', resultId);
+            try {
+                const session = await window.supabase.auth.getSession();
+                const token = session?.data?.session?.access_token;
 
-                        // Map dimensions to skills for radar chart
-                        // Server keys: "Technical Knowledge", "Problem Solving", "Analytical Thinking", etc.
+                if (token) {
+                    const response = await fetch(`/api/test-result/${resultId}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        const r = result.evaluation; // Evaluation object stored in DB
+                        totalScore = result.score || 0;
+                        percentage = result.score || 0;
+                        scholarshipPercent = result.scholarship_percentage || 0;
+                        studentName = result.student_name || 'Champion';
+                        answers = result.answers || {};
+
                         const dims = r.dimensionScores || {};
                         skills = {
                             analytical: dims["Analytical Thinking"] || 70,
@@ -1200,8 +1208,6 @@
                             conceptual: dims["System Design"] || 50,
                             communication: dims["Communication"] || 75
                         };
-
-                        answers = result.answers || {};
 
                         // AI Feedback
                         const bullet = '<span class="hollow-bullet"></span>';
@@ -1213,128 +1219,182 @@
                                 feedbackHTML += `<li class="bullet-item">${bullet}<strong>Strength:</strong> ${s}</li>`;
                             });
                         }
-                        if (r.careerSuggestions && r.careerSuggestions.length > 0) {
-                            const career = r.careerSuggestions.join(", ");
-                            recommendation = `<strong>Your Path:</strong> Based on your profile, you'd excel as a <strong>${r.careerSuggestions[0]}</strong>.`;
+                        if (r.recommendedCourses && r.recommendedCourses.length > 0) {
+                            recommendation = `<strong>Your Path:</strong> Based on your profile, we recommend the <strong>${r.recommendedCourses[0]}</strong>.`;
                         }
                     }
-                } catch (e) {
-                    console.error('Error parsing testResult:', e);
                 }
+            } catch (e) {
+                console.error('Error fetching historical result:', e);
+            }
+        }
+
+        // 2. Fallback to local testResultData (Current session)
+        if (totalScore === 0 && testResultData) {
+            try {
+                const result = JSON.parse(testResultData);
+                if (result.success && result.results) {
+                    const r = result.results;
+                    totalScore = r.totalScore || 0;
+                    percentage = r.percentage || 0;
+
+                    // Use server scholarship if consistent, else fallback to consistent logic
+                    // Server logic: <50 -> 25%, 50-69 -> 40%, 70-79 -> 50%, 80-89 -> 60%, 90+ -> 100%
+                    // Client logic (below) uses fixed 40% for demo? 
+                    // Let's use server logic if available, but for now stick to the "Everyone gets 40%" override 
+                    // as per previous code block 1173: "Everyone gets 40% scholarship"
+                    scholarshipPercent = 40;
+
+                    if (result.student && result.student.name) {
+                        studentName = result.student.name;
+                    }
+
+                    // Map dimensions to skills for radar chart
+                    // Server keys: "Technical Knowledge", "Problem Solving", "Analytical Thinking", etc.
+                    const dims = r.dimensionScores || {};
+                    skills = {
+                        analytical: dims["Analytical Thinking"] || 70,
+                        logical: dims["Problem Solving"] || 65,
+                        coding: dims["Technical Knowledge"] || 60,
+                        debugging: dims["Debugging Skills"] || 55,
+                        conceptual: dims["System Design"] || 50,
+                        communication: dims["Communication"] || 75
+                    };
+
+                    answers = result.answers || {};
+
+                    // AI Feedback
+                    const bullet = '<span class="hollow-bullet"></span>';
+                    if (r.overallFeedback) {
+                        feedbackHTML += `<li class="bullet-item">${bullet}<strong>Overall:</strong> ${r.overallFeedback}</li>`;
+                    }
+                    if (r.strengths && Array.isArray(r.strengths)) {
+                        r.strengths.forEach(s => {
+                            feedbackHTML += `<li class="bullet-item">${bullet}<strong>Strength:</strong> ${s}</li>`;
+                        });
+                    }
+                    if (r.careerSuggestions && r.careerSuggestions.length > 0) {
+                        const career = r.careerSuggestions.join(", ");
+                        recommendation = `<strong>Your Path:</strong> Based on your profile, you'd excel as a <strong>${r.careerSuggestions[0]}</strong>.`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error parsing testResult:', e);
+            }
+        }
+
+        // 2. Fallback to local calculation (Legacy/Mock)
+        if (totalScore === 0) {
+            console.warn('[Results] Primary data missing or failed, attempting robust fallback...');
+
+            try {
+                answers = answersData ? JSON.parse(answersData) : {};
+            } catch (e) {
+                answers = {};
             }
 
-            // 2. Fallback to local calculation (Legacy/Mock)
-            if (totalScore === 0) {
-                console.warn('[Results] Primary data missing or failed, attempting robust fallback...');
+            const answeredCount = Object.keys(answers).length;
 
-                try {
-                    answers = answersData ? JSON.parse(answersData) : {};
-                } catch (e) {
-                    answers = {};
-                }
-
-                const answeredCount = Object.keys(answers).length;
-
-                // UX Protection: If no results found, generate a high-quality random result instead of failing
-                if (answeredCount === 0) {
-                    console.warn('[Results] Critical data loss: No answers found. Generating random success experience.');
-                    totalScore = 68 + Math.floor(Math.random() * 22); // 68 - 90
-                } else {
-                    totalScore = Math.min(100, Math.max(45, Math.floor(answeredCount * 5.5 + Math.random() * 10)));
-                }
-
-                scholarshipPercent = 40;
-
-                skills = {
-                    analytical: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
-                    logical: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
-                    coding: Math.min(100, Math.floor(totalScore + Math.random() * 25 - 15)),
-                    debugging: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
-                    conceptual: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
-                    communication: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 5))
-                };
+            // UX Protection: If no results found, generate a high-quality random result instead of failing
+            if (answeredCount === 0) {
+                console.warn('[Results] Critical data loss: No answers found. Generating random success experience.');
+                totalScore = 68 + Math.floor(Math.random() * 22); // 68 - 90
+            } else {
+                totalScore = Math.min(100, Math.max(45, Math.floor(answeredCount * 5.5 + Math.random() * 10)));
             }
 
-            // --- UI Updates ---
-            rank = calculateRank(totalScore);
-            const percentile = Math.round((1 - rank / 1000) * 100);
-            incrementUserCounter();
+            scholarshipPercent = 40;
 
-            const originalFee = 45000;
-            const savings = Math.floor(originalFee * scholarshipPercent / 100);
-            const finalFee = originalFee - savings;
+            skills = {
+                analytical: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                logical: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                coding: Math.min(100, Math.floor(totalScore + Math.random() * 25 - 15)),
+                debugging: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                conceptual: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                communication: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 5))
+            };
+        }
 
-            document.getElementById('studentName').textContent = `Congratulations, ${studentName}!`;
-            animateValue('totalScore', 0, totalScore, 1500);
-            animateScoreRing(totalScore);
+        // --- UI Updates ---
+        rank = calculateRank(totalScore);
+        const percentile = Math.round((1 - rank / 1000) * 100);
+        incrementUserCounter();
 
-            // For answered/correct count, we might not have exact correct count from server easily 
-            // without recalculating or adding it to API response.
-            // Estimate for display if missing:
-            const answeredCount = Object.keys(answers).length || 18;
-            const estimatedCorrect = Math.max(1, Math.round(totalScore / 5.5)); // Improved estimate
+        const originalFee = 45000;
+        const savings = Math.floor(originalFee * scholarshipPercent / 100);
+        const finalFee = originalFee - savings;
 
-            animateValue('answeredCount', 0, answeredCount, 1000);
-            animateValue('correctCount', 0, estimatedCorrect, 1000);
+        document.getElementById('studentName').textContent = `Congratulations, ${studentName}!`;
+        animateValue('totalScore', 0, totalScore, 1500);
+        animateScoreRing(totalScore);
 
-            document.getElementById('percentile').textContent = `${percentile}%`;
-            document.getElementById('rankNumber').textContent = rank;
-            document.getElementById('totalStudents').textContent = totalStudents.toLocaleString() + '+';
-            document.getElementById('scholarshipPercent').textContent = `${scholarshipPercent}%`;
-            document.getElementById('originalFee').textContent = `₹${originalFee.toLocaleString('en-IN')}`;
-            document.getElementById('savingsAmount').textContent = `-₹${savings.toLocaleString('en-IN')}`;
-            document.getElementById('finalFee').textContent = `₹${finalFee.toLocaleString('en-IN')}`;
+        // For answered/correct count, we might not have exact correct count from server easily 
+        // without recalculating or adding it to API response.
+        // Estimate for display if missing:
+        const answeredCount = Object.keys(answers).length || 18;
+        const estimatedCorrect = Math.max(1, Math.round(totalScore / 5.5)); // Improved estimate
 
-            renderSkills(skills);
+        animateValue('answeredCount', 0, answeredCount, 1000);
+        animateValue('correctCount', 0, estimatedCorrect, 1000);
 
-            // Fallback for AI Content if empty
-            if (!feedbackHTML) {
-                const bullet = '<span class="hollow-bullet"></span>';
-                const strengthInsights = {
-                    high: [
-                        "Your analytical thinking demonstrates exceptional problem-solving potential.",
-                        "You show the kind of logical clarity that top developers possess.",
-                        "Your approach to challenges reveals a natural aptitude for coding."
-                    ],
-                    medium: [
-                        "Your curiosity and willingness to learn are your biggest strengths.",
-                        "You have the foundational thinking that successful coders build upon.",
-                        "Your persistence in tackling problems shows real developer mindset."
-                    ],
-                    growing: [
-                        "Taking this step shows the initiative that great developers have.",
-                        "Your growth mindset is exactly what the tech industry values.",
-                        "Every expert was once a beginner – your journey starts strong."
-                    ]
-                };
+        document.getElementById('percentile').textContent = `${percentile}%`;
+        document.getElementById('rankNumber').textContent = rank;
+        document.getElementById('totalStudents').textContent = totalStudents.toLocaleString() + '+';
+        document.getElementById('scholarshipPercent').textContent = `${scholarshipPercent}%`;
+        document.getElementById('originalFee').textContent = `₹${originalFee.toLocaleString('en-IN')}`;
+        document.getElementById('savingsAmount').textContent = `-₹${savings.toLocaleString('en-IN')}`;
+        document.getElementById('finalFee').textContent = `₹${finalFee.toLocaleString('en-IN')}`;
 
-                let insights = strengthInsights.growing;
-                if (totalScore >= 70) insights = strengthInsights.high;
-                else if (totalScore >= 40) insights = strengthInsights.medium;
+        renderSkills(skills);
 
-                feedbackHTML = insights.map(insight =>
-                    `<li class="bullet-item">${bullet}${insight}</li>`
-                ).join('');
+        // Fallback for AI Content if empty
+        if (!feedbackHTML) {
+            const bullet = '<span class="hollow-bullet"></span>';
+            const strengthInsights = {
+                high: [
+                    "Your analytical thinking demonstrates exceptional problem-solving potential.",
+                    "You show the kind of logical clarity that top developers possess.",
+                    "Your approach to challenges reveals a natural aptitude for coding."
+                ],
+                medium: [
+                    "Your curiosity and willingness to learn are your biggest strengths.",
+                    "You have the foundational thinking that successful coders build upon.",
+                    "Your persistence in tackling problems shows real developer mindset."
+                ],
+                growing: [
+                    "Taking this step shows the initiative that great developers have.",
+                    "Your growth mindset is exactly what the tech industry values.",
+                    "Every expert was once a beginner – your journey starts strong."
+                ]
+            };
+
+            let insights = strengthInsights.growing;
+            if (totalScore >= 70) insights = strengthInsights.high;
+            else if (totalScore >= 40) insights = strengthInsights.medium;
+
+            feedbackHTML = insights.map(insight =>
+                `<li class="bullet-item">${bullet}${insight}</li>`
+            ).join('');
+        }
+
+        if (!recommendation) {
+            recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
+            if (totalScore >= 80) {
+                recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
+            } else if (totalScore >= 60) {
+                recommendation = `<strong>Your Path:</strong> Our <strong>Professional Development Track</strong> will unlock your potential.`;
+            } else if (totalScore >= 40) {
+                recommendation = `<strong>Your Path:</strong> The <strong>Skill Builder Program</strong> is perfect for your growth.`;
             }
+        }
 
-            if (!recommendation) {
-                recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
-                if (totalScore >= 80) {
-                    recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
-                } else if (totalScore >= 60) {
-                    recommendation = `<strong>Your Path:</strong> Our <strong>Professional Development Track</strong> will unlock your potential.`;
-                } else if (totalScore >= 40) {
-                    recommendation = `<strong>Your Path:</strong> The <strong>Skill Builder Program</strong> is perfect for your growth.`;
-                }
-            }
+        document.getElementById('aiFeedback').innerHTML = feedbackHTML;
+        document.getElementById('aiRecommendationText').innerHTML = recommendation;
 
-            document.getElementById('aiFeedback').innerHTML = feedbackHTML;
-            document.getElementById('aiRecommendationText').innerHTML = recommendation;
+        window.resultData = { score: totalScore, rank, totalStudents, scholarship: scholarshipPercent, skills };
 
-            window.resultData = { score: totalScore, rank, totalStudents, scholarship: scholarshipPercent, skills };
-
-            // Load question review
-            displayQuestionReview(answers);
+        // Load question review
+        displayQuestionReview(answers);
         }
 
         // Function to display detailed question review

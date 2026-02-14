@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | FutureTech IT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --color-primary: #1a1a1a;
+            --primary-red: #DC0000;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --text-primary: #0a0a0a;
+            --text-secondary: #3a3a3a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f7f7;
+            color: var(--text-primary);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #000 0%, #444 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .result-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary-red);
+        }
+
+        .result-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: #111;
+        }
+
+        .result-date {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .result-stats {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .score-pill {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #f0f0f0;
+            color: #000;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-red);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 6px;
+        }
+
+        .view-btn:hover {
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+            background: white;
+            border-radius: 20px;
+            border: 2px dashed #ddd;
+        }
+
+        .btn-primary {
+            background: black;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 24px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-red);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <a href="index.html"
+                    style="color: #666; text-decoration: none; font-size: 14px; font-weight: 600; display: block; margin-bottom: 12px;">←
+                    Back to Home</a>
+                <h1>My Dashboard</h1>
+            </div>
+            <div id="userProfile" style="text-align: right;">
+                <p id="userName" style="font-weight: 700; margin: 0; font-size: 15px;"></p>
+                <button onclick="handleLogout()"
+                    style="background: none; border: none; color: #DC0000; cursor: pointer; padding: 4px 0; font-size: 13px; font-weight: 600;">Sign
+                    Out</button>
+            </div>
+        </header>
+
+        <div id="resultsList" class="results-list">
+            <div class="empty-state">
+                <p style="font-weight: 600; color: #666;">Analyzing your profile...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://diacczkzcxylmlvysqar.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpYWNjemt6Y3h5bG1sdnlzcWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2OTYyODQsImV4cCI6MjA4NjI3MjI4NH0.4e1ayR8Nu_laj0Ne6mSGVZTV6nLCmLHWs16ekN1n70E';
+
+        async function initialize() {
+            try {
+                const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) {
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                document.getElementById('userName').textContent = session.user.email;
+
+                const response = await fetch('/api/user-results', {
+                    headers: { 'Authorization': `Bearer ${session.access_token}` }
+                });
+                const data = await response.json();
+
+                const list = document.getElementById('resultsList');
+                if (!data.success || data.results.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <h3 style="font-size: 22px; margin-bottom: 12px;">You haven't taken the FSAT yet</h3>
+                            <p style="color: #666; max-width: 400px; margin: 0 auto;">Take the assessment to unlock your personalized AI career roadmap and scholarship details.</p>
+                            <a href="test.html" class="btn-primary">Start Assessment</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                list.innerHTML = data.results.map(r => `
+                    <div class="result-card">
+                        <div class="result-info">
+                            <h3>Assessment Report</h3>
+                            <div class="result-date">${new Date(r.submitted_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                        </div>
+                        <div class="result-stats">
+                            <div class="score-pill">${r.score}/100</div>
+                            <a href="results.html?id=${r.id}" class="view-btn">Full Report ➔</a>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                document.getElementById('resultsList').innerHTML = '<div class="empty-state">Something went wrong. Please try refreshing.</div>';
+            }
+        }
+
+        async function handleLogout() {
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            await supabase.auth.signOut();
+            window.location.href = 'index.html';
+        }
+
+        initialize();
+    </script>
+</body>
+
+</html>
