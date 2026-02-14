@@ -305,14 +305,20 @@
             margin-bottom: 20px;
             border: 2px solid #FFD700;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            display: inline-block;
         }
 
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--black);
+        font-size: 56px;
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 20px;
+        color: var(--black);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
         }
 
         .hero h1 .highlight {
@@ -326,12 +332,24 @@
             line-height: 1.6;
         }
 
-        .hero-ctas {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+        }
+
+        @media (max-width: 480px) {
+            .hero-ctas {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cta-primary,
+            .cta-secondary {
+                text-align: center;
+                width: 100%;
+            }
         }
 
         .cta-primary {
@@ -1402,7 +1420,8 @@
             <p>Real students. Real transformations. Real results.</p>
         </div>
 
-        <div class="story-grid">
+        <div class="story-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
             <!-- Story Card 1 -->
             <div class="story-card">
                 <div class="story-header">

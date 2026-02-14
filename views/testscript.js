@@ -200,7 +200,16 @@ function displayQuestion(index) {
         if (isSingleLine) {
             answerSection.innerHTML = `
                 <label class="answer-label">${label}</label>
-                <input type="text" id="answerInput" class="answer-textarea" placeholder="${placeholder}" value="${savedAnswer}" style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; margin-top: 10px;">
+                <input type="text" id="answerInput" class="answer-textarea" placeholder="${placeholder}" value="${savedAnswer}" autocomplete="off" style="
+                    width: 100%; 
+                    padding: 15px; 
+                    border: 2px solid #e0e0e0; 
+                    border-radius: 8px; 
+                    font-family: 'Inter', sans-serif; 
+                    font-size: 16px; 
+                    margin-top: 10px;
+                    height: 50px; /* Fixed height for single line */
+                ">
             `;
         } else {
             let rows = q.type === 'programming' || q.type === 'debugging' ? 15 : 5;
