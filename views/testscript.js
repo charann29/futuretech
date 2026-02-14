@@ -45,6 +45,222 @@ const sampleQuestions = [
 let tabSwitchCount = 0;
 let copyPasteAttempts = 0;
 
+// ==========================================
+// CORE FUNCTIONS (Moved to top for safety)
+// ==========================================
+
+// Load Questions from API
+async function loadQuestions() {
+    try {
+        console.log('Loading questions from API...');
+        const response = await fetch('/api/questions');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        if (data.questions && Array.isArray(data.questions) && data.questions.length > 0) {
+            questions = data.questions;
+            console.log(`✅ Loaded ${questions.length} questions from API`);
+        } else {
+            console.warn('API returned invalid data, using sample questions');
+            questions = sampleQuestions;
+        }
+    } catch (error) {
+        console.error('Failed to load questions from API, using sample:', error);
+        questions = sampleQuestions;
+    }
+
+    console.log(`Total questions loaded: ${questions.length}`);
+
+    // Initialize question navigation with type indicators
+    const navContainer = document.getElementById('questionsNav');
+    if (navContainer) {
+        navContainer.innerHTML = '';
+        questions.forEach((q, index) => {
+            const navItem = document.createElement('div');
+            navItem.className = 'question-nav-item';
+
+            // Add type icon
+            let typeIcon = '';
+            switch (q.type) {
+                case 'mcq': typeIcon = '📝'; break;
+                case 'fitb': case 'fill': typeIcon = '✍️'; break;
+                case 'programming': typeIcon = '💻'; break;
+                case 'debugging': typeIcon = '🐛'; break;
+            }
+
+            navItem.innerHTML = `<span style="font-size: 12px;">${typeIcon}</span> Q${index + 1}`;
+            navItem.onclick = () => goToQuestion(index);
+            navContainer.appendChild(navItem);
+        });
+    }
+
+    // Load first question
+    currentQuestionIndex = 0;
+    displayQuestion(currentQuestionIndex);
+}
+
+// Display question
+function displayQuestion(index) {
+    if (!questions[index]) return;
+    const q = questions[index];
+
+    // Update question number and marks
+    const questionNumber = document.getElementById('questionNumber') || document.getElementById('questionNumberDisplay');
+    const questionMarks = document.getElementById('questionMarks') || document.getElementById('questionMarksDisplay');
+
+    if (questionNumber) questionNumber.textContent = `Question ${index + 1}`;
+    if (questionMarks) questionMarks.textContent = `${q.marks} Marks`;
+
+    // Add question type badge
+    let typeBadge = '';
+    switch (q.type) {
+        case 'mcq': typeBadge = '📝 Multiple Choice'; break;
+        case 'fitb': case 'fill': typeBadge = '✍️ Fill in the Blank'; break;
+        case 'programming': typeBadge = '💻 Programming'; break;
+        case 'debugging': typeBadge = '🐛 Debugging'; break;
+    }
+
+    document.getElementById('questionText').innerHTML = `${typeBadge ? `<span style="background: #FFD700; color: #000; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 10px; font-weight: bold;">${typeBadge}</span>` : ''}${q.question}`;
+
+    // Show description/hints based on question type
+    let descriptionHTML = '';
+    if (q.description) {
+        descriptionHTML = `<p style="margin: 10px 0; color: #666;">${q.description}</p>`;
+    }
+
+    if (q.type === 'programming' && q.hints && q.hints.length > 0) {
+        descriptionHTML += '<div style="background: #fffbea; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0; border-radius: 4px;">';
+        descriptionHTML += '<strong style="color: #f59e0b;">💡 Hints:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
+        q.hints.forEach(hint => descriptionHTML += `<li style="margin: 4px 0;">${hint}</li>`);
+        descriptionHTML += '</ul></div>';
+    }
+
+    if (q.type === 'debugging' && q.buggyCode) {
+        descriptionHTML += '<div style="background: #fee; border-left: 4px solid #DC0000; padding: 12px; margin: 10px 0; border-radius: 4px;">';
+        descriptionHTML += '<strong style="color: #DC0000;">🐛 Code with Errors:</strong>';
+        descriptionHTML += `<pre style="background: #fff; padding: 12px; margin: 8px 0; border-radius: 4px; overflow-x: auto; border: 1px solid #ddd;"><code>${q.buggyCode}</code></pre>`;
+        descriptionHTML += '</div>';
+    }
+
+    document.getElementById('questionDescription').innerHTML = descriptionHTML;
+
+    // Load saved answer if exists
+    const savedAnswer = testAnswers[q.id] || '';
+    const answerSection = document.querySelector('.answer-section');
+
+    if (!answerSection) return;
+
+    if (q.type === 'mcq' && q.options && q.options.length > 0) {
+        let optionsHTML = '<div style="margin: 15px 0;">';
+        q.options.forEach((option, idx) => {
+            const isSelected = savedAnswer === idx.toString();
+            optionsHTML += `
+                <label class="mcq-option" style="display: block !important; padding: 15px !important; margin: 10px 0 !important; border: 2px solid ${isSelected ? '#3b82f6' : '#e0e0e0'} !important; border-radius: 8px !important; cursor: pointer !important; background: ${isSelected ? '#eff6ff' : 'white'} !important; transition: all 0.3s !important; font-size: 16px !important;">
+                    <input type="radio" name="answer_${q.id}" value="${idx}" ${isSelected ? 'checked' : ''} style="margin-right: 12px !important; cursor: pointer !important; width: 18px !important; height: 18px !important; vertical-align: middle !important;">
+                    <span style="vertical-align: middle !important;">${option}</span>
+                </label>
+            `;
+        });
+        optionsHTML += '</div>';
+        answerSection.innerHTML = optionsHTML;
+
+        setTimeout(() => {
+            const radioButtons = document.querySelectorAll(`input[name="answer_${q.id}"]`);
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    testAnswers[q.id] = e.target.value;
+                    updateNavigation();
+                    saveCurrentAnswer();
+                    displayQuestion(currentQuestionIndex);
+                });
+            });
+        }, 100);
+
+    } else {
+        let placeholder = 'Type your answer here...';
+        let label = 'Your Answer:';
+        let isSingleLine = false;
+
+        if (q.type === 'fitb' || q.type === 'fill') {
+            placeholder = 'Fill in the blank...';
+            isSingleLine = true;
+        } else if (q.type === 'programming') {
+            placeholder = 'Write your code here...\n\n// Example:\nfunction myFunction() {\n    // Your code\n}';
+            label = 'Your Code:';
+        } else if (q.type === 'debugging') {
+            placeholder = 'Explain the errors you found and provide the corrected code...';
+            label = 'Your Answer (List errors and corrected code):';
+        }
+
+        if (isSingleLine) {
+            answerSection.innerHTML = `
+                <label class="answer-label">${label}</label>
+                <input type="text" id="answerInput" class="answer-textarea" placeholder="${placeholder}" value="${savedAnswer}" style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; margin-top: 10px;">
+            `;
+        } else {
+            let rows = q.type === 'programming' || q.type === 'debugging' ? 15 : 5;
+            answerSection.innerHTML = `
+                <label class="answer-label">${label}</label>
+                <textarea id="answerInput" class="answer-textarea" placeholder="${placeholder}" style="width: 100%; min-height: ${rows * 25}px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; margin-top: 10px;">${savedAnswer}</textarea>
+            `;
+        }
+    }
+
+    updateNavigation();
+    updateQuestionCounter();
+}
+
+function goToQuestion(index) {
+    saveCurrentAnswer();
+    currentQuestionIndex = index;
+    displayQuestion(currentQuestionIndex);
+}
+
+function saveCurrentAnswer() {
+    if (!questions[currentQuestionIndex]) return;
+    const q = questions[currentQuestionIndex];
+
+    if (q.type === 'mcq') {
+        const selectedRadio = document.querySelector(`input[name="answer_${q.id}"]:checked`);
+        if (selectedRadio) testAnswers[q.id] = selectedRadio.value;
+    } else {
+        const answerElement = document.getElementById('answerInput');
+        if (answerElement && answerElement.value.trim()) {
+            testAnswers[q.id] = answerElement.value.trim();
+        }
+    }
+}
+
+function updateNavigation() {
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    if (btnPrev) btnPrev.disabled = currentQuestionIndex === 0;
+    if (btnNext) btnNext.style.display = currentQuestionIndex === questions.length - 1 ? 'none' : 'block';
+    if (btnSubmit) btnSubmit.style.display = currentQuestionIndex === questions.length - 1 ? 'block' : 'none';
+
+    document.querySelectorAll('.question-nav-item').forEach((item, idx) => {
+        item.classList.remove('active');
+        if (idx === currentQuestionIndex) item.classList.add('active');
+        if (testAnswers[questions[idx]?.id]) item.classList.add('answered');
+    });
+}
+
+function updateQuestionCounter() {
+    document.getElementById('currentQ').textContent = currentQuestionIndex + 1;
+    document.getElementById('totalQ').textContent = questions.length;
+}
+
+// ==========================================
+// END CORE FUNCTIONS
+// ==========================================
+
 // Initialize camera
 async function initCamera() {
     try {
@@ -70,7 +286,6 @@ async function initializeOnboarding() {
         if (nameField) {
             nameField.value = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
         }
-        // Email field not in new UI - we get it from auth instead
     }
 }
 
@@ -80,22 +295,18 @@ async function handleOnboardingSubmit(e) {
 
     // Get form values
     const name = document.getElementById('onboardName').value.trim();
-    // Get email from authenticated user
-    const email = window.authManager?.getUser()?.email || 'test@example.com';
     const phone = document.getElementById('onboardPhone').value.trim();
     const college = document.getElementById('onboardCollege').value.trim() || 'Not specified';
     const course = document.getElementById('onboardCourse').value.trim() || 'Not specified';
     const year = document.getElementById('onboardYear').value.trim();
 
     // Validate phone
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!/^\d{10}$/.test(phone)) {
         alert('Please enter a valid 10-digit phone number');
         return;
     }
 
     // Validate year
-    const currentYear = new Date().getFullYear();
     const yearNum = parseInt(year);
     if (!year || yearNum < 1990 || yearNum > 2030) {
         alert('Please enter a valid year of passing out (1990-2030)');
@@ -103,6 +314,7 @@ async function handleOnboardingSubmit(e) {
     }
 
     // Save student data
+    const email = window.authManager?.getUser()?.email || 'test@example.com';
     studentData = { name, email, phone, college, course, year };
 
     // Save lead data to backend
@@ -130,7 +342,7 @@ async function handleOnboardingSubmit(e) {
     // Hide onboarding overlay
     document.getElementById('onboardingOverlay').classList.add('hidden');
 
-    // Load questions
+    // Load questions - NOW SAFE TO CALL
     loadQuestions();
 
     // Start timer (45 minutes = 2700 seconds)
@@ -140,336 +352,6 @@ async function handleOnboardingSubmit(e) {
     enableAntiCheat();
 }
 
-// Load Questions from API
-async function loadQuestions() {
-    try {
-        console.log('Loading questions from API...');
-        const response = await fetch('/api/questions');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('API Response:', data);
-
-        if (data.questions && Array.isArray(data.questions) && data.questions.length > 0) {
-            questions = data.questions;
-            console.log(`✅ Loaded ${questions.length} questions from API`);
-            console.log('First question type:', questions[0].type);
-            console.log('First question has options:', !!questions[0].options);
-        } else {
-            console.warn('API returned invalid data, using sample questions');
-            questions = sampleQuestions;
-        }
-    } catch (error) {
-        console.error('Failed to load questions from API, using sample:', error);
-        questions = sampleQuestions;
-    }
-
-    console.log(`Total questions loaded: ${questions.length}`);
-    console.log('Question types:', questions.map(q => q.type));
-
-    // Initialize question navigation with type indicators
-    const navContainer = document.getElementById('questionsNav');
-    if (navContainer) {
-        navContainer.innerHTML = '';
-        questions.forEach((q, index) => {
-            const navItem = document.createElement('div');
-            navItem.className = 'question-nav-item';
-
-            // Add type icon
-            let typeIcon = '';
-            switch (q.type) {
-                case 'mcq':
-                    typeIcon = '📝';
-                    break;
-                case 'fitb':
-                case 'fill':
-                    typeIcon = '✍️';
-                    break;
-                case 'programming':
-                    typeIcon = '💻';
-                    break;
-                case 'debugging':
-                    typeIcon = '🐛';
-                    break;
-            }
-
-            navItem.innerHTML = `<span style="font-size: 12px;">${typeIcon}</span> Q${index + 1}`;
-            navItem.onclick = () => goToQuestion(index);
-            navContainer.appendChild(navItem);
-        });
-    }
-
-    // Load first question
-    currentQuestionIndex = 0;
-    displayQuestion(currentQuestionIndex);
-}
-
-// Display question
-function displayQuestion(index) {
-    console.log('[displayQuestion] Called with index:', index);
-
-    if (!questions[index]) {
-        console.error('[displayQuestion] No question at index:', index);
-        return;
-    }
-
-    const q = questions[index];
-    console.log('[displayQuestion] Question:', {
-        id: q.id,
-        type: q.type,
-        hasOptions: !!q.options,
-        optionsCount: q.options?.length
-    });
-
-    // Update question number and marks
-    const questionNumber = document.getElementById('questionNumber') || document.getElementById('questionNumberDisplay');
-    const questionMarks = document.getElementById('questionMarks') || document.getElementById('questionMarksDisplay');
-
-    if (questionNumber) questionNumber.textContent = `Question ${index + 1}`;
-    if (questionMarks) questionMarks.textContent = `${q.marks} Marks`;
-
-    // Add question type badge
-    let typeBadge = '';
-    switch (q.type) {
-        case 'mcq':
-            typeBadge = '📝 Multiple Choice';
-            break;
-        case 'fitb':
-        case 'fill':
-            typeBadge = '✍️ Fill in the Blank';
-            break;
-        case 'programming':
-            typeBadge = '💻 Programming';
-            break;
-        case 'debugging':
-            typeBadge = '🐛 Debugging';
-            break;
-        default:
-            typeBadge = '';
-    }
-
-    document.getElementById('questionText').innerHTML = `${typeBadge ? `<span style="background: #FFD700; color: #000; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 10px; font-weight: bold;">${typeBadge}</span>` : ''}${q.question}`;
-
-    // Show description/hints based on question type
-    let descriptionHTML = '';
-    if (q.description) {
-        descriptionHTML = `<p style="margin: 10px 0; color: #666;">${q.description}</p>`;
-    }
-
-    // Add hints for programming questions
-    if (q.type === 'programming' && q.hints && q.hints.length > 0) {
-        descriptionHTML += '<div style="background: #fffbea; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0; border-radius: 4px;">';
-        descriptionHTML += '<strong style="color: #f59e0b;">💡 Hints:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
-        q.hints.forEach(hint => {
-            descriptionHTML += `<li style="margin: 4px 0;">${hint}</li>`;
-        });
-        descriptionHTML += '</ul></div>';
-    }
-
-    // Show buggy code for debugging questions
-    if (q.type === 'debugging' && q.buggyCode) {
-        descriptionHTML += '<div style="background: #fee; border-left: 4px solid #DC0000; padding: 12px; margin: 10px 0; border-radius: 4px;">';
-        descriptionHTML += '<strong style="color: #DC0000;">🐛 Code with Errors:</strong>';
-        descriptionHTML += `<pre style="background: #fff; padding: 12px; margin: 8px 0; border-radius: 4px; overflow-x: auto; border: 1px solid #ddd;"><code>${q.buggyCode}</code></pre>`;
-        descriptionHTML += '</div>';
-    }
-
-    document.getElementById('questionDescription').innerHTML = descriptionHTML;
-
-    // Load saved answer if exists
-    const savedAnswer = testAnswers[q.id] || '';
-
-    // ALWAYS get the answer-section container directly
-    const answerSection = document.querySelector('.answer-section');
-
-    console.log('[Display Question]', {
-        questionId: q.id,
-        type: q.type,
-        hasOptions: !!q.options,
-        optionsCount: q.options?.length,
-        answerSectionFound: !!answerSection
-    });
-
-    if (!answerSection) {
-        console.error('Answer section not found!');
-        return;
-    }
-
-    // Handle different question types
-    if (q.type === 'mcq' && q.options && q.options.length > 0) {
-        console.log('[MCQ] ✅ Rendering MCQ with', q.options.length, 'options');
-        console.log('[MCQ] Options:', q.options);
-
-        // Display multiple choice options as radio buttons
-        let optionsHTML = '';
-        // Removed redundant label as per user request
-        optionsHTML += '<div style="margin: 15px 0;">';
-
-        q.options.forEach((option, idx) => {
-            const isSelected = savedAnswer === idx.toString();
-            // Changed red (#DC0000) to standard colors (blue/gray) for selection
-            optionsHTML += `
-                <label class="mcq-option" style="display: block !important; padding: 15px !important; margin: 10px 0 !important; border: 2px solid ${isSelected ? '#3b82f6' : '#e0e0e0'} !important; border-radius: 8px !important; cursor: pointer !important; background: ${isSelected ? '#eff6ff' : 'white'} !important; transition: all 0.3s !important; font-size: 16px !important;">
-                    <input type="radio" name="answer_${q.id}" value="${idx}" ${isSelected ? 'checked' : ''} style="margin-right: 12px !important; cursor: pointer !important; width: 18px !important; height: 18px !important; vertical-align: middle !important;">
-                    <span style="vertical-align: middle !important;">${option}</span>
-                </label>
-            `;
-        });
-        optionsHTML += '</div>';
-
-        console.log('[MCQ] HTML length:', optionsHTML.length);
-        console.log('[MCQ] Setting innerHTML on answerSection...');
-
-        answerSection.innerHTML = optionsHTML;
-
-        console.log('[MCQ] ✅ innerHTML set, now adding event listeners...');
-
-        // Add event listeners to radio buttons
-        setTimeout(() => {
-            const radioButtons = document.querySelectorAll(`input[name="answer_${q.id}"]`);
-            console.log('[MCQ] Found', radioButtons.length, 'radio buttons');
-
-            if (radioButtons.length === 0) {
-                console.error('[MCQ] ❌ No radio buttons found! Check HTML rendering.');
-            }
-
-            radioButtons.forEach((radio, idx) => {
-                console.log('[MCQ] Adding listener to radio', idx);
-                radio.addEventListener('change', (e) => {
-                    console.log('[MCQ] ✅ Answer selected:', e.target.value);
-                    testAnswers[q.id] = e.target.value;
-                    updateNavigation();
-                    saveCurrentAnswer();
-                    // Re-render to update styles
-                    displayQuestion(currentQuestionIndex);
-                });
-            });
-
-            console.log('[MCQ] ✅ All event listeners added');
-        }, 100);
-
-    } else {
-        // For FITB, programming, and debugging - show textarea or input
-        console.log('[Text Input] Type:', q.type);
-
-        let placeholder = 'Type your answer here...';
-        let label = 'Your Answer:';
-        let isSingleLine = false;
-
-        if (q.type === 'fitb' || q.type === 'fill') {
-            placeholder = 'Fill in the blank...';
-            label = 'Your Answer:';
-            isSingleLine = true;
-        } else if (q.type === 'programming') {
-            placeholder = 'Write your code here...\n\n// Example:\nfunction myFunction() {\n    // Your code\n}';
-            label = 'Your Code:';
-        } else if (q.type === 'debugging') {
-            placeholder = 'Explain the errors you found and provide the corrected code...\n\n// List all errors:\n// 1.\n// 2.\n\n// Corrected code:';
-            label = 'Your Answer (List errors and corrected code):';
-        }
-
-        let inputHTML = '';
-        if (isSingleLine) {
-            inputHTML = `
-                <label class="answer-label">${label}</label>
-                <input type="text" id="answerInput" class="answer-textarea"
-                    placeholder="${placeholder}"
-                    value="${savedAnswer}"
-                    style="width: 100%; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; margin-top: 10px;"
-                >
-            `;
-        } else {
-            let rows = q.type === 'programming' || q.type === 'debugging' ? 15 : 5;
-            inputHTML = `
-                <label class="answer-label">${label}</label>
-                <textarea id="answerInput" class="answer-textarea"
-                    placeholder="${placeholder}"
-                    style="width: 100%; min-height: ${rows * 25}px; padding: 15px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; margin-top: 10px;"
-                >${savedAnswer}</textarea>
-            `;
-        }
-
-        answerSection.innerHTML = inputHTML;
-    }
-
-    // Clear reasoning input for now (we can remove this section later if not needed)
-    const reasoningInput = document.getElementById('reasoningInput');
-    if (reasoningInput) {
-        reasoningInput.value = '';
-        reasoningInput.parentElement.style.display = 'none'; // Hide reasoning for now
-    }
-
-    // Update navigation
-    updateNavigation();
-    updateQuestionCounter();
-}
-
-// Go to specific question
-function goToQuestion(index) {
-    // Save current answer
-    saveCurrentAnswer();
-
-    currentQuestionIndex = index;
-    displayQuestion(currentQuestionIndex);
-}
-
-// Save current answer
-function saveCurrentAnswer() {
-    if (!questions[currentQuestionIndex]) return;
-
-    const q = questions[currentQuestionIndex];
-
-    // Check if it's MCQ with radio buttons
-    if (q.type === 'mcq') {
-        const selectedRadio = document.querySelector(`input[name="answer_${q.id}"]:checked`);
-        if (selectedRadio) {
-            testAnswers[q.id] = selectedRadio.value;
-        }
-    } else {
-        // For other types, get from textarea
-        const answerElement = document.getElementById('answerInput');
-        if (answerElement) {
-            const answer = answerElement.value.trim();
-            if (answer) {
-                testAnswers[q.id] = answer;
-            }
-        }
-    }
-}
-
-// Update navigation buttons
-function updateNavigation() {
-    const btnPrev = document.getElementById('btnPrev');
-    const btnNext = document.getElementById('btnNext');
-    const btnSubmit = document.getElementById('btnSubmit');
-
-    if (btnPrev) btnPrev.disabled = currentQuestionIndex === 0;
-    if (btnNext) btnNext.style.display = currentQuestionIndex === questions.length - 1 ? 'none' : 'block';
-    if (btnSubmit) btnSubmit.style.display = currentQuestionIndex === questions.length - 1 ? 'block' : 'none';
-
-    // Update question navigation items
-    const navItems = document.querySelectorAll('.question-nav-item');
-    navItems.forEach((item, idx) => {
-        item.classList.remove('active');
-        if (idx === currentQuestionIndex) {
-            item.classList.add('active');
-        }
-        if (testAnswers[questions[idx]?.id]) {
-            item.classList.add('answered');
-        }
-    });
-}
-
-// Update question counter
-function updateQuestionCounter() {
-    document.getElementById('currentQ').textContent = currentQuestionIndex + 1;
-    document.getElementById('totalQ').textContent = questions.length;
-}
-
-// Navigation handlers - will be set up after DOM loads
 function setupNavigationHandlers() {
     const btnPrev = document.getElementById('btnPrev');
     const btnNext = document.getElementById('btnNext');
@@ -501,9 +383,8 @@ function setupNavigationHandlers() {
             submitTest();
         };
     }
-
-    console.log('[Navigation] Handlers set up successfully');
 }
+
 
 // Track current question
 let currentQuestionIndex = 0;
@@ -586,7 +467,10 @@ function handlePaste(e) {
 }
 
 function updateWarningCounter() {
-    document.getElementById('warningCounter').textContent = `${Math.max(0, warningCount)}/3`;
+    const counter = document.getElementById('warningCounter');
+    if (counter) {
+        counter.textContent = `${Math.max(0, warningCount)}/3`;
+    }
 }
 
 // Warning Modal
@@ -599,33 +483,77 @@ function closeWarning() {
     document.getElementById('warningModal').style.display = 'none';
 }
 
-// Submit Test
-async function submitTest() {
-    if (!confirm('Are you sure you want to submit the test? You cannot change your answers after submission.')) {
+// Custom Modal Functions
+function showCustomModal(title, message, confirmText = 'OK', onConfirm = null, showCancel = true) {
+    const modal = document.getElementById('customModal');
+    if (!modal) {
+        // Fallback
+        alert(message);
         return;
     }
 
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalMessage').textContent = message;
+
+    const confirmBtn = document.getElementById('modalConfirmBtn');
+    confirmBtn.textContent = confirmText;
+    confirmBtn.onclick = onConfirm ? () => { closeCustomModal(); onConfirm(); } : closeCustomModal;
+
+    const cancelBtn = document.querySelector('.modal-btn-cancel');
+    if (showCancel) {
+        cancelBtn.style.display = 'block';
+        cancelBtn.parentElement.style.justifyContent = 'space-between';
+    } else {
+        cancelBtn.style.display = 'none';
+        cancelBtn.parentElement.style.justifyContent = 'center';
+    }
+
+    modal.style.display = 'flex';
+}
+
+function showErrorModal(message) {
+    showCustomModal('Notice', message, 'OK', null, false);
+}
+
+function closeCustomModal() {
+    const modal = document.getElementById('customModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+async function confirmSubmitTest() {
+    closeCustomModal();
     collectAnswers();
     await processSubmission();
 }
 
+// Submit Test
+function submitTest() {
+    showCustomModal(
+        'Ready to Submit?',
+        'Are you sure you want to finish the test? You won\'t be able to change your answers after this.',
+        'Yes, Submit Test',
+        confirmSubmitTest,
+        true
+    );
+}
+
 function autoSubmitTest(reason = 'Time limit reached') {
-    alert(reason);
+    showErrorModal(reason);
     collectAnswers();
     processSubmission();
 }
 
+/**
+ * ... [Existing collectAnswers function] ...
+ */
 function collectAnswers() {
     // Save current answer before collecting all
     saveCurrentAnswer();
 
     console.log('📊 Collecting answers...');
     console.log('Current testAnswers:', testAnswers);
-
-    // Keep testAnswers as-is (already in correct format: { questionId: answer })
-    // For MCQ: answer is "0", "1", "2", "3" (option index)
-    // For text: answer is the text string
-    // Backend will handle the structure
 
     const answeredCount = Object.keys(testAnswers).filter(k => testAnswers[k]).length;
     console.log(`✅ ${answeredCount} questions answered out of ${questions.length}`);
@@ -667,7 +595,7 @@ async function processSubmission() {
         const token = session?.data?.session?.access_token;
 
         if (!token) {
-            alert('Authentication required. Please sign in again.');
+            showErrorModal('Authentication required. Please sign in again.');
             window.location.href = 'index.html';
             return;
         }
@@ -694,7 +622,7 @@ async function processSubmission() {
             let errorMessage = result.error || 'Submission failed';
 
             if (result.code === 'API_KEY_MISSING') {
-                errorMessage = '⚠️ AI Evaluation Service Unavailable\n\nThe AI evaluation service is currently not configured. Your answers have been recorded but cannot be evaluated at this time.\n\nPlease contact the administrator for assistance.';
+                errorMessage = 'AI Evaluation Service Unavailable. Your answers have been recorded but cannot be evaluated at this time.';
             }
 
             throw new Error(errorMessage);
@@ -702,29 +630,15 @@ async function processSubmission() {
 
         // Response is OK, save and redirect
         console.log('[Submit] ✅ Test submitted successfully!');
-        console.log('[Submit] Result keys:', Object.keys(result));
-        console.log('[Submit] Saving to localStorage...');
 
         try {
             const resultString = JSON.stringify(result);
-            console.log('[Submit] Result string length:', resultString.length);
             localStorage.setItem('testResult', resultString);
-            console.log('[Submit] ✅ Saved to localStorage');
-
-            // Verify it was saved
-            const saved = localStorage.getItem('testResult');
-            console.log('[Submit] Verification - localStorage has data:', !!saved);
-
-            console.log('[Submit] Redirecting to results.html...');
             window.location.href = 'results.html';
         } catch (storageError) {
             console.error('[Submit] ❌ localStorage error:', storageError);
-            // The original code had a fallback to redirect even if localStorage failed.
-            // The provided snippet seems to be a mix of error handling for the fetch response
-            // and localStorage. I will integrate the error details part for the fetch response
-            // and keep the localStorage error handling separate.
-            alert('Results received but failed to save locally. Redirecting anyway...');
-            window.location.href = 'results.html';
+            showErrorModal('Results received but failed to save locally. Redirecting anyway...');
+            setTimeout(() => { window.location.href = 'results.html'; }, 2000);
         }
     } catch (error) {
         console.error('Submission error:', error);
@@ -732,29 +646,22 @@ async function processSubmission() {
         // Show user-friendly error message
         let errorMessage = 'There was an error submitting your test. Please contact support.';
 
-        // The provided snippet seems to be trying to add more detailed error messages
-        // based on the `result` object from the server response, but it's placed
-        // in the outer catch block which handles network errors or errors thrown
-        // before the `response.json()` is processed.
-        // I will adapt the spirit of showing detailed server errors here,
-        // assuming `error` might contain `result` if it was thrown from the `if (!response.ok)` block.
         if (error.message && error.message.includes('AI Evaluation Service Unavailable')) {
             errorMessage = error.message;
         } else if (error.message && error.message.includes('Authentication')) {
-            errorMessage = '🔐 Authentication Error\n\nYour session has expired. Please refresh the page and sign in again.';
+            errorMessage = 'Your session has expired. Please refresh the page and sign in again.';
         } else if (!navigator.onLine) {
-            errorMessage = '🌐 No Internet Connection\n\nPlease check your internet connection and try again.';
+            errorMessage = 'No Internet Connection. Please check your internet connection and try again.';
         } else if (error.message) {
-            // If the error was thrown from the `if (!response.ok)` block,
-            // its message would contain the server's error message.
             errorMessage = error.message;
         }
 
-        alert(errorMessage);
         const loadingOverlay = document.getElementById('loadingOverlay');
         if (loadingOverlay) {
             loadingOverlay.classList.remove('show');
         }
+
+        showErrorModal(errorMessage);
     }
 }
 

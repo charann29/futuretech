@@ -4,6 +4,7 @@ const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk');
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
+const questionsData = require('./config/professional-questions.json');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -451,7 +452,8 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
             return res.status(400).json({ error: 'No answers provided' });
         }
 
-        const allQuestions = loadQuestions(); // Use the helper function
+        // Flatten all questions from all sections
+        const allQuestions = questionsData.sections.flatMap(section => section.questions);
         log(`Loaded ${allQuestions.length} questions`);
 
         // Get questions that were answered
@@ -501,8 +503,8 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
             .insert({
                 user_id: req.user.id,
                 user_email: req.user.email,
-                student_name: studentData.name,
-                student_phone: studentData.phone,
+                student_name: student.name,
+                student_phone: student.phone,
                 score: aiEvaluation.percentage,
                 percentage: aiEvaluation.percentage,
                 scholarship_percentage: scholarship.percentage,
@@ -521,14 +523,14 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
         }
 
         // Update lead with phone number if provided
-        if (studentData.phone) {
+        if (student.phone) {
             await supabase
                 .from('leads')
                 .upsert({
                     user_id: req.user.id,
                     email: req.user.email,
-                    name: studentData.name || req.user.user_metadata?.full_name,
-                    phone: studentData.phone,
+                    name: student.name || req.user.user_metadata?.full_name,
+                    phone: student.phone,
                     source: 'fsat_test',
                     avatar_url: req.user.user_metadata?.avatar_url,
                     updated_at: new Date().toISOString()
@@ -557,8 +559,8 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
         console.error('❌ [Submit] Full error:', error);
 
         res.status(500).json({
-            error: 'Failed to process test submission. Please try again or contact support.',
-            details: error.message
+            error: error.message || 'Failed to process test submission. Please try again or contact support.',
+            details: error.stack
         });
     }
 });
@@ -627,7 +629,7 @@ function generateMockEvaluation(answers, questions) {
             questionId: q.id,
             score: score,
             maxScore: q.marks,
-            category: category,
+            category: questionCategory,
             feedback: isCorrect ? "Good understanding of the concept." : "Review this topic for better clarity.",
             strengths: isCorrect ? ["Concept clarity"] : [],
             improvements: isCorrect ? [] : ["Needs revision"]

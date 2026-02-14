@@ -516,14 +516,15 @@
             height: 18px !important;
         }
 
-        .mcq-option input[type="radio"]:checked + span {
+        .mcq-option input[type="radio"]:checked+span {
             font-weight: 600 !important;
             color: var(--primary-red) !important;
         }
 
         .reasoning-section {
             margin-top: 20px;
-            display: none; /* Hidden by default, can be shown for essay questions */
+            display: none;
+            /* Hidden by default, can be shown for essay questions */
         }
 
         .reasoning-textarea {
@@ -798,6 +799,116 @@
         .onboard-form-group input:focus {
             outline: none;
             border-color: var(--primary-red);
+            box-shadow: 0 0 0 4px rgba(220, 0, 0, 0.1);
+        }
+
+        /* Custom Modal */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            /* Above everything */
+            backdrop-filter: blur(5px);
+        }
+
+        .custom-modal {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background: #fff5f5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .modal-icon svg {
+            width: 40px;
+            height: 40px;
+            color: var(--primary-red);
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--black);
+        }
+
+        .modal-message {
+            font-size: 15px;
+            color: var(--light-gray);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            flex: 1;
+        }
+
+        .modal-btn-cancel {
+            background: #f1f1f1;
+            color: var(--black);
+        }
+
+        .modal-btn-cancel:hover {
+            background: #e1e1e1;
+        }
+
+        .modal-btn-confirm {
+            background: var(--primary-red);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+        }
+
+        .modal-btn-confirm:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 0, 0, 0.4);
+        }
         }
 
         .onboarding-card button[type="submit"] {
@@ -884,7 +995,8 @@
     <div class="onboarding-overlay" id="onboardingOverlay">
         <div class="onboarding-card">
             <h2>Welcome to <span>FSAT Test</span></h2>
-            <p style="color: var(--light-gray); margin-bottom: 30px;">Please provide your details to begin the assessment</p>
+            <p style="color: var(--light-gray); margin-bottom: 30px;">Please provide your details to begin the
+                assessment</p>
             <form id="onboardingForm">
                 <div class="onboard-form-group">
                     <label>Full Name *</label>
@@ -1158,6 +1270,26 @@
             }
         });
     </script>
+    <!-- Custom Confirmation Modal -->
+    <div id="customModal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <div class="modal-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+            <h3 id="modalTitle" class="modal-title">Ready to Submit?</h3>
+            <p id="modalMessage" class="modal-message">Are you sure you want to finish the test? You won't be able to
+                change your answers
+                after this.</p>
+            <div id="modalActions" class="modal-actions">
+                <button class="modal-btn modal-btn-cancel" onclick="closeCustomModal()">Cancel</button>
+                <button id="modalConfirmBtn" class="modal-btn modal-btn-confirm" onclick="confirmSubmitTest()">Yes,
+                    Submit Test</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

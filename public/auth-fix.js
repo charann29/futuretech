@@ -1,7 +1,7 @@
 // FutureTech Authentication - Fixed Version
 // This script initializes Supabase and AuthManager globally
 
-(function() {
+(function () {
     'use strict';
 
     console.log('[Auth] Initializing authentication...');
@@ -97,8 +97,8 @@
 
                 if (userName) {
                     userName.textContent = this.user.user_metadata?.full_name ||
-                                          this.user.email?.split('@')[0] ||
-                                          'User';
+                        this.user.email?.split('@')[0] ||
+                        'User';
                 }
 
                 if (userAvatar && this.user.user_metadata?.avatar_url) {
@@ -182,11 +182,14 @@
 
         async signInWithGoogle() {
             try {
+                const redirectUrl = `${window.location.origin}/index.html`;
                 console.log('[AuthManager] Starting Google sign-in...');
+                console.log('[AuthManager] specific-google-auth-fix: Using redirect URL:', redirectUrl);
+
                 const { data, error } = await window.supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: `${window.location.origin}/index.html`,
+                        redirectTo: redirectUrl,
                         queryParams: {
                             access_type: 'offline',
                             prompt: 'consent',
