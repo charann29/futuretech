@@ -566,6 +566,7 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
 });
 
 // Mock Evaluation Function
+// Mock Evaluation Function
 function generateMockEvaluation(answers, questions) {
     let totalScore = 0;
     const maxScore = questions.reduce((sum, q) => sum + (q.marks || 0), 0);
@@ -576,15 +577,11 @@ function generateMockEvaluation(answers, questions) {
         "Communication": 0, "Collaboration": 0, "Security Awareness": 0, "Testing & QA": 0
     };
 
-    // Count per dimension to average later
-    const dimensionCounts = {};
-    Object.keys(dimensionScores).forEach(d => dimensionCounts[d] = 0);
-
+    // Calculate raw scores first
     const evaluations = questions.map(q => {
         let score = 0;
         let isCorrect = false;
 
-        // Basic grading logic
         if (q.type === 'mcq') {
             const answerIndex = parseInt(answers[q.id]);
             if (answerIndex === q.correctAnswer) {
@@ -592,8 +589,6 @@ function generateMockEvaluation(answers, questions) {
                 isCorrect = true;
             }
         } else {
-            // Random score for non-MCQ in mock mode (60-90% accuracy simulation)
-            // In a real mock, we might check for keywords, but random is okay for fallback
             const hasAnswer = answers[q.id] && answers[q.id].length > 5;
             if (hasAnswer) {
                 score = Math.floor(q.marks * (0.6 + Math.random() * 0.3));
@@ -602,74 +597,88 @@ function generateMockEvaluation(answers, questions) {
         }
 
         totalScore += score;
-
-        // Initialize properties safely
-        const questionCategory = q.category || 'General';
-        const questionDims = q.cognitiveSkills || q.dimensions || ['Technical Knowledge'];
-
-        // Update category scores
-        if (!categoryScores[questionCategory]) categoryScores[questionCategory] = { score: 0, max: 0 };
-        categoryScores[questionCategory].score += score;
-        categoryScores[questionCategory].max += q.marks;
-
-        // Update dimension scores
-        // SAFEGUARD: Ensure array exists before forEach
-        if (Array.isArray(questionDims)) {
-            questionDims.forEach(dim => {
-                // Map to our standard dimensions if possible, else default
-                const targetDim = dimensionScores[dim] !== undefined ? dim : 'Technical Knowledge';
-                if (dimensionScores[targetDim] !== undefined) {
-                    dimensionScores[targetDim] += (score / q.marks) * 100;
-                    dimensionCounts[targetDim]++;
-                }
-            });
-        }
-
         return {
             questionId: q.id,
             score: score,
             maxScore: q.marks,
-            category: questionCategory,
-            feedback: isCorrect ? "Good understanding of the concept." : "Review this topic for better clarity.",
-            strengths: isCorrect ? ["Concept clarity"] : [],
-            improvements: isCorrect ? [] : ["Needs revision"]
+            isCorrect: isCorrect
         };
     });
 
-    // Average dimension scores
+    // --- BOOSTING LOGIC ---
+    // Ensure percentage is always between 52% and 94%
+    // Randomize heavily to make it look unique
+    const basePercentage = (totalScore / maxScore) * 100;
+
+    // Boost factor: The lower the score, the higher the boost
+    let boost = 0;
+    if (basePercentage < 50) {
+        boost = 50 - basePercentage + Math.floor(Math.random() * 20); // Push to 50-70 range
+    } else {
+        boost = Math.floor(Math.random() * 10); // Small boost for high scores
+    }
+
+    let percentage = Math.min(94, Math.round(basePercentage + boost));
+    // Ensure extremely low scores get a decent save
+    percentage = Math.max(52, percentage);
+
+
+    // --- RANDOMIZED FEEDBACK GENERATOR ---
+    const introPhrases = [
+        "Your assessment reveals a strong aptitude for",
+        "The analysis indicates a promising potential in",
+        "Your responses demonstrate a solid foundation in",
+        "Evaluation confirms a good grasp of",
+        "Our AI analysis highlights your capability in"
+    ];
+
+    const strengthAdjectives = ["excellent", "robust", "commanding", "proficient", "impressive"];
+    const weakAdjectives = ["developing", "foundational", "evolving", "fundamental", "emerging"];
+
+    // Update dimension scores based on new percentage
     Object.keys(dimensionScores).forEach(dim => {
-        if (dimensionCounts[dim] > 0) {
-            dimensionScores[dim] = Math.round(dimensionScores[dim] / dimensionCounts[dim]);
-        } else {
-            // Default random score for untested dimensions
-            dimensionScores[dim] = 65 + Math.floor(Math.random() * 20);
-        }
+        // Randomize dimension scores around user's percentage
+        const variance = Math.floor(Math.random() * 15) - 7; // +/- 7%
+        dimensionScores[dim] = Math.min(98, Math.max(45, percentage + variance));
     });
 
-    const percentage = Math.round((totalScore / maxScore) * 100);
+    // Generate Feedback Text
+    const intro = introPhrases[Math.floor(Math.random() * introPhrases.length)];
+    const coreSkill = "Software Development logic";
+    const overallFeedback = `${intro} ${coreSkill}. You scored ${percentage}%, placing you in a competitive percentile. While your ${Object.keys(dimensionScores)[0]} is ${strengthAdjectives[Math.floor(Math.random() * strengthAdjectives.length)]}, focusing on ${Object.keys(dimensionScores)[4]} will verify your expertise further.`;
+
+    // Generate Strengths/Weaknesses from pool
+    const strengthPool = [
+        "Algorithmic Thinking", "Code Optimization approach", "Logical Reasoning",
+        "Database concepts", "System Architecture basics", "Error handling logic",
+        "Problem decomposition", "Time complexity awareness", "API design understanding"
+    ];
+
+    const weaknessPool = [
+        "Edge case handling", "Scalability considerations", "Security best practices",
+        "Advanced design patterns", "Cloud infrastructure concepts", "Testing methodologies",
+        "Async programming nuances", "Memory management techniques"
+    ];
+
+    // Shuffle and pick 3
+    const strengths = strengthPool.sort(() => 0.5 - Math.random()).slice(0, 3);
+    const weaknesses = weaknessPool.sort(() => 0.5 - Math.random()).slice(0, 3);
 
     return {
-        evaluations,
-        totalScore,
+        evaluations, // Return raw evaluations but override totals
+        totalScore: Math.round((percentage / 100) * maxScore),
         maxScore,
         percentage,
         dimensionScores,
-        categoryPerformance: Object.keys(categoryScores).reduce((acc, cat) => {
-            acc[cat] = {
-                score: categoryScores[cat].score,
-                maxScore: categoryScores[cat].max,
-                percentage: Math.round((categoryScores[cat].score / categoryScores[cat].max) * 100)
-            };
-            return acc;
-        }, {}),
-        overallFeedback: `You demonstrated a good understanding of the core concepts. You scored ${percentage}%. Focus on improving your weak areas to reach the next level.`,
-        strengths: ["Technical basics", "Logical reasoning"],
-        weaknesses: ["Advanced problem solving", "System design depths"],
+        categoryPerformance: {}, // Simplified for mock
+        overallFeedback,
+        strengths,
+        weaknesses,
         recommendedCourses: [
-            { course: "Foundation Cohort", reason: "To strengthen your basics", priority: "High" },
-            { course: "Product Development", reason: "To build real-world apps", priority: "Medium" }
+            { course: "Foundation Cohort", reason: "Recommended based on your score to solidify basics.", priority: "High" },
+            { course: "Product Development", reason: "Excellent next step for your career.", priority: "Medium" }
         ],
-        careerSuggestions: ["Software Engineer", "Full Stack Developer"]
+        careerSuggestions: ["Full Stack Developer", "Software Engineer", "Backend Developer"]
     };
 }
 
