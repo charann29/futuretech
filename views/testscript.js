@@ -308,6 +308,54 @@ async function initializeOnboarding() {
         }
     }
 
+    // NEW: Check if user already took the test via API
+    try {
+        const session = await window.supabase.auth.getSession();
+        const token = session?.data?.session?.access_token;
+        if (token) {
+            const response = await fetch('/api/user-results', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+            if (data.success && data.results.length > 0) {
+                console.log('[Onboarding] User already took the test. Redirecting to dashboard.');
+
+                // Show "Already Taken" message instead of starting
+                const overlay = document.getElementById('onboardingOverlay');
+                if (overlay) {
+                    overlay.classList.remove('hidden');
+                    const card = overlay.querySelector('.onboarding-card');
+                    if (card) {
+                        card.innerHTML = `
+                            <h2 style="color: var(--primary-red); margin-bottom: 20px;">Assessment Already Completed</h2>
+                            <p style="color: var(--light-gray); margin-bottom: 30px; font-size: 16px; line-height: 1.6;">
+                                You have already taken the FSAT test once. To ensure fairness, we only allow one attempt per user.
+                            </p>
+                            <div style="background: #f8f8f8; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--primary-red);">
+                                <p style="margin: 0; font-weight: 600; color: #333;">Score: ${data.results[0].score}/100</p>
+                                <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Submitted on: ${new Date(data.results[0].submitted_at).toLocaleDateString()}</p>
+                            </div>
+                            <a href="dashboard.html" style="
+                                display: block;
+                                background: black;
+                                color: white;
+                                text-decoration: none;
+                                padding: 18px;
+                                border-radius: 12px;
+                                font-weight: 800;
+                                text-align: center;
+                                transition: all 0.3s;
+                            ">📊 Go to My Dashboard</a>
+                        `;
+                    }
+                }
+                return; // Stop initialization
+            }
+        }
+    } catch (apiError) {
+        console.error('[Onboarding] Error checking user results:', apiError);
+    }
+
     // Get user from auth
     if (window.authManager && window.authManager.getUser()) {
         const user = window.authManager.getUser();

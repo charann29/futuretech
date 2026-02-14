@@ -302,9 +302,29 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
     try {
         log('--- NEW SUBMISSION STARTED ---');
 
-        const { student, answers, metadata, timeSpent } = req.body;
         const userId = req.user.id;
         const userEmail = req.user.email;
+
+        // Check for existing submission
+        const { data: existingResult, error: checkError } = await supabase
+            .from('test_results')
+            .select('id')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+        if (checkError) {
+            log(`Error checking existing results: ${checkError.message}`);
+        }
+
+        if (existingResult) {
+            log(`User ${userId} already has a test result. Blocking submission.`);
+            return res.status(403).json({
+                error: 'Test already completed',
+                message: 'You have already taken the FSAT once. Please check your dashboard for results.'
+            });
+        }
+
+        const { student, answers, metadata, timeSpent } = req.body;
 
         log(`User: ${userId} (${userEmail}), Answers count: ${Object.keys(answers || {}).length}`);
 
