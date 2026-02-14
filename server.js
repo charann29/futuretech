@@ -327,7 +327,12 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
                 final_fee: scholarship.finalFee,
                 answers: answers,
                 evaluation: aiEvaluation,
-                metadata: metadata,
+                metadata: {
+                    ...metadata,
+                    college: student.college,
+                    course: student.course,
+                    year: student.year
+                },
                 submitted_at: new Date().toISOString()
             });
 
