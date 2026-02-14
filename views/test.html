@@ -1019,7 +1019,29 @@
                     <label>Year of Passing Out *</label>
                     <input type="number" id="onboardYear" required min="1990" max="2030" placeholder="e.g., 2026">
                 </div>
-                <button type="submit">🚀 Start FSAT Test (45 Minutes)</button>
+                <button type="submit" style="
+                    background: linear-gradient(135deg, #DC0000 0%, #B30000 100%);
+                    color: white;
+                    border: none;
+                    padding: 18px 32px;
+                    font-size: 18px;
+                    font-weight: 800;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    width: 100%;
+                    margin-top: 24px;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 10px 20px rgba(220, 0, 0, 0.2);
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 30px rgba(220, 0, 0, 0.3)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(220, 0, 0, 0.2)'">
+                    🚀 Start FSAT Test (45 Minutes)
+                </button>
             </form>
         </div>
     </div>
