@@ -689,16 +689,18 @@
             }
         }
 
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.95);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
         }
 
         .loading-overlay.show {
@@ -953,7 +955,7 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(220, 0, 0, 0.4);
         }
-        }
+
 
         .onboarding-card button[type="submit"] {
             width: 100%;
