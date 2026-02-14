@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const Anthropic = require('@anthropic-ai/sdk');
+// Anthropic SDK removed — using randomized evaluation
 const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 const questionsData = require('./config/professional-questions.json');
@@ -30,6 +30,11 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'views')));
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Serve favicon
+app.get('/favicon.ico', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'favicon.ico'));
+});
 
 // Serve React app (if built)
 const reactBuildPath = path.join(__dirname, 'frontend', 'dist');
@@ -90,10 +95,7 @@ async function requireAuth(req, res, next) {
     }
 }
 
-// Initialize Anthropic client
-const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY || 'your-api-key-here',
-});
+// AI client removed — using randomized evaluation
 
 // Load questions
 const fs = require('fs');
@@ -151,173 +153,7 @@ function calculateScholarship(percentage) {
     };
 }
 
-// AI Analysis using Claude - MULTI-DIMENSIONAL
-async function analyzeWithAI(answers, questions) {
-    console.log('🤖 [AI] Starting AI analysis...');
-    console.log('🤖 [AI] Questions to analyze:', questions.length);
-
-    try {
-        console.log('🤖 [AI] Preparing prompt for Claude...');
-
-        // Prepare the prompt for Claude
-        const analysisPrompt = `You are an expert technical evaluator for FutureTech IT Consulting analyzing a student's comprehensive scholarship test.
-
-FutureTech offers these courses:
-1. Foundation Cohort: Basic Logic Building, Programming, Data Structures & Algorithms
-2. Product Development: Full Stack (JAVA/Python/MERN), DevOps, Docker, Kubernetes, LLM API Integrations
-3. UI/UX & AI: Generative AI (RAG, MCP, LLMs, AI Agents), Figma, Adobe XD, PowerBI, Tableau, Machine Learning
-4. Cyber Security: Web & Network Security, Vulnerability Assessment
-5. Software Testing: Manual, Automation (Selenium), Performance Testing
-
-MULTI-DIMENSIONAL ANALYSIS REQUIRED:
-Evaluate across these dimensions:
-1. Technical Knowledge - Understanding of core technologies
-2. Problem Solving - Breaking down complex problems
-3. Analytical Thinking - Logical analysis and reasoning
-4. Creativity - Innovative approaches
-5. Debugging Skills - Identifying and fixing errors
-6. System Design - Architecting scalable systems
-7. Communication - Explaining concepts clearly
-8. Collaboration - Team-oriented thinking
-9. Security Awareness - Security principles
-10. Testing & QA - Quality assurance mindset
-
-Questions and Answers:
-${questions.map((q, i) => {
-            let studentAnswer = answers[q.id] || 'Not answered';
-
-            // For MCQ, convert index to actual option text
-            if (q.type === 'mcq' && q.options && answers[q.id] !== undefined) {
-                const answerIndex = parseInt(answers[q.id]);
-                if (!isNaN(answerIndex) && q.options[answerIndex]) {
-                    studentAnswer = `Option ${answerIndex + 1}: ${q.options[answerIndex]}`;
-
-                    // Check if correct
-                    if (answerIndex === q.correctAnswer) {
-                        studentAnswer += ' ✓ CORRECT';
-                    } else {
-                        studentAnswer += ` ✗ WRONG (Correct: Option ${q.correctAnswer + 1}: ${q.options[q.correctAnswer]})`;
-                    }
-                }
-            }
-
-            return `
-Question ${i + 1} (${q.marks} marks)
-Type: ${q.type || 'essay'}
-Category: ${q.category || 'General'}
-Dimensions tested: ${q.cognitiveSkills?.join(', ') || q.dimensions?.join(', ') || 'Multiple'}
-Question: ${q.question}
-${q.options ? 'Options: ' + q.options.map((opt, idx) => `${idx + 1}. ${opt}`).join(', ') : ''}
-${q.correctAnswer !== undefined ? 'Correct Answer: Option ' + (q.correctAnswer + 1) + ': ' + (q.options ? q.options[q.correctAnswer] : q.correctAnswers?.join(', ') || 'See explanation') : ''}
-Student's Answer: ${studentAnswer}
-${q.explanation ? 'Expected Understanding: ' + (typeof q.explanation === 'string' ? q.explanation : JSON.stringify(q.explanation.answer || q.explanation)) : ''}
----
-`;
-        }).join('\n')}
-
-Provide evaluation in JSON format:
-{
-  "evaluations": [
-    {
-      "questionId": number,
-      "score": number,
-      "maxScore": number,
-      "category": "string",
-      "feedback": "string (2-3 sentences)",
-      "strengths": ["string"],
-      "improvements": ["string"]
-    }
-  ],
-  "totalScore": number,
-  "maxScore": number,
-  "percentage": number,
-
-  "dimensionScores": {
-    "Technical Knowledge": number (0-100),
-    "Problem Solving": number (0-100),
-    "Analytical Thinking": number (0-100),
-    "Creativity": number (0-100),
-    "Debugging Skills": number (0-100),
-    "System Design": number (0-100),
-    "Communication": number (0-100),
-    "Collaboration": number (0-100),
-    "Security Awareness": number (0-100),
-    "Testing & QA": number (0-100)
-  },
-
-  "categoryPerformance": {
-    "Foundation": { "score": number, "maxScore": number, "percentage": number },
-    "Product Development": { "score": number, "maxScore": number, "percentage": number },
-    "AI & Data Science": { "score": number, "maxScore": number, "percentage": number },
-    "UI/UX": { "score": number, "maxScore": number, "percentage": number },
-    "Cyber Security": { "score": number, "maxScore": number, "percentage": number },
-    "Software Testing": { "score": number, "maxScore": number, "percentage": number }
-  },
-
-  "overallFeedback": "string (comprehensive analysis)",
-  "strengths": ["string (3-5 key strengths)"],
-  "weaknesses": ["string (3-5 areas for improvement)"],
-
-  "recommendedCourses": [
-    {
-      "course": "Course name from FutureTech offerings",
-      "reason": "Why recommended based on dimension scores and gaps",
-      "priority": "High" | "Medium" | "Low"
-    }
-  ],
-
-  "careerSuggestions": ["string (3-5 career paths based on strengths)"]
-}
-
-SCORING GUIDELINES:
-- MCQ: Full marks if correct, 0 if wrong
-- Fill-in-Blanks: Full marks if correct or reasonable alternative
-- Programming: Partial credit for approach even if incomplete
-- Debugging: Marks for each error identified and fixed
-- Dimension scores: Aggregate performance across questions testing that dimension
-- Be fair but rigorous. Reward good thinking even if execution imperfect.`;
-
-        console.log('🤖 [AI] Sending request to Claude API...');
-        console.log('🤖 [AI] Prompt length:', analysisPrompt.length, 'characters');
-
-        const startTime = Date.now();
-
-        const message = await anthropic.messages.create({
-            model: 'claude-3-5-sonnet-20240620', // Updated to valid model
-            max_tokens: 8000,
-            messages: [{
-                role: 'user',
-                content: analysisPrompt
-            }]
-        });
-
-        const endTime = Date.now();
-        console.log('🤖 [AI] ✅ Received response from Claude');
-        console.log('🤖 [AI] Response time:', (endTime - startTime) + 'ms');
-
-        const responseText = message.content[0].text;
-        console.log('🤖 [AI] Response length:', responseText.length, 'characters');
-
-        const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-
-        if (jsonMatch) {
-            console.log('🤖 [AI] ✅ JSON parsed successfully');
-            const result = JSON.parse(jsonMatch[0]);
-            console.log('🤖 [AI] Total Score:', result.totalScore, '/', result.maxScore);
-            console.log('🤖 [AI] Percentage:', result.percentage + '%');
-            return result;
-        }
-
-        console.error('🤖 [AI] ❌ Failed to parse JSON from response');
-        console.error('🤖 [AI] Response text:', responseText.substring(0, 500));
-        throw new Error('Failed to parse AI response');
-    } catch (error) {
-        console.error('🤖 [AI] ❌ Analysis Error:', error.message);
-        console.error('🤖 [AI] Error type:', error.constructor.name);
-        if (error.status) console.error('🤖 [AI] HTTP Status:', error.status);
-        throw error;
-    }
-}
+// Randomized evaluation (Claude LLM removed)
 
 // Lead capture endpoint - stores user data in Supabase
 app.post('/api/save-lead', requireAuth, async (req, res) => {
@@ -431,19 +267,9 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
     try {
         log('--- NEW SUBMISSION STARTED ---');
 
-        // Check API key
-        let useMockAI = false;
-        if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === '') {
-            log('⚠️ Anthropic API key not configured. Using Mock AI.');
-            console.log('⚠️ Anthropic API key not configured. Using Mock AI for evaluation.');
-            useMockAI = true;
-        }
-
         const { student, answers, metadata, timeSpent } = req.body;
         const userId = req.user.id;
         const userEmail = req.user.email;
-
-        log(`User: ${userId} (${userEmail}), Answers count: ${Object.keys(answers || {}).length}`);
 
         log(`User: ${userId} (${userEmail}), Answers count: ${Object.keys(answers || {}).length}`);
 
@@ -460,26 +286,15 @@ app.post('/api/submit-test', requireAuth, async (req, res) => {
         const testQuestions = allQuestions.filter(q => answers[q.id]);
         log(`Evaluating ${testQuestions.length} answered questions`);
 
-        // Analyze with AI or Mock
+        // Randomized evaluation (no AI)
         let aiEvaluation;
         try {
-            if (useMockAI) {
-                log('Using Mock AI evaluation...');
-                aiEvaluation = generateMockEvaluation(answers, testQuestions);
-            } else {
-                log('Calling AI for evaluation...');
-                try {
-                    aiEvaluation = await analyzeWithAI(answers, testQuestions);
-                } catch (aiCallError) {
-                    log(`AI Call Failed: ${aiCallError.message}`);
-                    log('Falling back to Mock AI...');
-                    aiEvaluation = generateMockEvaluation(answers, testQuestions);
-                }
-            }
+            log('Using randomized evaluation...');
+            aiEvaluation = generateMockEvaluation(answers, testQuestions);
         } catch (evalError) {
             log(`Evaluation Generation Failed: ${evalError.message}`);
             log(evalError.stack);
-            throw evalError; // Re-throw to main catch
+            throw evalError;
         }
 
         log('Evaluation generation successful');
@@ -642,6 +457,9 @@ function generateMockEvaluation(answers, questions) {
         dimensionScores[dim] = Math.min(98, Math.max(45, percentage + variance));
     });
 
+    // Force percentage into 50-69% range so everyone gets 40% scholarship
+    percentage = Math.max(50, Math.min(69, 50 + Math.floor(Math.random() * 20)));
+
     // Generate Feedback Text
     const intro = introPhrases[Math.floor(Math.random() * introPhrases.length)];
     const coreSkill = "Software Development logic";
@@ -712,48 +530,28 @@ app.get('/api/get-last-result', requireAuth, (req, res) => {
 
 app.post('/api/generate-resume', requireAuth, async (req, res) => {
     try {
-        // Check if API key is configured
-        if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === '') {
-            console.error('❌ Resume generation failed: Anthropic API key not configured');
-            return res.status(503).json({
-                error: 'AI service not configured. Please contact administrator to add Anthropic API key.',
-                code: 'API_KEY_MISSING'
-            });
-        }
-
         const { phone, name, email, education, skills, experience } = req.body;
 
-        // Log user info from authentication
         console.log('📄 Resume generation request from:', req.user.email);
 
-        const resumePrompt = `Generate a professional, ATS-optimized resume for a student applying for IT jobs in India. Use the following information:
+        // Generate a simple HTML resume template (no AI)
+        const resumeHTML = `
+        <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+            <h1 style="color: #1a1a1a; border-bottom: 2px solid #333; padding-bottom: 10px;">${name || 'Your Name'}</h1>
+            <p style="color: #555;">${email || ''} ${phone ? '| ' + phone : ''}</p>
 
-Name: ${name || 'N/A'}
-Email: ${email || 'N/A'}
-Phone: ${phone}
-Education: ${education || 'N/A'}
-Skills: ${skills || 'N/A'}
-Experience: ${experience || 'Fresher'}
+            <h2 style="color: #333; margin-top: 20px;">Professional Summary</h2>
+            <p>Motivated and enthusiastic professional seeking opportunities in the IT industry. Eager to apply technical skills and contribute to innovative projects.</p>
 
-Create a well-structured resume in HTML format that:
-1. Is ATS-friendly with proper keywords
-2. Highlights technical skills prominently
-3. Uses a clean, professional format
-4. Includes sections for: Summary, Education, Skills, Projects (if any), Experience
-5. Is optimized for Indian IT job market
+            <h2 style="color: #333;">Education</h2>
+            <p>${education || 'Not specified'}</p>
 
-Return only the HTML content (no markdown, just pure HTML).`;
+            <h2 style="color: #333;">Skills</h2>
+            <p>${skills || 'Not specified'}</p>
 
-        const message = await anthropic.messages.create({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 4000,
-            messages: [{
-                role: 'user',
-                content: resumePrompt
-            }]
-        });
-
-        const resumeHTML = message.content[0].text;
+            <h2 style="color: #333;">Experience</h2>
+            <p>${experience || 'Fresher'}</p>
+        </div>`;
 
         // Store resume in Supabase
         try {
@@ -786,7 +584,7 @@ Return only the HTML content (no markdown, just pure HTML).`;
                     email: req.user.email,
                     name: name || req.user.user_metadata?.full_name,
                     phone: phone,
-                    source: 'ai_resume',
+                    source: 'resume_builder',
                     avatar_url: req.user.user_metadata?.avatar_url,
                     updated_at: new Date().toISOString()
                 }, {
@@ -803,7 +601,6 @@ Return only the HTML content (no markdown, just pure HTML).`;
         });
     } catch (error) {
         console.error('❌ Resume generation error:', error.message);
-        console.error('Full error:', error);
         res.status(500).json({
             error: 'Failed to generate resume. Please try again or contact support.',
             details: error.message
@@ -821,14 +618,7 @@ app.listen(PORT, () => {
     console.log(`📝 Test page: http://localhost:${PORT}/test`);
     console.log(`📄 Resume builder: http://localhost:${PORT}/resume`);
 
-    // Check API key
-    if (!process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY === '') {
-        console.log('\n⚠️  WARNING: Anthropic API key is not set!');
-        console.log('   AI features (resume builder & test evaluation) will not work.');
-        console.log('   Please add ANTHROPIC_API_KEY to your .env file.');
-    } else {
-        console.log('✅ Anthropic API key configured');
-    }
+    console.log('✅ Randomized evaluation mode (no AI dependency)');
 
     // Check Supabase
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY) {

@@ -971,6 +971,16 @@
                 Download Report
             </button>
         </div>
+
+        <!-- Detailed Question Review Section -->
+        <div class="ai-analysis-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%); border: 1px solid rgba(0,0,0,0.1); padding: 20px; border-radius: 12px;">
+            <div class="ai-analysis-title" style="color: #333; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
+                📚 Detailed Question Review & Explanations
+            </div>
+            <div id="questionReviewContainer">
+                <p style="color: #666; font-style: italic;">Loading question details...</p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1120,7 +1130,8 @@
         function animateValue(elementId, start, end, duration) {
             const element = document.getElementById(elementId);
             if (!element) return;
-            const range = end - start   const startTime = performance.now();
+            const range = end - start;
+            const startTime = performance.now();
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
@@ -1159,12 +1170,8 @@
             const rank = calculateRank(totalScore);
             const percentile = Math.round((1 - rank / 1000) * 100);
 
-            let scholarshipPercent = 10;
-            if (totalScore >= 90) scholarshipPercent = 60;
-            else if (totalScore >= 80) scholarshipPercent = 50;
-            else if (totalScore >= 70) scholarshipPercent = 40;
-            else if (totalScore >= 60) scholarshipPercent = 30;
-            else if (totalScore >= 50) scholarshipPercent = 20;
+            // Everyone gets 40% scholarship
+            let scholarshipPercent = 40;
 
             const originalFee = 45000;
             const savings = Math.floor(originalFee * scholarshipPercent / 100);
@@ -1274,15 +1281,7 @@
                 }
             }
 
-            <!-- Detailed Question Review Section -->
-            <div class="ai-analysis-box" style="margin-top: 30px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%); border: 1px solid rgba(0,0,0,0.1);">
-                <div class="ai-analysis-title" style="color: #333; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
-                    📚 Detailed Question Review & Explanations
-                </div>
-                <div id="questionReviewContainer">
-                    <p style="color: #666; font-style: italic;">Loading question details...</p>
-                </div>
-            </div>
+
 
             document.getElementById('aiFeedback').innerHTML = feedbackHTML;
             document.getElementById('aiRecommendationText').innerHTML = recommendation;
@@ -1412,6 +1411,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadResults);
+
+        function shareOnLinkedIn() {
             const data = window.resultData || {};
             const score = data.score || 0;
             const rank = data.rank || 0;
@@ -1494,7 +1495,7 @@ This assessment helped me understand where I stand in my technical skills. It wa
             alert('Report download feature coming soon!\n\nFor now, you can take a screenshot of this page or share on LinkedIn.');
         }
 
-        document.addEventListener('DOMContentLoaded', loadResults);
+
     </script>
 </body>
 
