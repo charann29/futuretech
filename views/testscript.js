@@ -286,14 +286,42 @@ async function initCamera() {
 
 // Initialize onboarding with user data
 async function initializeOnboarding() {
+    console.log('[Onboarding] Initializing...');
+
+    // Check localStorage first
+    const savedData = localStorage.getItem('studentData');
+    if (savedData) {
+        try {
+            studentData = JSON.parse(savedData);
+            console.log('[Onboarding] Loaded saved student data:', studentData.email);
+
+            // If we have a phone number, we can skip onboarding
+            if (studentData.phone && studentData.phone.length === 10) {
+                console.log('[Onboarding] Phone found, skipping overlay');
+                const overlay = document.getElementById('onboardingOverlay');
+                if (overlay) overlay.classList.add('hidden');
+                loadQuestions();
+                return;
+            }
+        } catch (e) {
+            console.error('[Onboarding] Error parsing saved data:', e);
+        }
+    }
+
     // Get user from auth
     if (window.authManager && window.authManager.getUser()) {
         const user = window.authManager.getUser();
 
         // Pre-fill form with user data
         const nameField = document.getElementById('onboardName');
+        const phoneField = document.getElementById('onboardPhone');
+
         if (nameField) {
             nameField.value = user.user_metadata?.full_name || user.email?.split('@')[0] || '';
+        }
+
+        if (phoneField && user.phone) {
+            phoneField.value = user.phone.replace('+91', '').replace(' ', '');
         }
     }
 }
@@ -309,22 +337,28 @@ async function handleOnboardingSubmit(e) {
     const course = document.getElementById('onboardCourse').value.trim() || 'Not specified';
     const year = document.getElementById('onboardYear').value.trim();
 
-    // Validate phone
+    // Validate phone (Strict 10 digits)
     if (!/^\d{10}$/.test(phone)) {
-        alert('Please enter a valid 10-digit phone number');
+        alert('Please enter a valid 10-digit mobile number (numbers only, no spaces/zeros at start)');
         return;
     }
 
-    // Validate year
-    const yearNum = parseInt(year);
-    if (!year || yearNum < 1990 || yearNum > 2030) {
-        alert('Please enter a valid year of passing out (1990-2030)');
+    if (!name || !college || !course || !year) {
+        alert('Please fill in all the required fields marked with *');
         return;
     }
 
     // Save student data
+    if (!name || !phone || !year) {
+        alert('All fields marked with * are mandatory');
+        return;
+    }
+
     const email = window.authManager?.getUser()?.email || 'test@example.com';
     studentData = { name, email, phone, college, course, year };
+
+    // Save to localStorage for persistence across sessions
+    localStorage.setItem('studentData', JSON.stringify(studentData));
 
     // Save lead data to backend
     try {
