@@ -124,23 +124,23 @@
         }
 
         .cta-btn {
-            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
+            background: linear-gradient(135deg, #ff4d4d 0%, #ff6b6b 100%);
             color: white;
             padding: 10px 24px;
             border-radius: 8px;
             border: none;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
         }
 
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220, 0, 0, 0.4);
-            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
+            box-shadow: 0 6px 16px rgba(255, 77, 77, 0.3);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4d4d 100%);
         }
 
         .menu-toggle {
@@ -192,14 +192,15 @@
         }
 
         .auth-btn-primary {
-            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
+            background: linear-gradient(135deg, #ff4d4d 0%, #ff6b6b 100%);
             color: var(--white);
             border: none;
+            box-shadow: 0 4px 12px rgba(255, 77, 77, 0.2);
         }
 
         .auth-btn-primary:hover {
-            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
-            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4d4d 100%);
+            box-shadow: 0 6px 16px rgba(255, 77, 77, 0.3);
         }
 
         #userProfile {
@@ -356,44 +357,46 @@
         }
 
         .cta-primary {
-            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
+            background: linear-gradient(135deg, #ff4d4d 0%, #ff6b6b 100%);
             color: white;
             padding: 18px 36px;
             border-radius: 12px;
             font-size: 18px;
-            font-weight: 700;
+            font-weight: 600;
             border: none;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.25);
         }
 
         .cta-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(220, 0, 0, 0.4);
-            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
+            box-shadow: 0 8px 20px rgba(255, 77, 77, 0.35);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff4d4d 100%);
         }
 
         .cta-secondary {
-            background: var(--white);
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
             color: var(--black);
             padding: 18px 36px;
             border-radius: 12px;
             font-size: 18px;
-            font-weight: 700;
-            border: 3px solid var(--black);
+            font-weight: 600;
+            border: 1px solid #e0e0e0;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .cta-secondary:hover {
-            background: var(--black);
-            color: var(--white);
+            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
             transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            border-color: #d0d0d0;
         }
 
         .trust-bar {
@@ -1252,9 +1255,9 @@
                             </svg>
                         </button>
                         <div class="user-dropdown" id="userDropdown">
-                            <a href="dashboard.html" class="dropdown-item">📊 My Dashboard</a>
                             <a href="test.html" class="dropdown-item">📝 Take FSAT Test</a>
                             <a href="resume.html" class="dropdown-item">📄 Quick Resume (5 min)</a>
+                            <a href="/builder/resumes" class="dropdown-item">🎨 Advanced Resume Builder</a>
                             <div class="dropdown-divider"></div>
                             <div class="dropdown-item logout" onclick="authManager.signOut()">🚪 Sign Out</div>
                         </div>
@@ -1267,7 +1270,8 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-badge">🎓 2,847 Students Placed in Last 6 months</div>
-        <h1>Graduated But <span class="highlight">No Job?</span><br>You're Not Alone.</h1>
+        <h1>Are you <span class="highlight">Fresher! </span> But <span class="highlight">No Job?</span><br>You're Not
+            Alone. We are here to help you</h1>
         <p class="subheadline">
             Transform Into a ₹4.5-8 LPA Software Developer in Just 3-5 Months<br>
             <strong>No Coding Background Required</strong>
@@ -2102,31 +2106,37 @@
     <script src="../public/auth-fix.js"></script>
     <!-- Timer Script -->
     <script>
-        function startTimer(duration, display) {
-            var timer = duration, hours, minutes, seconds;
-            setInterval(function () {
-                hours = parseInt(timer / 3600, 10);
-                minutes = parseInt((timer % 3600) / 60, 10);
-                seconds = parseInt(timer % 60, 10);
+        function startTargetTimer(targetDateString, display) {
+            const targetDate = new Date(targetDateString).getTime();
 
-                hours = hours < 10 ? "0" + hours : hours;
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
+            const timerInterval = setInterval(function () {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
 
-                display.textContent = hours + ":" + minutes + ":" + seconds;
-
-                if (--timer < 0) {
-                    timer = duration;
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    display.textContent = "00:00:00";
+                    return;
                 }
+
+                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const h = hours < 10 ? "0" + hours : hours;
+                const m = minutes < 10 ? "0" + minutes : minutes;
+                const s = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = h + ":" + m + ":" + s;
             }, 1000);
         }
 
         // Use addEventListener to avoid overwriting other onload handlers
         window.addEventListener('load', function () {
-            var eightHours = 60 * 60 * 8;
-            var display = document.querySelector('#offer-timer');
+            const targetDate = "Feb 16, 2026 17:00:00";
+            const display = document.querySelector('#offer-timer');
             if (display) {
-                startTimer(eightHours, display);
+                startTargetTimer(targetDate, display);
             }
         });
     </script>
