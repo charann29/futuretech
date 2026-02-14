@@ -40,7 +40,7 @@
 
         /* ===== ANNOUNCEMENT BAR ===== */
         .announcement-bar {
-            background: var(--black);
+            background: linear-gradient(90deg, #1a1a1a 0%, #333333 100%);
             color: var(--white);
             padding: 12px 20px;
             text-align: center;
@@ -124,7 +124,7 @@
         }
 
         .cta-btn {
-            background: var(--primary-red);
+            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
             color: white;
             padding: 10px 24px;
             border-radius: 8px;
@@ -134,12 +134,13 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
         }
 
         .cta-btn:hover {
-            background: var(--dark-red);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(220, 0, 0, 0.4);
+            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
         }
 
         .menu-toggle {
@@ -191,14 +192,14 @@
         }
 
         .auth-btn-primary {
-            background: var(--primary-red);
+            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
             color: var(--white);
-            border-color: var(--primary-red);
+            border: none;
         }
 
         .auth-btn-primary:hover {
-            background: var(--dark-red);
-            border-color: var(--dark-red);
+            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
+            box-shadow: 0 4px 15px rgba(220, 0, 0, 0.3);
         }
 
         #userProfile {
@@ -355,7 +356,7 @@
         }
 
         .cta-primary {
-            background: var(--primary-red);
+            background: linear-gradient(135deg, #DC0000 0%, #FF4D4D 100%);
             color: white;
             padding: 18px 36px;
             border-radius: 12px;
@@ -370,9 +371,9 @@
         }
 
         .cta-primary:hover {
-            background: var(--dark-red);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(220, 0, 0, 0.4);
+            background: linear-gradient(135deg, #FF4D4D 0%, #DC0000 100%);
         }
 
         .cta-secondary {
@@ -1155,6 +1156,35 @@
 
             .price-current {
                 font-size: 48px;
+            }
+
+            /* Mobile Navbar Fixes */
+            .nav-container {
+                padding: 10px 15px;
+            }
+
+            .logo-img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            #userName {
+                display: none;
+                /* Hide username on mobile to save space */
+            }
+
+            #userAvatar {
+                width: 32px;
+                height: 32px;
+            }
+
+            .auth-btn {
+                padding: 6px 12px;
+                font-size: 12px;
             }
         }
     </style>
