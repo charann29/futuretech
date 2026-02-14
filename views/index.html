@@ -414,7 +414,12 @@
         .ticker-content {
             display: flex;
             gap: 60px;
-            animation: scroll 30s linear infinite;
+            width: max-content;
+            /* Ensure it doesn't wrap */
+            padding-right: 60px;
+            /* Add gap at the very end to match flex gap */
+            animation: scroll 60s linear infinite;
+            /* Slower, smoother */
         }
 
         .ticker-item {
@@ -434,7 +439,8 @@
             }
 
             100% {
-                transform: translateX(-50%);
+                transform: translateX(-25%);
+                /* Move 1/4th because we will have 4 sets */
             }
         }
 
@@ -1218,8 +1224,9 @@
         </p>
         <div class="hero-ctas">
             <a href="test.html" class="cta-primary">
-                🎯 Take Free FSAT Test → Get Up To 60% Scholarship<br>
-                <small style="font-size: 14px; opacity: 0.9;">(Save ₹27,000 on ₹45,000 course fee)</small>
+                Get Up To ₹50 Lakhs Worth Scholarship<br>
+                <small style="font-size: 14px; opacity: 0.9;">Take Free FSAT Now in <span id="offer-timer"
+                        style="color: yellow; font-weight: bold;">08:00:00</span></small>
             </a>
             <a href="resume.html" class="cta-secondary">
                 📄 Get Free AI Resume Builder<br>
@@ -1236,13 +1243,31 @@
     <!-- Live Ticker -->
     <div class="live-ticker">
         <div class="ticker-content">
+            <!-- Set 1 -->
             <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
                     class="highlight">Wipro</span></span>
             <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
                 hours ago</span>
             <span class="ticker-item">🎓 Priya from Vijayawada scored 92 in FSAT, got <span class="highlight">60%
                     scholarship</span> - 45 mins ago</span>
-            <!-- Duplicate for seamless loop -->
+
+            <!-- Set 2 -->
+            <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
+                    class="highlight">Wipro</span></span>
+            <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
+                hours ago</span>
+            <span class="ticker-item">🎓 Priya from Vijayawada scored 92 in FSAT, got <span class="highlight">60%
+                    scholarship</span> - 45 mins ago</span>
+
+            <!-- Set 3 -->
+            <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
+                    class="highlight">Wipro</span></span>
+            <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
+                hours ago</span>
+            <span class="ticker-item">🎓 Priya from Vijayawada scored 92 in FSAT, got <span class="highlight">60%
+                    scholarship</span> - 45 mins ago</span>
+
+            <!-- Set 4 -->
             <span class="ticker-item">✅ Suresh from Visakhapatnam completed Full Stack - Now at <span
                     class="highlight">Wipro</span></span>
             <span class="ticker-item">✅ Rajesh from Guntur got placed at <span class="highlight">₹6.5 LPA</span> - 2
@@ -1885,10 +1910,7 @@
                         <div style="font-size: 28px; font-weight: 900; color: white;">₹27,000</div>
                         <div style="font-size: 14px; color: white;">Score 50-69 (40% off)</div>
                     </div>
-                    <div style="background: var(--primary-red); padding: 15px; border-radius: 10px;">
-                        <div style="font-size: 28px; font-weight: 900; color: white;">₹33,750</div>
-                        <div style="font-size: 14px; color: white;">Score 35-49 (25% off)</div>
-                    </div>
+
 
                 </div>
             </div>
@@ -2027,6 +2049,36 @@
 
     <!-- Supabase Authentication (Fixed) -->
     <script src="../public/auth-fix.js"></script>
+    <!-- Timer Script -->
+    <script>
+        function startTimer(duration, display) {
+            var timer = duration, hours, minutes, seconds;
+            setInterval(function () {
+                hours = parseInt(timer / 3600, 10);
+                minutes = parseInt((timer % 3600) / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                hours = hours < 10 ? "0" + hours : hours;
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = hours + ":" + minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    timer = duration;
+                }
+            }, 1000);
+        }
+
+        // Use addEventListener to avoid overwriting other onload handlers
+        window.addEventListener('load', function () {
+            var eightHours = 60 * 60 * 8;
+            var display = document.querySelector('#offer-timer');
+            if (display) {
+                startTimer(eightHours, display);
+            }
+        });
+    </script>
 </body>
 
 </html>
