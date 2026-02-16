@@ -611,11 +611,11 @@
             await waitForAuth();
 
             // Check authentication
-            const isAuthed = await window.authManager.requireAuth('/');
-            if (!isAuthed) {
-                console.log('Resume Builder: User not authenticated, redirecting...');
-                return;
-            }
+            // const isAuthed = await window.authManager.requireAuth('/');
+            // if (!isAuthed) {
+            //     console.log('Resume Builder: User not authenticated, redirecting...');
+            //     return;
+            // }
 
             console.log('Resume Builder: User authenticated:', window.authManager.getUser()?.email);
 

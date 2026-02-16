@@ -627,17 +627,19 @@
         /* Auto-save indicator */
         .auto-save-indicator {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             background: var(--black);
             color: var(--white);
             padding: 10px 20px;
             border-radius: 8px;
             font-size: 13px;
-            z-index: 999;
+            z-index: 10001;
+            /* Ensure it's above everything including overlays */
             opacity: 0;
             transition: opacity 0.3s;
             border: 2px solid var(--green);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .auto-save-indicator.show {

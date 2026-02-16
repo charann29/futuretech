@@ -444,36 +444,69 @@ async function handleOnboardingSubmit(e) {
 }
 
 function setupNavigationHandlers() {
+    console.log('[Navigation] Setting up handlers...');
     const btnPrev = document.getElementById('btnPrev');
     const btnNext = document.getElementById('btnNext');
     const btnSubmit = document.getElementById('btnSubmit');
 
     if (btnPrev) {
         btnPrev.onclick = () => {
-            if (currentQuestionIndex > 0) {
-                saveCurrentAnswer();
-                currentQuestionIndex--;
-                displayQuestion(currentQuestionIndex);
+            try {
+                if (currentQuestionIndex > 0) {
+                    saveCurrentAnswer();
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                    scrollToTop();
+                }
+            } catch (e) {
+                console.error('[Navigation] Prev Error:', e);
             }
         };
     }
 
     if (btnNext) {
         btnNext.onclick = () => {
-            if (currentQuestionIndex < questions.length - 1) {
-                saveCurrentAnswer();
-                currentQuestionIndex++;
-                displayQuestion(currentQuestionIndex);
+            try {
+                console.log('[Navigation] Next clicked. Current:', currentQuestionIndex, 'Total:', questions.length);
+                if (currentQuestionIndex < questions.length - 1) {
+                    saveCurrentAnswer();
+                    currentQuestionIndex++;
+                    console.log('[Navigation] Moving to:', currentQuestionIndex);
+                    displayQuestion(currentQuestionIndex);
+                    scrollToTop();
+                } else {
+                    console.warn('[Navigation] Already at last question');
+                }
+            } catch (e) {
+                console.error('[Navigation] Next Error:', e);
+                // Attempt recovery by forcing display
+                try {
+                    displayQuestion(currentQuestionIndex);
+                } catch (retryError) {
+                    console.error('[Navigation] Critical Display Error:', retryError);
+                }
             }
         };
     }
 
     if (btnSubmit) {
         btnSubmit.onclick = () => {
-            saveCurrentAnswer();
-            submitTest();
+            try {
+                saveCurrentAnswer();
+                submitTest();
+            } catch (e) {
+                console.error('[Navigation] Submit Error:', e);
+            }
         };
     }
+}
+
+function scrollToTop() {
+    const questionDisplay = document.querySelector('.question-display');
+    if (questionDisplay) {
+        questionDisplay.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
