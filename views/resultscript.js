@@ -37,14 +37,14 @@ const courses = {
 };
 
 // Initialize results page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadResults();
 });
 
 function loadResults() {
     // Get results from localStorage
     const resultData = localStorage.getItem('testResult');
-    
+
     if (!resultData) {
         alert('No test results found. Please take the test first.');
         window.location.href = 'test.html';
@@ -57,13 +57,13 @@ function loadResults() {
 
 function displayResults(result) {
     // Display student name
-    document.getElementById('studentName').textContent = 
+    document.getElementById('studentName').textContent =
         `Congratulations, ${result.student.name}!`;
 
     // Display score
     const score = result.analysis.totalScore;
     const percentage = result.analysis.percentage;
-    
+
     animateValue('scoreValue', 0, score, 2000);
     setTimeout(() => {
         document.getElementById('percentageValue').textContent = `${percentage.toFixed(1)}%`;
@@ -96,13 +96,13 @@ function animateValue(id, start, end, duration) {
 }
 
 function displayScholarship(scholarship) {
-    document.getElementById('scholarshipPercent').textContent = 
+    document.getElementById('scholarshipPercent').textContent =
         `${scholarship.percentage}%`;
-    document.getElementById('scholarshipAmount').textContent = 
+    document.getElementById('scholarshipAmount').textContent =
         `₹${scholarship.amount.toLocaleString('en-IN')}`;
-    document.getElementById('finalFee').textContent = 
+    document.getElementById('finalFee').textContent =
         `₹${scholarship.finalFee.toLocaleString('en-IN')}`;
-    document.getElementById('savingsAmount').textContent = 
+    document.getElementById('savingsAmount').textContent =
         `₹${scholarship.amount.toLocaleString('en-IN')}`;
 }
 
@@ -122,10 +122,10 @@ function displayRecommendedCourse(courseKey) {
             </div>
             <div style="margin-top: 20px; padding: 15px; background: #f0fdf4; border-radius: 10px;">
                 <p style="color: #16a34a; font-weight: 600; margin-bottom: 5px;">
-                    ✅ Certification Included
+                    Certification Included
                 </p>
                 <p style="color: #16a34a; font-weight: 600;">
-                    ✅ At least 5 Placement Drives Assured
+                    At least 5 Placement Drives Assured
                 </p>
             </div>
         </div>
@@ -162,7 +162,7 @@ function displayConceptAnalysis(conceptProficiency) {
                 </p>
                 ${data.gaps.length > 0 ? `
                     <div class="recommendations">
-                        <h4>💡 Areas for Improvement:</h4>
+                        <h4>Areas for Improvement:</h4>
                         <ul>
                             ${data.gaps.map(gap => `<li>${gap}</li>`).join('')}
                         </ul>
@@ -170,7 +170,7 @@ function displayConceptAnalysis(conceptProficiency) {
                 ` : `
                     <div style="background: #d1fae5; padding: 15px; border-radius: 10px; border-left: 4px solid #22c55e;">
                         <p style="color: #065f46; font-weight: 600;">
-                            ✨ Excellent understanding! Keep up the great work.
+                            Excellent understanding! Keep up the great work.
                         </p>
                     </div>
                 `}
@@ -198,7 +198,7 @@ function contactUs() {
 
 function enrollNow() {
     const message = encodeURIComponent(
-        'Hi! I just completed the scholarship test and would like to enroll in the course. My test ID: ' + 
+        'Hi! I just completed the scholarship test and would like to enroll in the course. My test ID: ' +
         Date.now()
     );
     window.open(`https://wa.me/918977781696?text=${message}`, '_blank');

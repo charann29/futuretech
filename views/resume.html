@@ -17,8 +17,8 @@
         }
 
         :root {
-            --primary-red: #DC0000;
-            --dark-red: #A00000;
+            --primary-red: #A50000;
+            --dark-red: #7B0000;
             --black: #000000;
             --dark-gray: #1a1a1a;
             --medium-gray: #333333;
@@ -26,6 +26,7 @@
             --off-white: #f5f5f5;
             --white: #ffffff;
             --border-gray: #e0e0e0;
+            --gold: #DAA520;
         }
 
         body {
@@ -36,7 +37,7 @@
 
         /* HEADER */
         .header {
-            background: var(--black);
+            background: var(--dark-red);
             color: var(--white);
             padding: 20px;
             border-bottom: 3px solid var(--primary-red);
@@ -69,7 +70,7 @@
         }
 
         .logo-text span {
-            color: var(--primary-red);
+            color: var(--gold);
         }
 
         .back-link {
@@ -106,8 +107,8 @@
         }
 
         .user-badge::before {
-            content: "👤";
-            font-size: 16px;
+            content: "";
+            display: none;
         }
 
         /* MAIN CONTENT */
@@ -150,7 +151,7 @@
             background: var(--white);
             padding: 40px;
             border-radius: 20px;
-            border: 3px solid var(--black);
+            border: 3px solid var(--primary-red);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
@@ -192,7 +193,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-red);
-            box-shadow: 0 0 0 3px rgba(220, 0, 0, 0.1);
+            box-shadow: 0 0 0 3px rgba(165, 0, 0, 0.1);
         }
 
         .form-group textarea {
@@ -216,7 +217,7 @@
         .btn-generate:hover {
             background: var(--dark-red);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(220, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(165, 0, 0, 0.3);
         }
 
         .btn-generate:disabled {
@@ -235,7 +236,7 @@
             background: var(--white);
             padding: 30px;
             border-radius: 15px;
-            border: 3px solid var(--black);
+            border: 3px solid var(--primary-red);
             margin-bottom: 30px;
         }
 
@@ -505,7 +506,7 @@
                     </div>
 
                     <button type="submit" class="btn-generate" id="btnGenerate">
-                        🚀 Generate AI Resume
+                        Generate AI Resume
                     </button>
                 </form>
 
@@ -560,7 +561,7 @@
             <!-- Result Section -->
             <div class="result-section" id="resultSection">
                 <div class="result-header">
-                    <h2>🎉 Your Resume is Ready!</h2>
+                    <h2>Your Resume is Ready!</h2>
                     <p style="color: var(--light-gray);">Download it now and start applying for jobs</p>
                 </div>
 
@@ -569,8 +570,8 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-download" onclick="downloadResume()">📥 Download Resume</button>
-                    <button class="btn-new" onclick="createNew()">✨ Create New Resume</button>
+                    <button class="btn-download" onclick="downloadResume()">Download Resume</button>
+                    <button class="btn-new" onclick="createNew()">Create New Resume</button>
                 </div>
             </div>
         </div>
@@ -681,7 +682,7 @@
                     const token = session?.data?.session?.access_token;
 
                     if (!token) {
-                        alert('🔐 Authentication required. Please sign in again.');
+                        alert('Authentication required. Please sign in again.');
                         window.location.href = '/';
                         return;
                     }
@@ -738,11 +739,11 @@
                     let errorMessage = 'Failed to generate resume. Please try again.';
 
                     if (error.message && error.message.includes('API_KEY_MISSING')) {
-                        errorMessage = '⚠️ AI Service Unavailable\n\nThe AI resume generation service is currently not configured. Please contact the administrator or try again later.';
+                        errorMessage = 'AI Service Unavailable\n\nThe AI resume generation service is currently not configured. Please contact the administrator or try again later.';
                     } else if (error.message && error.message.includes('Authentication')) {
-                        errorMessage = '🔐 Authentication Error\n\nYour session has expired. Please refresh the page and sign in again.';
+                        errorMessage = 'Authentication Error\n\nYour session has expired. Please refresh the page and sign in again.';
                     } else if (!navigator.onLine) {
-                        errorMessage = '🌐 No Internet Connection\n\nPlease check your internet connection and try again.';
+                        errorMessage = 'No Internet Connection\n\nPlease check your internet connection and try again.';
                     }
 
                     alert(errorMessage);
@@ -769,11 +770,11 @@
                             line-height: 1.6;
                         }
                         h1 {
-                            color: #DC0000;
+                            color: #A50000;
                             margin-bottom: 10px;
                         }
                         h2 {
-                            border-bottom: 2px solid #DC0000;
+                            border-bottom: 2px solid #A50000;
                             padding-bottom: 5px;
                             margin-top: 20px;
                         }
@@ -815,7 +816,7 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            alert('✅ Resume downloaded!\n\nYou can:\n• Open it in any browser\n• Press Ctrl+P (Cmd+P on Mac) to print as PDF\n• Share it directly');
+            alert('Resume downloaded!\n\nYou can:\n• Open it in any browser\n• Press Ctrl+P (Cmd+P on Mac) to print as PDF\n• Share it directly');
         }
 
         function createNew() {

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,16 +12,26 @@
             margin: 50px auto;
             padding: 20px;
         }
+
         .status {
             background: #f0f0f0;
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
         }
-        .success { background: #d4edda; color: #155724; }
-        .error { background: #f8d7da; color: #721c24; }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
         button {
-            background: #DC0000;
+            background: #A50000;
             color: white;
             padding: 15px 30px;
             border: none;
@@ -29,9 +40,11 @@
             font-size: 16px;
             margin: 10px 5px;
         }
+
         button:hover {
-            background: #A00000;
+            background: #7B0000;
         }
+
         pre {
             background: #000;
             color: #0f0;
@@ -41,17 +54,18 @@
         }
     </style>
 </head>
+
 <body>
-    <h1>🔐 FutureTech Auth Testing</h1>
+    <h1>FutureTech Auth Testing</h1>
 
     <div id="status" class="status">
         <h3>Loading...</h3>
     </div>
 
     <div>
-        <button onclick="testAuth()">🔍 Check Auth Status</button>
-        <button onclick="signInGoogle()">🔐 Sign in with Google</button>
-        <button onclick="signOut()">🚪 Sign Out</button>
+        <button onclick="testAuth()">Check Auth Status</button>
+        <button onclick="signInGoogle()">Sign in with Google</button>
+        <button onclick="signOut()">Sign Out</button>
     </div>
 
     <div id="details" style="margin-top: 30px;"></div>
@@ -75,14 +89,14 @@
             try {
                 // Check if supabase is available
                 if (!window.supabase) {
-                    showStatus('❌ Error: Supabase not loaded', 'error');
+                    showStatus('Error: Supabase not loaded', 'error');
                     showDetails('window.supabase is undefined');
                     return;
                 }
 
                 // Check if authManager is available
                 if (!window.authManager) {
-                    showStatus('❌ Error: AuthManager not loaded', 'error');
+                    showStatus('Error: AuthManager not loaded', 'error');
                     showDetails('window.authManager is undefined');
                     return;
                 }
@@ -91,13 +105,13 @@
                 const user = window.authManager.getUser();
 
                 if (user) {
-                    showStatus('✅ Authenticated', 'success');
+                    showStatus('Authenticated', 'success');
                     showDetails(`
                         <h3>User Details:</h3>
                         <pre>${JSON.stringify(user, null, 2)}</pre>
                     `);
                 } else {
-                    showStatus('⚠️ Not Authenticated', '');
+                    showStatus('Not Authenticated', '');
                     showDetails('<p>No user session found. Please sign in with Google.</p>');
                 }
 
@@ -108,7 +122,7 @@
                 });
 
             } catch (error) {
-                showStatus('❌ Error: ' + error.message, 'error');
+                showStatus('Error: ' + error.message, 'error');
                 showDetails('<pre>' + error.stack + '</pre>');
                 console.error('Auth test error:', error);
             }
@@ -143,7 +157,7 @@
         // Listen for auth changes
         if (window.authManager) {
             const originalOnAuthStateChange = window.authManager.onAuthStateChange.bind(window.authManager);
-            window.authManager.onAuthStateChange = function(event, session) {
+            window.authManager.onAuthStateChange = function (event, session) {
                 console.log('Auth state changed:', event, session);
                 originalOnAuthStateChange(event, session);
                 setTimeout(() => testAuth(), 500);
@@ -151,4 +165,5 @@
         }
     </script>
 </body>
+
 </html>

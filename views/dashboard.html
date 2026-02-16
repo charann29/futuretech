@@ -10,7 +10,7 @@
     <style>
         :root {
             --color-primary: #1a1a1a;
-            --primary-red: #DC0000;
+            --primary-red: #A50000;
             --glass-bg: rgba(255, 255, 255, 0.95);
             --glass-border: rgba(0, 0, 0, 0.1);
             --text-primary: #0a0a0a;
@@ -145,14 +145,14 @@
         <header>
             <div>
                 <a href="index.html"
-                    style="color: #666; text-decoration: none; font-size: 14px; font-weight: 600; display: block; margin-bottom: 12px;">←
-                    Back to Home</a>
+                    style="color: #666; text-decoration: none; font-size: 14px; font-weight: 600; display: block; margin-bottom: 12px;">Return
+                    to Home</a>
                 <h1>My Dashboard</h1>
             </div>
             <div id="userProfile" style="text-align: right;">
                 <p id="userName" style="font-weight: 700; margin: 0; font-size: 15px;"></p>
                 <button onclick="handleLogout()"
-                    style="background: none; border: none; color: #DC0000; cursor: pointer; padding: 4px 0; font-size: 13px; font-weight: 600;">Sign
+                    style="background: none; border: none; color: #A50000; cursor: pointer; padding: 4px 0; font-size: 13px; font-weight: 600;">Sign
                     Out</button>
             </div>
         </header>
@@ -189,8 +189,8 @@
                 if (!data.success || data.results.length === 0) {
                     list.innerHTML = `
                         <div class="empty-state">
-                            <h3 style="font-size: 22px; margin-bottom: 12px;">You haven't taken the FSAT yet</h3>
-                            <p style="color: #666; max-width: 400px; margin: 0 auto;">Take the assessment to unlock your personalized AI career roadmap and scholarship details.</p>
+                            <h3 style="font-size: 22px; margin-bottom: 12px;">No assessment found</h3>
+                            <p style="color: #666; max-width: 400px; margin: 0 auto;">Complete the Career Assessment to unlock your personalized AI roadmap and scholarship details.</p>
                             <a href="test.html" class="btn-primary">Start Assessment</a>
                         </div>
                     `;

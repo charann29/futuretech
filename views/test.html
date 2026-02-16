@@ -16,8 +16,8 @@
         }
 
         :root {
-            --primary-red: #DC0000;
-            --dark-red: #A00000;
+            --primary-red: #A50000;
+            --dark-red: #7B0000;
             --black: #000000;
             --dark-gray: #1a1a1a;
             --medium-gray: #333333;
@@ -28,6 +28,7 @@
             --green: #10b981;
             --yellow: #f59e0b;
             --blue: #3b82f6;
+            --gold: #DAA520;
         }
 
         body {
@@ -54,9 +55,9 @@
 
         .sidebar-header {
             padding: 20px;
-            background: var(--black);
+            background: var(--primary-red);
             color: var(--white);
-            border-bottom: 3px solid var(--primary-red);
+            border-bottom: 3px solid var(--dark-red);
         }
 
         .logo-section {
@@ -79,7 +80,7 @@
         }
 
         .logo-text span {
-            color: var(--primary-red);
+            color: var(--gold);
         }
 
         .test-info {
@@ -982,7 +983,7 @@
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center;">
         <div
             style="background: white; padding: 40px; border-radius: 15px; max-width: 450px; width: 90%; text-align: center; border: 3px solid var(--primary-red);">
-            <h2 style="color: var(--black); margin-bottom: 10px; font-size: 28px; font-weight: 900;">🎓 FSAT Test Login
+            <h2 style="color: var(--black); margin-bottom: 10px; font-size: 28px; font-weight: 900;">FSAT Test Login
             </h2>
             <p style="color: var(--light-gray); margin-bottom: 30px;">Sign in to start your test and unlock scholarship
                 opportunities</p>
@@ -996,7 +997,7 @@
                         style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
                     <button onclick="handleLogin()"
                         style="width: 100%; padding: 15px; background: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 15px;">
-                        🔐 Sign In
+                        Sign In
                     </button>
                     <button onclick="handleGoogleLogin()"
                         style="width: 100%; padding: 15px; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 15px;">
@@ -1017,7 +1018,7 @@
                         style="width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
                     <button onclick="handleSignUp()"
                         style="width: 100%; padding: 15px; background: var(--primary-red); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 15px;">
-                        ✨ Create Account
+                        Create Account
                     </button>
                     <button onclick="handleGoogleLogin()"
                         style="width: 100%; padding: 15px; background: white; color: #333; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; margin-bottom: 15px;">
@@ -1066,7 +1067,7 @@
                     <input type="number" id="onboardYear" required min="1990" max="2030" placeholder="e.g., 2026">
                 </div>
                 <button type="submit" style="
-                    background: linear-gradient(135deg, #DC0000 0%, #B30000 100%);
+                    background: linear-gradient(135deg, #A50000 0%, #7B0000 100%);
                     color: white;
                     border: none;
                     padding: 18px 32px;
@@ -1086,7 +1087,7 @@
                     gap: 10px;
                 " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 15px 30px rgba(220, 0, 0, 0.3)'"
                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(220, 0, 0, 0.2)'">
-                    🚀 Start FSAT Test (45 Minutes)
+                    Start FSAT Test (45 Minutes)
                 </button>
             </form>
         </div>
@@ -1204,7 +1205,7 @@
             <footer class="bottom-bar">
                 <div class="action-buttons">
                     <button class="btn btn-prev" id="btnPrev">← Previous</button>
-                    <button class="btn btn-mark" id="btnMark">⭐ Mark for Review</button>
+                    <button class="btn btn-mark" id="btnMark">Mark for Review</button>
                 </div>
                 <div class="question-counter">
                     Question <span id="currentQ">1</span> of <span id="totalQ">10</span>
@@ -1322,14 +1323,14 @@
 
                     if (session && session.user) {
                         // User IS authenticated - hide login, show onboarding
-                        console.log('✅ User authenticated:', session.user.email);
+                        console.log('User authenticated:', session.user.email);
                         document.getElementById('loginOverlay').style.display = 'none';
                         document.getElementById('onboardingOverlay').classList.remove('hidden');
                     } else {
                         // User NOT authenticated - show login overlay ONLY
                         document.getElementById('loginOverlay').style.display = 'flex';
                         document.getElementById('onboardingOverlay').classList.add('hidden');
-                        console.log('⚠️  Not authenticated, showing login');
+                        console.log('Not authenticated, showing login');
                     }
                 } catch (error) {
                     console.error('Auth error:', error);

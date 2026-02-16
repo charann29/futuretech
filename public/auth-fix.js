@@ -49,24 +49,67 @@
                     return;
                 }
 
-                this.session = session;
-                this.user = session?.user || null;
+                this.setSession(session);
                 this.initialized = true;
 
                 console.log('[AuthManager] Initialized successfully. User:', this.user?.email || 'Not signed in');
 
-                // Listen for auth changes
+                // Listen for auth changes (this handles local-tab changes)
                 window.supabase.auth.onAuthStateChange((event, session) => {
                     console.log('[AuthManager] Auth state changed:', event);
-                    this.session = session;
-                    this.user = session?.user || null;
+                    this.setSession(session);
                     this.onAuthStateChange(event, session);
+                });
+
+                // Listen for storage changes (handles cross-tab changes for some browsers)
+                window.addEventListener('storage', (event) => {
+                    // Supabase v2 uses keys like sb-xxxxx-auth-token
+                    if (event.key && (event.key.includes('auth-token') || event.key.includes('supabase.auth.token'))) {
+                        console.log('[AuthManager] Storage change detected, re-syncing auth...');
+                        this.refreshSession();
+                    }
+                });
+
+                // Re-sync on tab focus
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible') {
+                        console.log('[AuthManager] Tab became visible, refreshing session...');
+                        this.refreshSession();
+                    }
                 });
 
                 return this.user;
             } catch (error) {
                 console.error('[AuthManager] Initialization error:', error);
                 return null;
+            }
+        }
+
+        setSession(session) {
+            this.session = session;
+            this.user = session?.user || null;
+            this.updateAuthUI();
+        }
+
+        async refreshSession() {
+            try {
+                const { data: { session } } = await window.supabase.auth.getSession();
+                const oldUserId = this.user?.id;
+                const newUserId = session?.user?.id;
+
+                if (oldUserId !== newUserId) {
+                    console.log('[AuthManager] Session sync detected change:', oldUserId, '->', newUserId);
+                    this.setSession(session);
+
+                    // Trigger custom events if needed
+                    if (newUserId && !oldUserId) {
+                        this.onAuthStateChange('SIGNED_IN', session);
+                    } else if (!newUserId && oldUserId) {
+                        this.onAuthStateChange('SIGNED_OUT', null);
+                    }
+                }
+            } catch (e) {
+                console.error('[AuthManager] Error refreshing session:', e);
             }
         }
 

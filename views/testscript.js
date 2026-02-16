@@ -1,6 +1,6 @@
 // Test Configuration
-const TESTSCRIPT_VERSION = 'v2.0-MCQ-FIX';
-console.log('🚀 TestScript Version:', TESTSCRIPT_VERSION);
+const TESTSCRIPT_VERSION = 'v2.1-PRO';
+console.log('TestScript Version:', TESTSCRIPT_VERSION);
 
 let testStartTime;
 let timerInterval;
@@ -64,7 +64,7 @@ async function loadQuestions() {
 
         if (data.questions && Array.isArray(data.questions) && data.questions.length > 0) {
             questions = data.questions;
-            console.log(`✅ Loaded ${questions.length} questions from API`);
+            console.log(`Loaded ${questions.length} questions from API`);
         } else {
             console.warn('API returned invalid data, using sample questions');
             questions = sampleQuestions;
@@ -84,16 +84,16 @@ async function loadQuestions() {
             const navItem = document.createElement('div');
             navItem.className = 'question-nav-item';
 
-            // Add type icon
-            let typeIcon = '';
+            // Add type indicator
+            let typeLabel = '';
             switch (q.type) {
-                case 'mcq': typeIcon = '📝'; break;
-                case 'fitb': case 'fill': typeIcon = '✍️'; break;
-                case 'programming': typeIcon = '💻'; break;
-                case 'debugging': typeIcon = '🐛'; break;
+                case 'mcq': typeLabel = 'MC'; break;
+                case 'fitb': case 'fill': typeLabel = 'FB'; break;
+                case 'programming': typeLabel = 'PG'; break;
+                case 'debugging': typeLabel = 'DB'; break;
             }
 
-            navItem.innerHTML = `<span style="font-size: 12px;">${typeIcon}</span> Q${index + 1}`;
+            navItem.innerHTML = `<span style="font-size: 10px; font-weight: 800; color: #666; display: block; margin-bottom: 2px;">${typeLabel}</span> Q${index + 1}`;
             navItem.onclick = () => goToQuestion(index);
             navContainer.appendChild(navItem);
         });
@@ -119,10 +119,10 @@ function displayQuestion(index) {
     // Add question type badge
     let typeBadge = '';
     switch (q.type) {
-        case 'mcq': typeBadge = '📝 Multiple Choice'; break;
-        case 'fitb': case 'fill': typeBadge = '✍️ Fill in the Blank'; break;
-        case 'programming': typeBadge = '💻 Programming'; break;
-        case 'debugging': typeBadge = '🐛 Debugging'; break;
+        case 'mcq': typeBadge = 'Multiple Choice'; break;
+        case 'fitb': case 'fill': typeBadge = 'Fill in the Blank'; break;
+        case 'programming': typeBadge = 'Programming'; break;
+        case 'debugging': typeBadge = 'Debugging'; break;
     }
 
     document.getElementById('questionText').innerHTML = `${typeBadge ? `<span style="background: #FFD700; color: #000; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 10px; font-weight: bold;">${typeBadge}</span>` : ''}${q.question}`;
@@ -135,14 +135,14 @@ function displayQuestion(index) {
 
     if (q.type === 'programming' && q.hints && q.hints.length > 0) {
         descriptionHTML += '<div style="background: #fffbea; border-left: 4px solid #f59e0b; padding: 12px; margin: 10px 0; border-radius: 4px;">';
-        descriptionHTML += '<strong style="color: #f59e0b;">💡 Hints:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
+        descriptionHTML += '<strong style="color: #f59e0b;">Hints:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
         q.hints.forEach(hint => descriptionHTML += `<li style="margin: 4px 0;">${hint}</li>`);
         descriptionHTML += '</ul></div>';
     }
 
     if (q.type === 'debugging' && q.buggyCode) {
-        descriptionHTML += '<div style="background: #fee; border-left: 4px solid #DC0000; padding: 12px; margin: 10px 0; border-radius: 4px;">';
-        descriptionHTML += '<strong style="color: #DC0000;">🐛 Code with Errors:</strong>';
+        descriptionHTML += '<div style="background: #fee; border-left: 4px solid #A50000; padding: 12px; margin: 10px 0; border-radius: 4px;">';
+        descriptionHTML += '<strong style="color: #A50000;">Code with Errors:</strong>';
         descriptionHTML += `<pre style="background: #fff; padding: 12px; margin: 8px 0; border-radius: 4px; overflow-x: auto; border: 1px solid #ddd;"><code>${q.buggyCode}</code></pre>`;
         descriptionHTML += '</div>';
     }
@@ -345,7 +345,7 @@ async function initializeOnboarding() {
                                 font-weight: 800;
                                 text-align: center;
                                 transition: all 0.3s;
-                            ">📊 Go to My Dashboard</a>
+                            ">Go to My Dashboard</a>
                         `;
                     }
                 }
@@ -643,11 +643,11 @@ function collectAnswers() {
     // Save current answer before collecting all
     saveCurrentAnswer();
 
-    console.log('📊 Collecting answers...');
+    console.log('Collecting answers...');
     console.log('Current testAnswers:', testAnswers);
 
     const answeredCount = Object.keys(testAnswers).filter(k => testAnswers[k]).length;
-    console.log(`✅ ${answeredCount} questions answered out of ${questions.length}`);
+    console.log(`${answeredCount} questions answered out of ${questions.length}`);
 }
 
 async function processSubmission() {
@@ -720,14 +720,14 @@ async function processSubmission() {
         }
 
         // Response is OK, save and redirect
-        console.log('[Submit] ✅ Test submitted successfully!');
+        console.log('[Submit] Test submitted successfully!');
 
         try {
             const resultString = JSON.stringify(result);
             localStorage.setItem('testResult', resultString);
             window.location.href = 'results.html';
         } catch (storageError) {
-            console.error('[Submit] ❌ localStorage error:', storageError);
+            console.error('[Submit] localStorage error:', storageError);
             showErrorModal('Results received but failed to save locally. Redirecting anyway...');
             setTimeout(() => { window.location.href = 'results.html'; }, 2000);
         }
@@ -896,17 +896,17 @@ displayQuestion = function (index) {
     const btnMark = document.getElementById('btnMark');
     if (btnMark) {
         if (markedQuestions.has(q.id)) {
-            btnMark.textContent = '✓ Marked';
+            btnMark.textContent = 'Marked';
             btnMark.style.background = '#10b981';
             btnMark.style.color = 'white';
         } else {
-            btnMark.textContent = '⭐ Mark for Review';
+            btnMark.textContent = 'Mark for Review';
             btnMark.style.background = '#f59e0b';
             btnMark.style.color = 'black';
         }
     }
 
-    console.log('[Enhanced displayQuestion] ✅ Complete');
+    console.log('[Enhanced displayQuestion] Complete');
 }
 
 // Enhanced Load Questions

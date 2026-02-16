@@ -8,9 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-primary: #1a1a1a;
-            --color-primary-light: #333333;
-            --color-primary-dark: #000000;
+            --color-primary: #A50000;
+            --primary-red: #A50000;
+            --color-primary-light: #C00000;
+            --color-primary-dark: #7B0000;
             --color-accent: #555555;
             --color-accent-light: #888888;
             --glass-bg: rgba(255, 255, 255, 0.85);
@@ -19,6 +20,7 @@
             --text-primary: #0a0a0a;
             --text-secondary: #3a3a3a;
             --text-muted: #6a6a6a;
+            --gold: #DAA520;
         }
 
         * {
@@ -161,7 +163,6 @@
         .rank-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
             padding: 12px 28px;
             background: linear-gradient(135deg, rgba(60, 60, 60, 0.15) 0%, rgba(100, 100, 100, 0.15) 100%);
             border: 1px solid rgba(60, 60, 60, 0.3);
@@ -336,7 +337,7 @@
         }
 
         .ai-header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #333333 100%);
+            background: linear-gradient(135deg, #A50000 0%, #7B0000 100%);
             padding: 24px 32px;
             display: flex;
             align-items: center;
@@ -977,7 +978,7 @@
             style="margin-top: 30px; background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(240, 240, 240, 0.8) 100%); border: 1px solid rgba(0,0,0,0.1); padding: 20px; border-radius: 12px;">
             <div class="ai-analysis-title"
                 style="color: #333; font-size: 16px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
-                📚 Detailed Question Review & Explanations
+                Detailed Question Review & Explanations
             </div>
             <div id="questionReviewContainer">
                 <p style="color: #666; font-style: italic;">Loading question details...</p>
@@ -1395,7 +1396,7 @@
 
         // Load question review
         displayQuestionReview(answers);
-        }
+
 
         // Function to display detailed question review
         async function displayQuestionReview(userAnswers) {
@@ -1424,7 +1425,7 @@
                     let userAnswer = userAnswers[q.id];
 
                     let statusClass = 'neutral';
-                    let statusIcon = '➖';
+                    let statusIcon = '';
                     let statusText = 'Not Answered';
                     let statusColor = '#999';
                     let statusBg = '#f0f0f0';
@@ -1434,20 +1435,20 @@
                             const selectedIdx = parseInt(userAnswer);
                             if (selectedIdx === q.correctAnswer) {
                                 statusClass = 'correct';
-                                statusIcon = '✅';
+                                statusIcon = '●';
                                 statusText = 'Correct';
                                 statusColor = '#10b981';
                                 statusBg = '#d1fae5';
                             } else {
                                 statusClass = 'wrong';
-                                statusIcon = '❌';
+                                statusIcon = '●';
                                 statusText = 'Incorrect';
                                 statusColor = '#ef4444';
                                 statusBg = '#fee2e2';
                             }
                         } else {
                             statusClass = 'neutral'; // Manual/AI graded
-                            statusIcon = '📝';
+                            statusIcon = '●';
                             statusText = 'Submitted';
                             statusColor = '#3b82f6';
                             statusBg = '#dbeafe';
@@ -1478,14 +1479,14 @@
                             </div>
 
                             ${q.type === 'mcq' && statusClass === 'wrong' ? `
-                            <div style="margin-top: 10px; font-size: 14px; color: #DC0000;">
+                            <div style="margin-top: 10px; font-size: 14px; color: #A50000;">
                                 <p><strong>Correct Answer:</strong> ${q.options[q.correctAnswer]}</p>
                             </div>
                             ` : ''}
 
                             <div style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border: 1px dashed #ccc;">
                                 <p style="margin: 0; font-size: 13px; color: #666;">
-                                    <strong>💡 Expected Understanding / Explanation:</strong><br>
+                                    <strong>Expected Understanding / Explanation:</strong><br>
                                     ${formatExplanation(q.explanation)}
                                 </p>
                             </div>
@@ -1602,6 +1603,9 @@ This assessment helped me understand where I stand in my technical skills. It wa
 
 
     </script>
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../public/auth-fix.js"></script>
 </body>
 
 </html>
