@@ -571,7 +571,7 @@
 
                 <div class="action-buttons">
                     <button class="btn-download" onclick="downloadResume()">Download Resume</button>
-                    <button class="btn-new" onclick="createNew()">Create New Resume</button>
+                    <!-- <button class="btn-new" onclick="createNew()">Create New Resume</button> -->
                 </div>
             </div>
         </div>
@@ -795,12 +795,12 @@
                         @media print {
                             body { padding: 20px; }
                         }
-                    </style>
-                </head>
+                    <\/style>
+                <\/head>
                 <body>
                     ${resumeHTML}
-                </body>
-                </html>
+                <\/body>
+                <\/html>
             `], { type: 'text/html' });
 
             const url = URL.createObjectURL(blob);
@@ -816,35 +816,10 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
 
-            alert('Resume downloaded!\n\nYou can:\n• Open it in any browser\n• Press Ctrl+P (Cmd+P on Mac) to print as PDF\n• Share it directly');
+
         }
 
-        function createNew() {
-            const form = document.getElementById('resumeForm');
-            const formSection = document.getElementById('formSection');
-            const loading = document.getElementById('loading');
-            const resultSection = document.getElementById('resultSection');
-            const btnGenerate = document.getElementById('btnGenerate');
 
-            // Reset form
-            form.reset();
-            form.style.display = 'block';
-            loading.classList.remove('show');
-            btnGenerate.disabled = false;
-
-            // Restore user email
-            const userEmail = window.authManager?.getUser()?.email;
-            if (userEmail) {
-                document.getElementById('email').value = userEmail;
-            }
-
-            // Hide result, show form
-            resultSection.classList.remove('show');
-            formSection.style.display = 'block';
-
-            // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
     </script>
 </body>
 
