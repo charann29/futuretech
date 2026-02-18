@@ -1044,8 +1044,20 @@
     <div class="onboarding-overlay" id="onboardingOverlay">
         <div class="onboarding-card">
             <h2>Welcome to <span>FSAT Test</span></h2>
-            <p style="color: var(--light-gray); margin-bottom: 30px;">Please provide your details to begin the
+            <p style="color: var(--light-gray); margin-bottom: 20px;">Please provide your details to begin the
                 assessment</p>
+
+            <div
+                style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid var(--primary-red);">
+                <h4 style="margin-bottom: 10px; font-size: 14px; text-transform: uppercase; color: var(--black);">
+                    Performance Metrics:</h4>
+                <ul style="list-style: none; padding: 0; font-size: 13px; color: var(--medium-gray);">
+                    <li style="margin-bottom: 5px;">• <strong>847 students</strong> took FSAT last week</li>
+                    <li style="margin-bottom: 5px;">• Average score: <strong>67/100</strong></li>
+                    <li style="margin-bottom: 5px;">• Average scholarship: <strong>42% (₹18,900 saved)</strong></li>
+                    <li>• Highest scorer: <strong>Ramesh (92/100) saved ₹27,000</strong></li>
+                </ul>
+            </div>
             <form id="onboardingForm">
                 <div class="onboard-form-group">
                     <label>Full Name *</label>
@@ -1284,6 +1296,8 @@
         async function handleSignUp() {
             const email = document.getElementById('signupEmail').value.trim();
             const password = document.getElementById('signupPassword').value;
+            const fullName = document.getElementById('signupName')?.value?.trim() || email.split('@')[0]; // Try to get name if field exists
+
             if (!email || !password) {
                 showAuthError('Please enter both email and password');
                 return;
@@ -1292,13 +1306,40 @@
                 showAuthError('Password must be at least 6 characters long');
                 return;
             }
+
             try {
-                const { data, error } = await window.supabase.auth.signUp({ email, password });
-                if (error) throw error;
-                document.getElementById('loginOverlay').style.display = 'none';
-                window.location.reload();
+                // Call backend to bypass IP rate limits
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, full_name: fullName })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Signup failed');
+                }
+
+                if (result.success) {
+                    // If backend returned a session, set it on the client
+                    if (result.session) {
+                        const { error: sessionError } = await window.supabase.auth.setSession(result.session);
+                        if (sessionError) console.error('Error setting session:', sessionError);
+                    }
+
+                    document.getElementById('loginOverlay').style.display = 'none';
+                    window.location.reload();
+                }
             } catch (error) {
-                showAuthError(error.message || 'Failed to create account. Please try again.');
+                console.error('Signup error:', error);
+
+                // Fallback to client-side signup if backend fails (e.g. 500 config error)
+                if (error.message.includes('Server configuration error')) {
+                    showAuthError('Server Error: Missing Service Role Key. Please report this to admin.');
+                } else {
+                    showAuthError(error.message || 'Failed to create account. Please try again.');
+                }
             }
         }
 

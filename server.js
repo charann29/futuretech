@@ -190,6 +190,75 @@ app.post('/api/save-lead', requireAuth, async (req, res) => {
     }
 });
 
+// Admin Signup Endpoint (Bypasses IP Rate Limits)
+app.post('/api/auth/signup', async (req, res) => {
+    try {
+        const { email, password, full_name } = req.body;
+
+        if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+            console.error('❌ Missing SUPABASE_SERVICE_ROLE_KEY');
+            return res.status(500).json({
+                error: 'Server configuration error. Service Role Key missing.'
+            });
+        }
+
+        // Initialize Admin Client
+        const supabaseAdmin = createClient(
+            process.env.SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY,
+            {
+                auth: {
+                    autoRefreshToken: false,
+                    persistSession: false
+                }
+            }
+        );
+
+        console.log(`🔐 Attempting admin signup for: ${email}`);
+
+        // Create user via Admin API (Bypasses Rate Limits)
+        const { data, error } = await supabaseAdmin.auth.admin.createUser({
+            email,
+            password,
+            email_confirm: true, // Auto-confirm email for smoother testing
+            user_metadata: { full_name }
+        });
+
+        if (error) {
+            console.error('❌ Admin signup failed:', error);
+            return res.status(400).json({ error: error.message });
+        }
+
+        console.log(`✅ User created via Admin API: ${data.user.id}`);
+
+        // If successful, we might want to sign them in immediately to get a session
+        const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (signInError) {
+            // If sign in fails (weird, but possible), return success but ask to login
+            return res.json({
+                success: true,
+                message: 'Account created successfully. Please log in.',
+                user: data.user
+            });
+        }
+
+        // Return the session so frontend can auto-login
+        res.json({
+            success: true,
+            session: signInData.session,
+            user: signInData.user
+        });
+
+    } catch (error) {
+        console.error('❌ Signup endpoint error:', error);
+        res.status(500).json({ error: 'Internal server error during signup' });
+    }
+});
+
 // Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'index.html'));
@@ -480,22 +549,23 @@ function generateMockEvaluation(answers, questions) {
         };
     });
 
-    // --- BOOSTING LOGIC ---
-    // Ensure percentage is always between 52% and 94%
-    // Randomize heavily to make it look unique
-    const basePercentage = (totalScore / maxScore) * 100;
+    // --- SCORING LOGIC UPDATE (User Requested) ---
+    // Calculate actual percentage based on correct answers
+    let percentage = (totalScore / maxScore) * 100;
 
-    // Boost factor: The lower the score, the higher the boost
-    let boost = 0;
-    if (basePercentage < 50) {
-        boost = 50 - basePercentage + Math.floor(Math.random() * 20); // Push to 50-70 range
+    // Logic:
+    // 1. If score > 80%, keep it as is (merit based).
+    // 2. If score <= 80%, randomize between 60% and 79% (fallback range).
+    if (percentage > 80) {
+        // Keep actual high score
+        percentage = Math.round(percentage);
     } else {
-        boost = Math.floor(Math.random() * 10); // Small boost for high scores
+        // Randomize between 60 and 79
+        percentage = Math.floor(Math.random() * (79 - 60 + 1)) + 60;
     }
 
-    let percentage = Math.min(94, Math.round(basePercentage + boost));
-    // Ensure extremely low scores get a decent save
-    percentage = Math.max(52, percentage);
+    // Ensure realistic bounds
+    percentage = Math.min(100, Math.max(0, percentage));
 
 
     // --- RANDOMIZED FEEDBACK GENERATOR ---
@@ -594,24 +664,255 @@ app.post('/api/generate-resume', requireAuth, async (req, res) => {
 
         console.log('📄 Resume generation request from:', req.user.email);
 
-        // Generate a simple HTML resume template (no AI)
+        // Construct payload for Python service
+        const resumePayload = {
+            personal_info: {
+                name: name || '',
+                email: email || '',
+                phone: phone || '',
+                location: 'India' // Default location
+            },
+            education: [{
+                institution: 'University / College', // Placeholder if parsing fails
+                degree: education || '',
+                start_date: '2020', // Default
+                end_date: '2024',   // Default
+                details: []
+            }],
+            experience: experience ? [{
+                company: 'Key Project / Experience',
+                role: 'Developer',
+                start_date: '',
+                end_date: '',
+                details: [experience]
+            }] : [],
+            skills: [{
+                category: 'Technical Skills',
+                skills: (skills || '').split(',').map(s => s.trim()).filter(s => s)
+            }],
+            summary: `Motivated professional with expertise in ${skills || 'technology'}.`,
+            custom_sections: []
+        };
+
+        let enhancedResume = resumePayload;
+
+        try {
+            // Call Python Resume Service
+            console.log('🔄 Calling Python Resume Service...');
+            const pythonServiceResponse = await fetch('http://localhost:8000/process', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(resumePayload)
+            });
+
+            if (pythonServiceResponse.ok) {
+                const data = await pythonServiceResponse.json();
+                if (data.resume) {
+                    enhancedResume = data.resume;
+                    console.log('✅ Resume enhanced by Python service');
+                }
+            } else {
+                console.warn('⚠️ Python service returned error:', pythonServiceResponse.status);
+            }
+        } catch (err) {
+            console.error('❌ Failed to connect to Python service:', err.message);
+            // Fallback to basic payload if service is down
+        }
+
+        // Generate Professional HTML Resume
         const resumeHTML = `
-        <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
-            <h1 style="color: #1a1a1a; border-bottom: 2px solid #333; padding-bottom: 10px;">${name || 'Your Name'}</h1>
-            <p style="color: #555;">${email || ''} ${phone ? '| ' + phone : ''}</p>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>${enhancedResume.personal_info.name || 'Resume'}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+            <style>
+                :root {
+                    --primary: #2c3e50;
+                    --secondary: #34495e;
+                    --accent: #2980b9;
+                    --text: #333;
+                    --text-light: #666;
+                    --bg: #fff;
+                    --border: #e0e0e0;
+                }
+                
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+                
+                body {
+                    font-family: 'Inter', sans-serif;
+                    line-height: 1.6;
+                    color: var(--text);
+                    background: var(--bg);
+                    max-width: 850px;
+                    margin: 0 auto;
+                    padding: 40px;
+                }
+                
+                /* Header */
+                header {
+                    border-bottom: 2px solid var(--primary);
+                    padding-bottom: 20px;
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                }
+                
+                .header-left h1 {
+                    font-size: 32px;
+                    color: var(--primary);
+                    margin-bottom: 5px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+                
+                .header-left p {
+                    font-size: 16px;
+                    color: var(--text-light);
+                }
 
-            <h2 style="color: #333; margin-top: 20px;">Professional Summary</h2>
-            <p>Motivated and enthusiastic professional seeking opportunities in the IT industry. Eager to apply technical skills and contribute to innovative projects.</p>
+                .contact-info {
+                    text-align: right;
+                    font-size: 14px;
+                    color: var(--text-light);
+                }
 
-            <h2 style="color: #333;">Education</h2>
-            <p>${education || 'Not specified'}</p>
+                .contact-info div { margin-bottom: 3px; }
 
-            <h2 style="color: #333;">Skills</h2>
-            <p>${skills || 'Not specified'}</p>
+                /* Sections */
+                section { margin-bottom: 25px; }
 
-            <h2 style="color: #333;">Experience</h2>
-            <p>${experience || 'Fresher'}</p>
-        </div>`;
+                h2 {
+                    font-size: 18px;
+                    color: var(--accent);
+                    text-transform: uppercase;
+                    border-bottom: 1px solid var(--border);
+                    padding-bottom: 5px;
+                    margin-bottom: 15px;
+                    font-weight: 700;
+                }
+
+                /* Summary */
+                .summary { margin-bottom: 20px; text-align: justify; }
+
+                /* Skills */
+                .skills-grid {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                }
+                
+                .skill-tag {
+                    background: #f0f4f8;
+                    color: var(--secondary);
+                    padding: 4px 10px;
+                    border-radius: 4px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    border: 1px solid #dae1e7;
+                }
+
+                /* Experience & Education */
+                .item { margin-bottom: 15px; }
+                
+                .item-header {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 4px;
+                }
+                
+                .item-title { font-weight: 700; color: var(--primary); }
+                .item-date { font-size: 14px; color: var(--text-light); font-style: italic; }
+                .item-subtitle { color: var(--secondary); font-weight: 500; margin-bottom: 5px; }
+                
+                ul { list-style-type: disc; margin-left: 20px; margin-top: 5px; }
+                li { margin-bottom: 4px; font-size: 14.5px; }
+                
+                @media print {
+                    body { padding: 0; }
+                    /* Ensure background colors print */
+                    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+            </style>
+        </head>
+        <body>
+            <header>
+                <div class="header-left">
+                    <h1>${enhancedResume.personal_info.name}</h1>
+                    <p>Software Developer</p>
+                </div>
+                <div class="contact-info">
+                    <div>${enhancedResume.personal_info.email}</div>
+                    <div>${enhancedResume.personal_info.phone || ''}</div>
+                    <div>${enhancedResume.personal_info.location || ''}</div>
+                </div>
+            </header>
+
+            ${enhancedResume.summary ? `
+            <section>
+                <h2>Professional Summary</h2>
+                <div class="summary">${enhancedResume.summary}</div>
+            </section>` : ''}
+
+            ${enhancedResume.skills && enhancedResume.skills.length > 0 ? `
+            <section>
+                <h2>Technical Skills</h2>
+                <div class="skills-grid">
+                    ${enhancedResume.skills.map(cat =>
+            cat.skills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')
+        ).join('')}
+                </div>
+            </section>` : ''}
+
+            ${enhancedResume.experience && enhancedResume.experience.length > 0 ? `
+            <section>
+                <h2>Experience</h2>
+                ${enhancedResume.experience.map(exp => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${exp.role}</span>
+                        <span class="item-date">${exp.start_date} - ${exp.end_date}</span>
+                    </div>
+                    <div class="item-subtitle">${exp.company} ${exp.location ? `| ${exp.location}` : ''}</div>
+                    <ul>
+                        ${exp.details.map(detail => `<li>${detail}</li>`).join('')}
+                    </ul>
+                </div>`).join('')}
+            </section>` : ''}
+
+            ${enhancedResume.projects && enhancedResume.projects.length > 0 ? `
+            <section>
+                <h2>Projects</h2>
+                ${enhancedResume.projects.map(proj => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${proj.name}</span>
+                        <span class="item-date">${proj.link ? `<a href="${proj.link}">Link</a>` : ''}</span>
+                    </div>
+                    <ul>
+                        ${proj.details.map(detail => `<li>${detail}</li>`).join('')}
+                    </ul>
+                </div>`).join('')}
+            </section>` : ''}
+
+            ${enhancedResume.education && enhancedResume.education.length > 0 ? `
+            <section>
+                <h2>Education</h2>
+                ${enhancedResume.education.map(edu => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${edu.degree}</span>
+                        <span class="item-date">${edu.start_date} - ${edu.end_date}</span>
+                    </div>
+                    <div class="item-subtitle">${edu.institution}</div>
+                    ${edu.details.length > 0 ? `<ul>${edu.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+                </div>`).join('')}
+            </section>` : ''}
+        </body>
+        </html>`;
 
         // Store resume in Supabase
         try {

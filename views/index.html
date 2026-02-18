@@ -2292,8 +2292,74 @@
     <section class="hero">
         <div class="hero-badge">2,847 Students Placed in Last 6 months</div>
         <h1>Are you <span class="highlight">Fresher! </span> But <span class="highlight">No Job?</span><br>
-            <span id="typewriter-text"></span><span class="cursor">|</span>
+            <div class="text-cycler">
+                <div class="cycler-wrapper">
+                    <span>Job</span>
+                    <span>Internship</span>
+                    <span>Project</span>
+                    <span>Experience</span>
+                    <span>Job</span> <!-- Duplicate first for smooth loop -->
+                </div>
+            </div>
         </h1>
+
+        <style>
+            .text-cycler {
+                height: 1.2em;
+                overflow: hidden;
+                display: inline-block;
+                vertical-align: bottom;
+                position: relative;
+                width: 250px;
+                /* Adjust width as needed */
+                text-align: left;
+            }
+
+            .cycler-wrapper {
+                display: flex;
+                flex-direction: column;
+                animation: cycler 8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            }
+
+            .cycler-wrapper span {
+                display: block;
+                height: 100%;
+                color: var(--primary-red);
+                font-weight: 800;
+            }
+
+            @keyframes cycler {
+
+                0%,
+                20% {
+                    transform: translateY(0);
+                }
+
+                25%,
+                45% {
+                    transform: translateY(-20%);
+                }
+
+                /* 1/5 shift */
+                50%,
+                70% {
+                    transform: translateY(-40%);
+                }
+
+                /* 2/5 shift */
+                75%,
+                95% {
+                    transform: translateY(-60%);
+                }
+
+                /* 3/5 shift */
+                100% {
+                    transform: translateY(-80%);
+                }
+
+                /* 4/5 shift (to duplicate) */
+            }
+        </style>
         <p class="subheadline">
             Transform Into a ₹4.5-8 LPA Software Developer in Just 3-5 Months<br>
             <strong>No Coding Background Required</strong>
@@ -2452,12 +2518,14 @@
                 <div
                     style="background: var(--off-white); padding: 20px; border-radius: 10px; margin: 30px 0; border: 2px solid var(--primary-red);">
                     <h4 style="margin-bottom: 15px; font-weight: 700;">Performance metrics:</h4>
-                    <ul style="list-style: none; padding: 0;" class="elegant-list">
-                        <li style="padding: 8px 0;"><strong>847 students</strong> took FSAT last week</li>
-                        <li style="padding: 8px 0;">Average score: <strong>67/100</strong></li>
-                        <li style="padding: 8px 0;">Average scholarship: <strong>42% (₹18,900 saved)</strong></li>
-                        <li style="padding: 8px 0;">Highest scorer: <strong>Ramesh (92/100) saved ₹27,000</strong>
+                    <ul style="list-style: disc; padding-left: 20px; color: var(--black);" class="elegant-list">
+                        <li style="padding: 4px 0; font-size: 15px;"><strong>847 students</strong> took FSAT last week
                         </li>
+                        <li style="padding: 4px 0; font-size: 15px;">Average score: <strong>67/100</strong></li>
+                        <li style="padding: 4px 0; font-size: 15px;">Average scholarship: <strong>42% (₹18,900
+                                saved)</strong></li>
+                        <li style="padding: 4px 0; font-size: 15px;">Highest scorer: <strong>Ramesh (92/100) saved
+                                ₹27,000</strong></li>
                     </ul>
                 </div>
 
@@ -2748,7 +2816,7 @@
                         <div class="track-icon">💻</div>
                         <div>
                             <span class="track-label">TRACK 2</span>
-                            <h3>Product Development & DevOps</h3>
+                            <h3>FullStack Development & DevOps</h3>
                         </div>
                     </div>
                     <ul class="track-list">
@@ -3374,25 +3442,12 @@
 
         // Use addEventListener to avoid overwriting other onload handlers
         window.addEventListener('load', function () {
-            const targetDate = "Feb 16, 2026 17:00:00";
+            const targetDate = "Feb 25, 2026 17:00:00";
             const display = document.querySelector('#offer-timer');
             if (display) {
                 startTargetTimer(targetDate, display);
             }
-            setTimeout(type, 1500); // Start typing after delay
         });
-
-        // Typewriter Effect
-        const typewriterText = "You're Not Alone. We are here to help you";
-        const typewriterElement = document.getElementById('typewriter-text');
-        let charIndex = 0;
-        function type() {
-            if (charIndex < typewriterText.length) {
-                typewriterElement.textContent += typewriterText.charAt(charIndex);
-                charIndex++;
-                setTimeout(type, 100);
-            }
-        }
     </script>
 </body>
 
