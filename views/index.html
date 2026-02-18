@@ -3447,15 +3447,17 @@
                     return;
                 }
 
-                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+                const d = days < 10 ? "0" + days : days;
                 const h = hours < 10 ? "0" + hours : hours;
                 const m = minutes < 10 ? "0" + minutes : minutes;
                 const s = seconds < 10 ? "0" + seconds : seconds;
 
-                display.textContent = h + ":" + m + ":" + s;
+                display.textContent = d + "d : " + h + "h : " + m + "m : " + s + "s";
             }, 1000);
         }
 
