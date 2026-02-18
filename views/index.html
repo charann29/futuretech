@@ -3492,9 +3492,8 @@
             // Set initial width
             const updateWidth = (index) => {
                 const item = items[index];
-                // Use getBoundingClientRect for precise width including sub-pixel
-                const width = item.getBoundingClientRect().width;
-                // Add a small buffer only if needed, but precise is better for "hugging"
+                // Use offsetWidth to get the layout width, ignoring transforms (scale)
+                const width = item.offsetWidth;
                 container.style.width = `${width}px`;
             };
 
