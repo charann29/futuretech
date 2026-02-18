@@ -986,6 +986,10 @@
         </div>
     </div>
 
+    <!-- Supabase CDN (must be before inline script) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../public/auth-fix.js"></script>
+
     <script>
         // Skills configuration (grayscale)
         const skillConfig = [
@@ -1153,53 +1157,123 @@
             }, 300);
         }
 
-        // Handle dashboard button visibility
-        const sessionData = await window.supabase.auth.getSession();
-        if (sessionData.data.session) {
-            document.getElementById('dashboardBtn').style.display = 'block';
-        }
+        // Wrap in async IIFE since we need top-level await
+        (async function () {
 
-        // Check for ID in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const resultId = urlParams.get('id');
-
-        // Retrieve local data as fallback
-        const testResultData = localStorage.getItem('testResult');
-        const evaluationText = localStorage.getItem('testEvaluation');
-        const answersData = localStorage.getItem('testAnswers');
-
-        let totalScore = 0;
-        let percentage = 0;
-        let scholarshipPercent = 0;
-        let rank = 0;
-        let totalStudents = getTotalStudents();
-        let skills = {};
-        let feedbackHTML = '';
-        let recommendation = '';
-        let answers = {};
-        let studentName = 'Champion';
-
-        // 1. Try to load from server if ID exists
-        if (resultId) {
-            console.log('[Results] Loading historical result:', resultId);
+            // Handle dashboard button visibility
             try {
-                const session = await window.supabase.auth.getSession();
-                const token = session?.data?.session?.access_token;
+                if (window.supabase) {
+                    const sessionData = await window.supabase.auth.getSession();
+                    if (sessionData?.data?.session) {
+                        const dashBtn = document.getElementById('dashboardBtn');
+                        if (dashBtn) dashBtn.style.display = 'block';
+                    }
+                }
+            } catch (e) { console.warn('Dashboard button check failed:', e); }
 
-                if (token) {
-                    const response = await fetch(`/api/test-result/${resultId}`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    const result = await response.json();
+            // Check for ID in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const resultId = urlParams.get('id');
 
-                    if (result.success) {
-                        const r = result.evaluation; // Evaluation object stored in DB
-                        totalScore = result.score || 0;
-                        percentage = result.score || 0;
-                        scholarshipPercent = result.scholarship_percentage || 0;
-                        studentName = result.student_name || 'Champion';
-                        answers = result.answers || {};
+            // Retrieve local data as fallback
+            const testResultData = localStorage.getItem('testResult');
+            const evaluationText = localStorage.getItem('testEvaluation');
+            const answersData = localStorage.getItem('testAnswers');
 
+            let totalScore = 0;
+            let percentage = 0;
+            let scholarshipPercent = 0;
+            let rank = 0;
+            let totalStudents = getTotalStudents();
+            let skills = {};
+            let feedbackHTML = '';
+            let recommendation = '';
+            let answers = {};
+            let studentName = 'Champion';
+
+            // 1. Try to load from server if ID exists
+            if (resultId) {
+                console.log('[Results] Loading historical result:', resultId);
+                try {
+                    const session = await window.supabase.auth.getSession();
+                    const token = session?.data?.session?.access_token;
+
+                    if (token) {
+                        const response = await fetch(`/api/test-result/${resultId}`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        const result = await response.json();
+
+                        if (result.success) {
+                            const r = result.evaluation; // Evaluation object stored in DB
+                            totalScore = result.score || 0;
+                            percentage = result.score || 0;
+                            scholarshipPercent = result.scholarship_percentage || 0;
+                            studentName = result.student_name || 'Champion';
+                            answers = result.answers || {};
+
+                            const dims = r.dimensionScores || {};
+                            skills = {
+                                analytical: dims["Analytical Thinking"] || 70,
+                                logical: dims["Problem Solving"] || 65,
+                                coding: dims["Technical Knowledge"] || 60,
+                                debugging: dims["Debugging Skills"] || 55,
+                                conceptual: dims["System Design"] || 50,
+                                communication: dims["Communication"] || 75
+                            };
+
+                            // AI Feedback
+                            const bullet = '<span class="hollow-bullet"></span>';
+                            if (r.overallFeedback) {
+                                feedbackHTML += `<li class="bullet-item">${bullet}<strong>Overall:</strong> ${r.overallFeedback}</li>`;
+                            }
+                            if (r.strengths && Array.isArray(r.strengths)) {
+                                r.strengths.forEach(s => {
+                                    feedbackHTML += `<li class="bullet-item">${bullet}<strong>Strength:</strong> ${s}</li>`;
+                                });
+                            }
+                            if (r.recommendedCourses && r.recommendedCourses.length > 0) {
+                                recommendation = `<strong>Your Path:</strong> Based on your profile, we recommend the <strong>${r.recommendedCourses[0]}</strong>.`;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error fetching historical result:', e);
+                }
+            }
+
+            // 2. Fallback to local testResultData (Current session)
+            if (totalScore === 0 && testResultData) {
+                try {
+                    const result = JSON.parse(testResultData);
+                    console.log('[Results] Parsed testResult keys:', Object.keys(result));
+
+                    // Support both formats:
+                    // Old: { success: true, results: { totalScore, percentage, ... } }
+                    // New: { evaluation: { percentage, dimensionScores, ... }, studentData: {...}, scholarship: {...} }
+                    let r = null;
+                    if (result.success && result.results) {
+                        r = result.results;
+                        totalScore = r.totalScore || r.percentage || 0;
+                        percentage = r.percentage || 0;
+                        scholarshipPercent = 40;
+                        if (result.student && result.student.name) {
+                            studentName = result.student.name;
+                        }
+                    } else if (result.evaluation) {
+                        r = result.evaluation;
+                        totalScore = r.percentage || 0;
+                        percentage = r.percentage || 0;
+                        scholarshipPercent = result.scholarship?.percentage || 40;
+                        if (result.studentData && result.studentData.name) {
+                            studentName = result.studentData.name;
+                        }
+                        answers = result.evaluation?.answers || {};
+                    }
+
+                    if (r) {
+
+                        // Map dimensions to skills for radar chart
                         const dims = r.dimensionScores || {};
                         skills = {
                             analytical: dims["Analytical Thinking"] || 70,
@@ -1209,6 +1283,10 @@
                             conceptual: dims["System Design"] || 50,
                             communication: dims["Communication"] || 75
                         };
+
+                        if (!Object.keys(answers).length) {
+                            answers = result.answers || {};
+                        }
 
                         // AI Feedback
                         const bullet = '<span class="hollow-bullet"></span>';
@@ -1220,252 +1298,199 @@
                                 feedbackHTML += `<li class="bullet-item">${bullet}<strong>Strength:</strong> ${s}</li>`;
                             });
                         }
-                        if (r.recommendedCourses && r.recommendedCourses.length > 0) {
-                            recommendation = `<strong>Your Path:</strong> Based on your profile, we recommend the <strong>${r.recommendedCourses[0]}</strong>.`;
+                        if (r.careerSuggestions && r.careerSuggestions.length > 0) {
+                            recommendation = `<strong>Your Path:</strong> Based on your profile, you'd excel as a <strong>${r.careerSuggestions[0]}</strong>.`;
+                        } else if (r.recommendedCourses && r.recommendedCourses.length > 0) {
+                            recommendation = `<strong>Your Path:</strong> Based on your profile, we recommend <strong>${r.recommendedCourses[0]}</strong>.`;
                         }
                     }
+                } catch (e) {
+                    console.error('Error parsing testResult:', e);
                 }
-            } catch (e) {
-                console.error('Error fetching historical result:', e);
             }
-        }
 
-        // 2. Fallback to local testResultData (Current session)
-        if (totalScore === 0 && testResultData) {
-            try {
-                const result = JSON.parse(testResultData);
-                if (result.success && result.results) {
-                    const r = result.results;
-                    totalScore = r.totalScore || 0;
-                    percentage = r.percentage || 0;
+            // 2. Fallback to local calculation (Legacy/Mock)
+            if (totalScore === 0) {
+                console.warn('[Results] Primary data missing or failed, attempting robust fallback...');
 
-                    // Use server scholarship if consistent, else fallback to consistent logic
-                    // Server logic: <50 -> 25%, 50-69 -> 40%, 70-79 -> 50%, 80-89 -> 60%, 90+ -> 100%
-                    // Client logic (below) uses fixed 40% for demo? 
-                    // Let's use server logic if available, but for now stick to the "Everyone gets 40%" override 
-                    // as per previous code block 1173: "Everyone gets 40% scholarship"
-                    scholarshipPercent = 40;
+                try {
+                    answers = answersData ? JSON.parse(answersData) : {};
+                } catch (e) {
+                    answers = {};
+                }
 
-                    if (result.student && result.student.name) {
-                        studentName = result.student.name;
-                    }
+                const answeredCount = Object.keys(answers).length;
 
-                    // Map dimensions to skills for radar chart
-                    // Server keys: "Technical Knowledge", "Problem Solving", "Analytical Thinking", etc.
-                    const dims = r.dimensionScores || {};
-                    skills = {
-                        analytical: dims["Analytical Thinking"] || 70,
-                        logical: dims["Problem Solving"] || 65,
-                        coding: dims["Technical Knowledge"] || 60,
-                        debugging: dims["Debugging Skills"] || 55,
-                        conceptual: dims["System Design"] || 50,
-                        communication: dims["Communication"] || 75
-                    };
+                // UX Protection: If no results found, generate a high-quality random result instead of failing
+                if (answeredCount === 0) {
+                    console.warn('[Results] Critical data loss: No answers found. Generating random success experience.');
+                    totalScore = 68 + Math.floor(Math.random() * 22); // 68 - 90
+                } else {
+                    totalScore = Math.min(100, Math.max(45, Math.floor(answeredCount * 5.5 + Math.random() * 10)));
+                }
 
-                    answers = result.answers || {};
+                scholarshipPercent = 40;
 
-                    // AI Feedback
-                    const bullet = '<span class="hollow-bullet"></span>';
-                    if (r.overallFeedback) {
-                        feedbackHTML += `<li class="bullet-item">${bullet}<strong>Overall:</strong> ${r.overallFeedback}</li>`;
-                    }
-                    if (r.strengths && Array.isArray(r.strengths)) {
-                        r.strengths.forEach(s => {
-                            feedbackHTML += `<li class="bullet-item">${bullet}<strong>Strength:</strong> ${s}</li>`;
+                skills = {
+                    analytical: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                    logical: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                    coding: Math.min(100, Math.floor(totalScore + Math.random() * 25 - 15)),
+                    debugging: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
+                    conceptual: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
+                    communication: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 5))
+                };
+            }
+
+            // --- UI Updates ---
+            rank = calculateRank(totalScore);
+            const percentile = Math.round((1 - rank / 1000) * 100);
+            incrementUserCounter();
+
+            const originalFee = 45000;
+            const savings = Math.floor(originalFee * scholarshipPercent / 100);
+            const finalFee = originalFee - savings;
+
+            document.getElementById('studentName').textContent = `Congratulations, ${studentName}!`;
+            animateValue('totalScore', 0, totalScore, 1500);
+            animateScoreRing(totalScore);
+
+            // For answered/correct count, we might not have exact correct count from server easily 
+            // without recalculating or adding it to API response.
+            // Estimate for display if missing:
+            const answeredCount = Object.keys(answers).length || 18;
+            const estimatedCorrect = Math.max(1, Math.round(totalScore / 5.5)); // Improved estimate
+
+            animateValue('answeredCount', 0, answeredCount, 1000);
+            animateValue('correctCount', 0, estimatedCorrect, 1000);
+
+            document.getElementById('percentile').textContent = `${percentile}%`;
+            document.getElementById('rankNumber').textContent = rank;
+            document.getElementById('totalStudents').textContent = totalStudents.toLocaleString() + '+';
+            document.getElementById('scholarshipPercent').textContent = `${scholarshipPercent}%`;
+            document.getElementById('originalFee').textContent = `₹${originalFee.toLocaleString('en-IN')}`;
+            document.getElementById('savingsAmount').textContent = `-₹${savings.toLocaleString('en-IN')}`;
+            document.getElementById('finalFee').textContent = `₹${finalFee.toLocaleString('en-IN')}`;
+
+            renderSkills(skills);
+
+            // Fallback for AI Content if empty
+            if (!feedbackHTML) {
+                const bullet = '<span class="hollow-bullet"></span>';
+                const strengthInsights = {
+                    high: [
+                        "Your analytical thinking demonstrates exceptional problem-solving potential.",
+                        "You show the kind of logical clarity that top developers possess.",
+                        "Your approach to challenges reveals a natural aptitude for coding."
+                    ],
+                    medium: [
+                        "Your curiosity and willingness to learn are your biggest strengths.",
+                        "You have the foundational thinking that successful coders build upon.",
+                        "Your persistence in tackling problems shows real developer mindset."
+                    ],
+                    growing: [
+                        "Taking this step shows the initiative that great developers have.",
+                        "Your growth mindset is exactly what the tech industry values.",
+                        "Every expert was once a beginner – your journey starts strong."
+                    ]
+                };
+
+                let insights = strengthInsights.growing;
+                if (totalScore >= 70) insights = strengthInsights.high;
+                else if (totalScore >= 40) insights = strengthInsights.medium;
+
+                feedbackHTML = insights.map(insight =>
+                    `<li class="bullet-item">${bullet}${insight}</li>`
+                ).join('');
+            }
+
+            if (!recommendation) {
+                recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
+                if (totalScore >= 80) {
+                    recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
+                } else if (totalScore >= 60) {
+                    recommendation = `<strong>Your Path:</strong> Our <strong>Professional Development Track</strong> will unlock your potential.`;
+                } else if (totalScore >= 40) {
+                    recommendation = `<strong>Your Path:</strong> The <strong>Skill Builder Program</strong> is perfect for your growth.`;
+                }
+            }
+
+            document.getElementById('aiFeedback').innerHTML = feedbackHTML;
+            document.getElementById('aiRecommendationText').innerHTML = recommendation;
+
+            window.resultData = { score: totalScore, rank, totalStudents, scholarship: scholarshipPercent, skills };
+
+            // Load question review
+            displayQuestionReview(answers);
+
+
+            // Function to display detailed question review
+            async function displayQuestionReview(userAnswers) {
+                const container = document.getElementById('questionReviewContainer');
+                if (!container) return;
+
+                try {
+                    // Fetch questions configuration
+                    const response = await fetch('/api/questions');
+                    const data = await response.json();
+                    const allQuestions = [];
+
+                    // Flatten sections if needed, or use direct array
+                    if (data.sections) {
+                        Object.values(data.sections).forEach(section => {
+                            if (Array.isArray(section)) allQuestions.push(...section);
                         });
+                    } else if (Array.isArray(data)) {
+                        allQuestions.push(...data);
                     }
-                    if (r.careerSuggestions && r.careerSuggestions.length > 0) {
-                        const career = r.careerSuggestions.join(", ");
-                        recommendation = `<strong>Your Path:</strong> Based on your profile, you'd excel as a <strong>${r.careerSuggestions[0]}</strong>.`;
-                    }
-                }
-            } catch (e) {
-                console.error('Error parsing testResult:', e);
-            }
-        }
 
-        // 2. Fallback to local calculation (Legacy/Mock)
-        if (totalScore === 0) {
-            console.warn('[Results] Primary data missing or failed, attempting robust fallback...');
+                    let reviewHTML = '';
 
-            try {
-                answers = answersData ? JSON.parse(answersData) : {};
-            } catch (e) {
-                answers = {};
-            }
+                    allQuestions.forEach((q, index) => {
+                        // Normalize user answer
+                        let userAnswer = userAnswers[q.id];
 
-            const answeredCount = Object.keys(answers).length;
+                        let statusClass = 'neutral';
+                        let statusIcon = '';
+                        let statusText = 'Not Answered';
+                        let statusColor = '#999';
+                        let statusBg = '#f0f0f0';
 
-            // UX Protection: If no results found, generate a high-quality random result instead of failing
-            if (answeredCount === 0) {
-                console.warn('[Results] Critical data loss: No answers found. Generating random success experience.');
-                totalScore = 68 + Math.floor(Math.random() * 22); // 68 - 90
-            } else {
-                totalScore = Math.min(100, Math.max(45, Math.floor(answeredCount * 5.5 + Math.random() * 10)));
-            }
-
-            scholarshipPercent = 40;
-
-            skills = {
-                analytical: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
-                logical: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
-                coding: Math.min(100, Math.floor(totalScore + Math.random() * 25 - 15)),
-                debugging: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 10)),
-                conceptual: Math.min(100, Math.floor(totalScore + Math.random() * 15 - 5)),
-                communication: Math.min(100, Math.floor(totalScore + Math.random() * 20 - 5))
-            };
-        }
-
-        // --- UI Updates ---
-        rank = calculateRank(totalScore);
-        const percentile = Math.round((1 - rank / 1000) * 100);
-        incrementUserCounter();
-
-        const originalFee = 45000;
-        const savings = Math.floor(originalFee * scholarshipPercent / 100);
-        const finalFee = originalFee - savings;
-
-        document.getElementById('studentName').textContent = `Congratulations, ${studentName}!`;
-        animateValue('totalScore', 0, totalScore, 1500);
-        animateScoreRing(totalScore);
-
-        // For answered/correct count, we might not have exact correct count from server easily 
-        // without recalculating or adding it to API response.
-        // Estimate for display if missing:
-        const answeredCount = Object.keys(answers).length || 18;
-        const estimatedCorrect = Math.max(1, Math.round(totalScore / 5.5)); // Improved estimate
-
-        animateValue('answeredCount', 0, answeredCount, 1000);
-        animateValue('correctCount', 0, estimatedCorrect, 1000);
-
-        document.getElementById('percentile').textContent = `${percentile}%`;
-        document.getElementById('rankNumber').textContent = rank;
-        document.getElementById('totalStudents').textContent = totalStudents.toLocaleString() + '+';
-        document.getElementById('scholarshipPercent').textContent = `${scholarshipPercent}%`;
-        document.getElementById('originalFee').textContent = `₹${originalFee.toLocaleString('en-IN')}`;
-        document.getElementById('savingsAmount').textContent = `-₹${savings.toLocaleString('en-IN')}`;
-        document.getElementById('finalFee').textContent = `₹${finalFee.toLocaleString('en-IN')}`;
-
-        renderSkills(skills);
-
-        // Fallback for AI Content if empty
-        if (!feedbackHTML) {
-            const bullet = '<span class="hollow-bullet"></span>';
-            const strengthInsights = {
-                high: [
-                    "Your analytical thinking demonstrates exceptional problem-solving potential.",
-                    "You show the kind of logical clarity that top developers possess.",
-                    "Your approach to challenges reveals a natural aptitude for coding."
-                ],
-                medium: [
-                    "Your curiosity and willingness to learn are your biggest strengths.",
-                    "You have the foundational thinking that successful coders build upon.",
-                    "Your persistence in tackling problems shows real developer mindset."
-                ],
-                growing: [
-                    "Taking this step shows the initiative that great developers have.",
-                    "Your growth mindset is exactly what the tech industry values.",
-                    "Every expert was once a beginner – your journey starts strong."
-                ]
-            };
-
-            let insights = strengthInsights.growing;
-            if (totalScore >= 70) insights = strengthInsights.high;
-            else if (totalScore >= 40) insights = strengthInsights.medium;
-
-            feedbackHTML = insights.map(insight =>
-                `<li class="bullet-item">${bullet}${insight}</li>`
-            ).join('');
-        }
-
-        if (!recommendation) {
-            recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
-            if (totalScore >= 80) {
-                recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
-            } else if (totalScore >= 60) {
-                recommendation = `<strong>Your Path:</strong> Our <strong>Professional Development Track</strong> will unlock your potential.`;
-            } else if (totalScore >= 40) {
-                recommendation = `<strong>Your Path:</strong> The <strong>Skill Builder Program</strong> is perfect for your growth.`;
-            }
-        }
-
-        document.getElementById('aiFeedback').innerHTML = feedbackHTML;
-        document.getElementById('aiRecommendationText').innerHTML = recommendation;
-
-        window.resultData = { score: totalScore, rank, totalStudents, scholarship: scholarshipPercent, skills };
-
-        // Load question review
-        displayQuestionReview(answers);
-
-
-        // Function to display detailed question review
-        async function displayQuestionReview(userAnswers) {
-            const container = document.getElementById('questionReviewContainer');
-            if (!container) return;
-
-            try {
-                // Fetch questions configuration
-                const response = await fetch('/api/questions');
-                const data = await response.json();
-                const allQuestions = [];
-
-                // Flatten sections if needed, or use direct array
-                if (data.sections) {
-                    Object.values(data.sections).forEach(section => {
-                        if (Array.isArray(section)) allQuestions.push(...section);
-                    });
-                } else if (Array.isArray(data)) {
-                    allQuestions.push(...data);
-                }
-
-                let reviewHTML = '';
-
-                allQuestions.forEach((q, index) => {
-                    // Normalize user answer
-                    let userAnswer = userAnswers[q.id];
-
-                    let statusClass = 'neutral';
-                    let statusIcon = '';
-                    let statusText = 'Not Answered';
-                    let statusColor = '#999';
-                    let statusBg = '#f0f0f0';
-
-                    if (userAnswer) {
-                        if (q.type === 'mcq') {
-                            const selectedIdx = parseInt(userAnswer);
-                            if (selectedIdx === q.correctAnswer) {
-                                statusClass = 'correct';
-                                statusIcon = '●';
-                                statusText = 'Correct';
-                                statusColor = '#10b981';
-                                statusBg = '#d1fae5';
+                        if (userAnswer) {
+                            if (q.type === 'mcq') {
+                                const selectedIdx = parseInt(userAnswer);
+                                if (selectedIdx === q.correctAnswer) {
+                                    statusClass = 'correct';
+                                    statusIcon = '●';
+                                    statusText = 'Correct';
+                                    statusColor = '#10b981';
+                                    statusBg = '#d1fae5';
+                                } else {
+                                    statusClass = 'wrong';
+                                    statusIcon = '●';
+                                    statusText = 'Incorrect';
+                                    statusColor = '#ef4444';
+                                    statusBg = '#fee2e2';
+                                }
                             } else {
-                                statusClass = 'wrong';
+                                statusClass = 'neutral'; // Manual/AI graded
                                 statusIcon = '●';
-                                statusText = 'Incorrect';
-                                statusColor = '#ef4444';
-                                statusBg = '#fee2e2';
+                                statusText = 'Submitted';
+                                statusColor = '#3b82f6';
+                                statusBg = '#dbeafe';
                             }
-                        } else {
-                            statusClass = 'neutral'; // Manual/AI graded
-                            statusIcon = '●';
-                            statusText = 'Submitted';
-                            statusColor = '#3b82f6';
-                            statusBg = '#dbeafe';
                         }
-                    }
 
-                    // Format user answer text
-                    let userAnswerText = 'Not answered';
-                    if (userAnswer) {
-                        if (q.type === 'mcq') {
-                            userAnswerText = q.options[parseInt(userAnswer)];
-                        } else {
-                            userAnswerText = userAnswer;
+                        // Format user answer text
+                        let userAnswerText = 'Not answered';
+                        if (userAnswer) {
+                            if (q.type === 'mcq') {
+                                userAnswerText = q.options[parseInt(userAnswer)];
+                            } else {
+                                userAnswerText = userAnswer;
+                            }
                         }
-                    }
 
-                    reviewHTML += `
+                        reviewHTML += `
                         <div class="review-card" style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; border-left: 5px solid ${statusColor}; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
                             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
                                 <h4 style="margin: 0; font-size: 16px; color: #333;">Q${index + 1}: ${q.question}</h4>
@@ -1492,41 +1517,41 @@
                             </div>
                         </div>
                     `;
-                });
+                    });
 
-                container.innerHTML = reviewHTML;
+                    container.innerHTML = reviewHTML;
 
-            } catch (error) {
-                console.error('Failed to load questions for review:', error);
-                container.innerHTML = '<p>Unable to load detailed question review at this time.</p>';
+                } catch (error) {
+                    console.error('Failed to load questions for review:', error);
+                    container.innerHTML = '<p>Unable to load detailed question review at this time.</p>';
+                }
             }
-        }
 
-        function formatExplanation(explanation) {
-            if (!explanation) return 'No explanation available.';
-            if (typeof explanation === 'string') return explanation;
-            if (explanation.stepByStep) {
-                return `
+            function formatExplanation(explanation) {
+                if (!explanation) return 'No explanation available.';
+                if (typeof explanation === 'string') return explanation;
+                if (explanation.stepByStep) {
+                    return `
                     <ul style="padding-left: 20px; margin: 5px 0;">
                         ${explanation.stepByStep.map(step => `<li>${step}</li>`).join('')}
                     </ul>
                     <p style="margin-top: 5px;"><strong>Answer:</strong> ${explanation.answer}</p>
                 `;
+                }
+                return JSON.stringify(explanation);
             }
-            return JSON.stringify(explanation);
-        }
 
-        document.addEventListener('DOMContentLoaded', loadResults);
+            document.addEventListener('DOMContentLoaded', loadResults);
 
-        function shareOnLinkedIn() {
-            const data = window.resultData || {};
-            const score = data.score || 0;
-            const rank = data.rank || 0;
-            const totalStudents = data.totalStudents || 8124;
-            const scholarship = data.scholarship || 0;
+            function shareOnLinkedIn() {
+                const data = window.resultData || {};
+                const score = data.score || 0;
+                const rank = data.rank || 0;
+                const totalStudents = data.totalStudents || 8124;
+                const scholarship = data.scholarship || 0;
 
-            // Pre-filled post template
-            const postText = `I just completed the FSAT (FutureTech Scholastic Assessment Test) and scored ${score}/100!
+                // Pre-filled post template
+                const postText = `I just completed the FSAT (FutureTech Scholastic Assessment Test) and scored ${score}/100!
 
 Rank: #${rank} out of ${totalStudents.toLocaleString()}+ students
 Scholarship Earned: ${scholarship}%
@@ -1535,77 +1560,75 @@ This assessment helped me understand where I stand in my technical skills. It wa
 
 @Trailbliz #FutureTechIT #TechnicalAssessment #CodingSkills #CareerGrowth #SkillAssessment`;
 
-            // Show modal with template
-            document.getElementById('shareTemplate').textContent = postText;
-            document.getElementById('shareModal').classList.add('active');
-        }
+                // Show modal with template
+                document.getElementById('shareTemplate').textContent = postText;
+                document.getElementById('shareModal').classList.add('active');
+            }
 
-        function closeModal() {
-            document.getElementById('shareModal').classList.remove('active');
-        }
+            function closeModal() {
+                document.getElementById('shareModal').classList.remove('active');
+            }
 
-        function copyTemplate() {
-            const template = document.getElementById('shareTemplate').textContent;
-            navigator.clipboard.writeText(template).then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy Text';
-                    btn.classList.remove('copied');
-                }, 2000);
-            }).catch(() => {
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = template;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy Text';
-                    btn.classList.remove('copied');
-                }, 2000);
+            function copyTemplate() {
+                const template = document.getElementById('shareTemplate').textContent;
+                navigator.clipboard.writeText(template).then(() => {
+                    const btn = document.getElementById('copyBtn');
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = 'Copy Text';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback
+                    const textarea = document.createElement('textarea');
+                    textarea.value = template;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    const btn = document.getElementById('copyBtn');
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.textContent = 'Copy Text';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+
+            function copyTemplateBeforeOpen() {
+                const template = document.getElementById('shareTemplate').textContent;
+                navigator.clipboard.writeText(template).catch(() => {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = template;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                });
+            }
+
+            // Close modal on outside click
+            document.getElementById('shareModal').addEventListener('click', function (e) {
+                if (e.target === this) closeModal();
             });
-        }
 
-        function copyTemplateBeforeOpen() {
-            const template = document.getElementById('shareTemplate').textContent;
-            navigator.clipboard.writeText(template).catch(() => {
-                const textarea = document.createElement('textarea');
-                textarea.value = template;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-            });
-        }
+            function enrollNow() {
+                const data = window.resultData || {};
+                const message = encodeURIComponent(
+                    `Hi! I completed the FutureTech IT Assessment and scored ${data.score}/100 with ${data.scholarship}% scholarship. I'd like to enroll in a program.`
+                );
+                window.open(`https://wa.me/918977781696?text=${message}`, '_blank');
+            }
 
-        // Close modal on outside click
-        document.getElementById('shareModal').addEventListener('click', function (e) {
-            if (e.target === this) closeModal();
-        });
-
-        function enrollNow() {
-            const data = window.resultData || {};
-            const message = encodeURIComponent(
-                `Hi! I completed the FutureTech IT Assessment and scored ${data.score}/100 with ${data.scholarship}% scholarship. I'd like to enroll in a program.`
-            );
-            window.open(`https://wa.me/918977781696?text=${message}`, '_blank');
-        }
-
-        function downloadReport() {
-            alert('Report download feature coming soon!\n\nFor now, you can take a screenshot of this page or share on LinkedIn.');
-        }
+            function downloadReport() {
+                alert('Report download feature coming soon!\n\nFor now, you can take a screenshot of this page or share on LinkedIn.');
+            }
 
 
+        })(); // End async IIFE
     </script>
-    <!-- Supabase CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../public/auth-fix.js"></script>
 </body>
 
 </html>
