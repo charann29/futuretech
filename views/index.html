@@ -2309,20 +2309,24 @@
                 position: relative;
                 display: inline-block;
                 vertical-align: text-bottom;
-                width: 330px;
+                width: auto;
+                /* Initial auto, JS will set pixel width */
+                min-width: 50px;
                 height: 1.2em;
                 overflow: hidden;
                 margin-bottom: -0.15em;
                 /* Soft mask for entry/exit */
                 mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
                 -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+                transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
             }
 
             .mp-item {
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 100%;
+                width: auto;
+                white-space: nowrap;
                 height: 100%;
                 line-height: 1.2em;
                 font-weight: 900;
@@ -3479,10 +3483,25 @@
 
         // Motion Primitives Text Loop Logic
         window.addEventListener('load', function () {
+            const container = document.querySelector('.mp-text-loop');
             const items = document.querySelectorAll('.mp-item');
-            if (items.length === 0) return;
+            if (items.length === 0 || !container) return;
 
             let currentIndex = 0;
+
+            // Set initial width
+            const updateWidth = (index) => {
+                const item = items[index];
+                // Use getBoundingClientRect for precise width including sub-pixel
+                const width = item.getBoundingClientRect().width;
+                // Add a small buffer only if needed, but precise is better for "hugging"
+                container.style.width = `${width}px`;
+            };
+
+            // Needs a slight delay to ensure fonts are loaded and layout is stable
+            setTimeout(() => {
+                updateWidth(currentIndex);
+            }, 100);
 
             // Start loop after initial delay
             setInterval(() => {
@@ -3494,10 +3513,12 @@
                 current.classList.remove('active');
                 current.classList.add('exit');
 
-                // Prepare next (reset state if needed) - not strictly needed with CSS classes if logic is clean
-                // But we need to ensure 'next' doesn't have 'exit' class from previous cycle
+                // Prepare next
                 next.classList.remove('exit');
                 next.classList.add('active');
+
+                // Animate Width
+                updateWidth(nextIndex);
 
                 currentIndex = nextIndex;
             }, 2500); // 2.5s interval
