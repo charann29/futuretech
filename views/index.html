@@ -2301,6 +2301,9 @@
                     <span>Job</span> <!-- Duplicate first for smooth loop -->
                 </div>
             </div>
+            <br>
+            <span id="typewriter-text" style="font-family: 'Courier New', monospace; font-size: 0.8em;"></span><span
+                class="cursor">|</span>
         </h1>
 
         <style>
@@ -2358,6 +2361,32 @@
                 }
 
                 /* 4/5 shift (to duplicate) */
+            }
+
+            /* Typewriter Effect Styles */
+            #typewriter-text {
+                color: var(--gold);
+                font-weight: 800;
+            }
+
+            .cursor {
+                display: inline-block;
+                width: 3px;
+                background-color: var(--gold);
+                margin-left: 5px;
+                animation: blink 1s step-end infinite;
+            }
+
+            @keyframes blink {
+
+                from,
+                to {
+                    background-color: transparent
+                }
+
+                50% {
+                    background-color: var(--gold);
+                }
             }
         </style>
         <p class="subheadline">
@@ -3447,7 +3476,21 @@
             if (display) {
                 startTargetTimer(targetDate, display);
             }
+            setTimeout(type, 1500); // Start typing after delay
         });
+
+        // Typewriter Effect
+        const typewriterText = "You're Not Alone. We are here to help you";
+        const typewriterElement = document.getElementById('typewriter-text');
+        let charIndex = 0;
+
+        function type() {
+            if (charIndex < typewriterText.length) {
+                typewriterElement.textContent += typewriterText.charAt(charIndex);
+                charIndex++;
+                setTimeout(type, 100);
+            }
+        }
     </script>
 </body>
 
