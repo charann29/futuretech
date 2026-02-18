@@ -2291,13 +2291,79 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-badge">2,847 Students Placed in Last 6 months</div>
-        <h1>Are you <span class="highlight">Fresher! </span> But <span class="highlight">No Job?</span><br>
+        <h1>Are you <span class="highlight">Fresher! </span> But <span class="highlight">No </span>
+            <div class="text-cycler">
+                <div class="cycler-wrapper">
+                    <span>Job</span>
+                    <span>Internship</span>
+                    <span>Project</span>
+                    <span>Experience</span>
+                    <span>Job</span>
+                </div>
+            </div><span class="highlight">?</span><br>
 
             <span id="typewriter-text" style="font-family: 'Courier New', monospace; font-size: 0.8em;"></span><span
                 class="cursor">|</span>
         </h1>
 
         <style>
+            /* Text Cycler Styles */
+            .text-cycler {
+                height: 1.1em;
+                overflow: hidden;
+                display: inline-block;
+                vertical-align: bottom;
+                position: relative;
+                width: 320px;
+                text-align: left;
+                margin-bottom: -0.1em;
+            }
+
+            .cycler-wrapper {
+                display: flex;
+                flex-direction: column;
+                animation: cycler 8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            }
+
+            .cycler-wrapper span {
+                display: block;
+                height: 100%;
+                color: var(--dark-red);
+                font-weight: 900;
+            }
+
+            @keyframes cycler {
+
+                0%,
+                20% {
+                    transform: translateY(0);
+                }
+
+                25%,
+                45% {
+                    transform: translateY(-20%);
+                }
+
+                /* 1/5 shift */
+                50%,
+                70% {
+                    transform: translateY(-40%);
+                }
+
+                /* 2/5 shift */
+                75%,
+                95% {
+                    transform: translateY(-60%);
+                }
+
+                /* 3/5 shift */
+                100% {
+                    transform: translateY(-80%);
+                }
+
+                /* 4/5 shift (to duplicate) */
+            }
+
             /* Typewriter Effect Styles */
             #typewriter-text {
                 color: var(--gold);
