@@ -2996,15 +2996,83 @@
             </style>
 
             <!-- Assurance Banner -->
-            <div
-                style="background: linear-gradient(135deg, #f4de62 0%, #FFA500 100%); padding: 30px; border-radius: 15px; text-align: center; border: 3px solid #000; margin-bottom: 30px;">
-                <h3 style="font-size: 28px; font-weight: 900; color: #000; margin-bottom: 15px;">Our Commitment</h3>
-                <p style="font-size: 20px; font-weight: 700; color: #000; margin: 0;">
-                    Certification Included<br>
-                    Assured Placement Support
-                </p>
+            <!-- Assurance Banner -->
+            <div class="assurance-card">
+                <div class="assurance-icon">🛡️</div>
+                <h3>Our Commitment</h3>
+                <div class="assurance-features">
+                    <div class="feature-item">
+                        <span class="check-icon">✓</span>
+                        <span>Certification Included</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="check-icon">✓</span>
+                        <span>At least 5 Placement Drives Guaranteed</span>
+                    </div>
+                </div>
             </div>
 
+            <style>
+                .assurance-card {
+                    background: linear-gradient(145deg, #ffffff, #fffdf5);
+                    border: 1px solid rgba(218, 165, 32, 0.3);
+                    border-left: 5px solid #A50000;
+                    border-radius: 16px;
+                    padding: 30px;
+                    text-align: center;
+                    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+                    margin-bottom: 40px;
+                    position: relative;
+                    overflow: hidden;
+                    transition: transform 0.3s ease;
+                }
+
+                .assurance-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 15px 35px -10px rgba(165, 0, 0, 0.15);
+                }
+
+                .assurance-card h3 {
+                    font-size: 26px;
+                    font-weight: 800;
+                    color: #A50000;
+                    margin-bottom: 20px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+
+                .assurance-icon {
+                    font-size: 32px;
+                    margin-bottom: 10px;
+                    display: inline-block;
+                }
+
+                .assurance-features {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    align-items: center;
+                }
+
+                .feature-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #333;
+                    background: rgba(165, 0, 0, 0.04);
+                    padding: 10px 20px;
+                    border-radius: 50px;
+                    width: fit-content;
+                }
+
+                .check-icon {
+                    color: #A50000;
+                    font-weight: 900;
+                    font-size: 18px;
+                }
+            </style>
             <!-- Contact Information -->
             <div style="background: var(--dark-red); color: white; padding: 40px; border-radius: 15px;">
                 <h3 style="color: var(--gold); margin-bottom: 25px; font-size: 24px; font-weight: 800;">Get In
