@@ -2308,13 +2308,14 @@
             .mp-text-loop {
                 position: relative;
                 display: inline-block;
-                vertical-align: text-bottom;
+                vertical-align: bottom;
                 width: auto;
                 /* Initial auto, JS will set pixel width */
                 min-width: 50px;
                 height: 1.2em;
                 overflow: hidden;
-                margin-bottom: -0.15em;
+                margin-bottom: 0.15em;
+                /* Slight lift */
                 /* Soft mask for entry/exit */
                 mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
                 -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
