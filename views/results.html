@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Analysis Results | FutureTech IT</title>
+    <title>AI Analysis Results | Fortune IT</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -841,7 +841,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header animate-in">
-            <h1>FutureTech Scholastic Assessment Test</h1>
+            <h1>Fortune IT Scholastic Assessment Test</h1>
             <p>AI-Powered Analysis Report</p>
         </div>
 
@@ -922,7 +922,7 @@
                     </div>
                     <div class="ai-header-text">
                         <h3>FSAT Insights</h3>
-                        <p>FutureTech Scholastic Assessment</p>
+                        <p>Fortune IT Scholastic Assessment</p>
                     </div>
                 </div>
                 <div class="ai-body">
@@ -946,7 +946,7 @@
         <div class="scholarship-section glass-card animate-in delay-3">
             <div class="scholarship-title">Your Scholarship</div>
             <div class="scholarship-value" id="scholarshipPercent">---</div>
-            <div class="scholarship-subtitle">on FutureTech IT Programs</div>
+            <div class="scholarship-subtitle">on Fortune IT Programs</div>
             <div class="scholarship-breakdown">
                 <div class="breakdown-item">
                     <div class="breakdown-value" id="originalFee">₹45,000</div>
@@ -1404,7 +1404,7 @@
             }
 
             if (!recommendation) {
-                recommendation = `<strong>Your Path:</strong> Start with <strong>FutureTech Foundations</strong> – designed for future champions.`;
+                recommendation = `<strong>Your Path:</strong> Start with <strong>Fortune IT Foundations</strong> – designed for future champions.`;
                 if (totalScore >= 80) {
                     recommendation = `<strong>Your Path:</strong> You're ready for <strong>Advanced Full-Stack Development</strong>!`;
                 } else if (totalScore >= 60) {
@@ -1551,14 +1551,14 @@
                 const scholarship = data.scholarship || 0;
 
                 // Pre-filled post template
-                const postText = `I just completed the FSAT (FutureTech Scholastic Assessment Test) and scored ${score}/100!
+                const postText = `I just completed the FSAT (Fortune IT Scholastic Assessment Test) and scored ${score}/100!
 
 Rank: #${rank} out of ${totalStudents.toLocaleString()}+ students
 Scholarship Earned: ${scholarship}%
 
 This assessment helped me understand where I stand in my technical skills. It was a great experience writing this exam and getting detailed AI-powered feedback on my abilities.
 
-@Trailbliz #FutureTechIT #TechnicalAssessment #CodingSkills #CareerGrowth #SkillAssessment`;
+@Trailbliz #Fortune ITIT #TechnicalAssessment #CodingSkills #CareerGrowth #SkillAssessment`;
 
                 // Show modal with template
                 document.getElementById('shareTemplate').textContent = postText;
@@ -1617,7 +1617,7 @@ This assessment helped me understand where I stand in my technical skills. It wa
             function enrollNow() {
                 const data = window.resultData || {};
                 const message = encodeURIComponent(
-                    `Hi! I completed the FutureTech IT Assessment and scored ${data.score}/100 with ${data.scholarship}% scholarship. I'd like to enroll in a program.`
+                    `Hi! I completed the Fortune IT Assessment and scored ${data.score}/100 with ${data.scholarship}% scholarship. I'd like to enroll in a program.`
                 );
                 window.open(`https://wa.me/918977781696?text=${message}`, '_blank');
             }
