@@ -201,5 +201,5 @@ function enrollNow() {
         'Hi! I just completed the scholarship test and would like to enroll in the course. My test ID: ' +
         Date.now()
     );
-    window.open(`https://wa.me/918977781696?text=${message}`, '_blank');
+    window.open(`https://wa.me/919063197675?text=${message}`, '_blank');
 }
